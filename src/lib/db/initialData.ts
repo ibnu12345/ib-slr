@@ -1,0 +1,1040 @@
+import { SiteSettings, NavigationItem, CMSPage, FAQItem, PricingPlan, TestimonialItem } from "../types/cms";
+
+export const defaultSiteSettings: SiteSettings = {
+  brandName: "IB-SLR",
+  tagline: "From Literature to Evidence.",
+  contactEmail: "contact@ib-slr.local",
+  supportEmail: "support@ib-slr.local",
+  twitterUrl: "https://twitter.com",
+  githubUrl: "https://github.com",
+  linkedinUrl: "https://linkedin.com",
+  footerDisclaimer: "IB-SLR is a rigorous, AI-assisted systematic literature review SaaS platform engineered for researchers, universities, and clinical evidence syntheses. Human-in-the-loop verification is preserved at every stage.",
+  announcement: {
+    isActive: true,
+    message: "IB-SLR v1.0 Released — Experience grounded literature screening and auditable PRISMA 2020 reporting.",
+    linkUrl: "/how-it-works",
+    linkText: "Learn more",
+  },
+};
+
+export const defaultNavigationItems: NavigationItem[] = [
+  // Header
+  { id: "nav-h-1", location: "header", label: "Features", url: "/features", sortOrder: 1, isExternal: false, isVisible: true },
+  { id: "nav-h-2", location: "header", label: "How It Works", url: "/how-it-works", sortOrder: 2, isExternal: false, isVisible: true },
+  { id: "nav-h-3", location: "header", label: "For Researchers", url: "/for-researchers", sortOrder: 3, isExternal: false, isVisible: true },
+  { id: "nav-h-4", location: "header", label: "For Institutions", url: "/for-institutions", sortOrder: 4, isExternal: false, isVisible: true },
+  { id: "nav-h-5", location: "header", label: "Pricing", url: "/pricing", sortOrder: 5, isExternal: false, isVisible: true },
+  { id: "nav-h-6", location: "header", label: "Resources", url: "/resources", sortOrder: 6, isExternal: false, isVisible: true },
+  { id: "nav-h-7", location: "header", label: "About", url: "/about", sortOrder: 7, isExternal: false, isVisible: true },
+
+  // Footer Column 1: Product
+  { id: "nav-f1-1", location: "footer_col1", label: "Features Overview", url: "/features", sortOrder: 1, isExternal: false, isVisible: true },
+  { id: "nav-f1-2", location: "footer_col1", label: "Methodology & Flow", url: "/how-it-works", sortOrder: 2, isExternal: false, isVisible: true },
+  { id: "nav-f1-3", location: "footer_col1", label: "Pricing & Plans", url: "/pricing", sortOrder: 3, isExternal: false, isVisible: true },
+  { id: "nav-f1-4", location: "footer_col1", label: "Security & RLS", url: "/security", sortOrder: 4, isExternal: false, isVisible: true },
+
+  // Footer Column 2: Solutions
+  { id: "nav-f2-1", location: "footer_col2", label: "For Researchers", url: "/for-researchers", sortOrder: 1, isExternal: false, isVisible: true },
+  { id: "nav-f2-2", location: "footer_col2", label: "For Academic Labs", url: "/for-institutions", sortOrder: 2, isExternal: false, isVisible: true },
+  { id: "nav-f2-3", location: "footer_col2", label: "Systematic Review Guides", url: "/resources", sortOrder: 3, isExternal: false, isVisible: true },
+  { id: "nav-f2-4", location: "footer_col2", label: "Methodology Blog", url: "/blog", sortOrder: 4, isExternal: false, isVisible: true },
+
+  // Footer Column 3: Company & Contact
+  { id: "nav-f3-1", location: "footer_col3", label: "About IB-SLR", url: "/about", sortOrder: 1, isExternal: false, isVisible: true },
+  { id: "nav-f3-2", location: "footer_col3", label: "Contact Us", url: "/contact", sortOrder: 2, isExternal: false, isVisible: true },
+  { id: "nav-f3-3", location: "footer_col3", label: "Platform Login", url: "/login", sortOrder: 3, isExternal: false, isVisible: true },
+  { id: "nav-f3-4", location: "footer_col3", label: "Create Account", url: "/register", sortOrder: 4, isExternal: false, isVisible: true },
+
+  // Footer Legal
+  { id: "nav-fl-1", location: "footer_legal", label: "Privacy Policy", url: "/privacy", sortOrder: 1, isExternal: false, isVisible: true },
+  { id: "nav-fl-2", location: "footer_legal", label: "Terms of Service", url: "/terms", sortOrder: 2, isExternal: false, isVisible: true },
+  { id: "nav-fl-3", location: "footer_legal", label: "Security Standards", url: "/security", sortOrder: 3, isExternal: false, isVisible: true },
+];
+
+export const defaultPricingPlans: PricingPlan[] = [
+  {
+    id: "plan-academic",
+    name: "Academic Free",
+    tierKey: "academic_free",
+    tagline: "Essential SLR tooling for solo students and independent scholars.",
+    priceMonthly: 0,
+    priceAnnual: 0,
+    features: [
+      "1 Active Systematic Review Project",
+      "Up to 1,000 References Imported",
+      "Title & Abstract Screening with Exclusion Reasons",
+      "Manual Data Extraction Matrix",
+      "Event-Driven PRISMA 2020 Flow Diagram",
+      "XLSX & CSV Data Export",
+      "Email Community Support"
+    ],
+    isFeatured: false,
+    sortOrder: 1,
+  },
+  {
+    id: "plan-researcher",
+    name: "Professional Researcher",
+    tierKey: "pro_researcher",
+    tagline: "Advanced AI-assisted extraction and dual-reviewer workflows for funded researchers.",
+    priceMonthly: 29,
+    priceAnnual: 290,
+    features: [
+      "Unlimited Review Projects",
+      "Up to 25,000 References per Review",
+      "Citation-Anchored AI Screening & Extraction",
+      "Dual Independent Reviewers with Blinding",
+      "Conflict Adjudication & Auditor Logs",
+      "Quality Appraisal Frameworks (JBI, CASP, RoB 2)",
+      "DOCX Manuscript & Journal Table Generation",
+      "Priority Email & Slack Support"
+    ],
+    isFeatured: true,
+    sortOrder: 2,
+  },
+  {
+    id: "plan-institution",
+    name: "Institutional & Lab",
+    tierKey: "institutional",
+    tagline: "Department-wide governance, dedicated HIPAA/FERPA tenancy, and custom AI adapters.",
+    priceMonthly: 99,
+    priceAnnual: 990,
+    features: [
+      "Unlimited Workspaces & Team Seats",
+      "Centralized License & Usage Management",
+      "Custom Institutional Single Sign-On (SAML / SSO)",
+      "Private On-Premises or Cloud Storage Connector",
+      "Dedicated Database Encryption & Custom RLS",
+      "API Access for Institutional Repositories",
+      "Dedicated Research Methodology Onboarding"
+    ],
+    isFeatured: false,
+    sortOrder: 3,
+  },
+];
+
+export const defaultFAQs: FAQItem[] = [
+  {
+    id: "faq-1",
+    category: "Methodology & PRISMA",
+    question: "How does IB-SLR ensure PRISMA 2020 compliance?",
+    answer: "PRISMA numbers in IB-SLR are never estimated or hallucinated. The platform implements an immutable PRISMA Event Ledger that records every imported record, duplicate removal, title/abstract exclusion (with structured reason codes), and full-text assessment in real time.",
+    sortOrder: 1,
+    isPublished: true,
+  },
+  {
+    id: "faq-2",
+    category: "AI & Evidence Integrity",
+    question: "Does the AI assistant ever fabricate citations or data?",
+    answer: "No. IB-SLR strictly enforces evidence-grounded AI inference. Whenever the AI extracts data fields or suggests screening criteria, it requires exact page coordinates and verbatim supporting quotes. If information is absent in the document, it explicitly outputs 'Not Reported'.",
+    sortOrder: 2,
+    isPublished: true,
+  },
+  {
+    id: "faq-3",
+    category: "Data Privacy & Security",
+    question: "Are our unpublished research papers or manuscripts shared with AI model vendors?",
+    answer: "Never. Your uploaded literature, PDF manuscripts, and screening notes are protected by Row-Level Security (RLS) and stored in isolated private vaults. We never use client research documents to train foundation AI models.",
+    sortOrder: 3,
+    isPublished: true,
+  },
+  {
+    id: "faq-4",
+    category: "Collaboration",
+    question: "How does the dual-reviewer workflow handle screening conflicts?",
+    answer: "Reviewers can screen titles, abstracts, and full texts in independent blinded mode. If their inclusion/exclusion decisions diverge, IB-SLR marks the article with a 'Conflict' flag and queues it for an appointed adjudicator or third reviewer.",
+    sortOrder: 4,
+    isPublished: true,
+  },
+  {
+    id: "faq-5",
+    category: "File Formats & Imports",
+    question: "Which citation and bibliographic formats are supported?",
+    answer: "IB-SLR supports direct imports of RIS, BibTeX, EndNote XML, CSV, and DOI batches from databases such as PubMed, Crossref, Scopus, Web of Science, and OpenAlex.",
+    sortOrder: 5,
+    isPublished: true,
+  },
+];
+
+export const defaultTestimonials: TestimonialItem[] = [
+  {
+    id: "test-1",
+    quote: "IB-SLR transformed our clinical review timeline. Being able to trace every AI-extracted outcome to its exact page and paragraph gave our systematic review team the rigorous transparency Cochrane standards require.",
+    authorName: "Dr. Elena Vance",
+    authorRole: "Senior Research Fellow in Evidence-Based Medicine",
+    institution: "Institute for Health Informatics",
+    isApproved: true,
+    sortOrder: 1,
+  },
+  {
+    id: "test-2",
+    quote: "The dual-reviewer blinding and instant PRISMA 2020 flow reconciliation eliminated hundreds of hours of manual cross-referencing spreadsheets. The academic, calm UI is a breath of fresh air.",
+    authorName: "Prof. Marcus Thorne",
+    authorRole: "Chair of Public Health & Epidemiology",
+    institution: "University Faculty of Health Sciences",
+    isApproved: true,
+    sortOrder: 2,
+  },
+];
+
+export const defaultPages: CMSPage[] = [
+  {
+    id: "page-home",
+    slug: "/",
+    title: "Home | IB-SLR",
+    description: "AI-assisted Systematic Literature Review SaaS platform for researchers, universities, and evidence syntheses.",
+    seoMetadata: {
+      metaTitle: "IB-SLR — From Literature to Evidence | Systematic Literature Review Workspace",
+      metaDescription: "Accelerate your systematic literature review with evidence-grounded AI, dual-reviewer blinding, and auditable PRISMA 2020 reporting.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-hero",
+        pageId: "page-home",
+        sectionType: "hero",
+        title: "From Literature to Evidence.",
+        subtitle: "A rigorous, AI-assisted systematic review workspace engineered for researchers. Manage protocols, screen literature with dual-reviewer blinding, extract grounded evidence, and generate audit-proof PRISMA 2020 reports.",
+        content: {
+          badge: "ACADEMIC EVIDENCE PLATFORM",
+          primaryCtaText: "Start Review Workspace",
+          primaryCtaUrl: "/register",
+          secondaryCtaText: "Explore Methodology",
+          secondaryCtaUrl: "/how-it-works",
+          secondaryBadge: "Strict Evidence Grounding · No Fabricated Citations",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-features",
+        pageId: "page-home",
+        sectionType: "feature_grid",
+        title: "Built for Methodological Rigor",
+        subtitle: "Every module adheres to internationally recognized SLR standards including PRISMA 2020, Cochrane, and JBI guidelines.",
+        content: {
+          features: [
+            {
+              title: "Protocol & PICO Framework",
+              description: "Formulate research questions with PICO, PICo, or SPIDER frameworks. Lock versioned eligibility criteria before screening begins.",
+              icon: "FileText"
+            },
+            {
+              title: "Multi-Format Reference Import",
+              description: "Seamlessly ingest RIS, BibTeX, EndNote XML, and CSV files with automated DOI normalization and duplicate candidate review.",
+              icon: "UploadCloud"
+            },
+            {
+              title: "Dual-Reviewer Screening & Blinding",
+              description: "Conduct independent title/abstract and full-text screening. Resolve conflicting reviewer decisions with auditable adjudication.",
+              icon: "Users"
+            },
+            {
+              title: "Evidence-Grounded AI Assistant",
+              description: "Query documents with mandatory page coordinate anchoring and verbatim quotes. AI never hallucinates citations or findings.",
+              icon: "Sparkles"
+            },
+            {
+              title: "Quality Appraisal Studio",
+              description: "Evaluate study methodology using configurable instruments including CASP, JBI, and Risk of Bias 2 (RoB 2) frameworks.",
+              icon: "ShieldCheck"
+            },
+            {
+              title: "Event-Sourced PRISMA 2020 Flow",
+              description: "Generate compliant PRISMA diagrams derived directly from workflow records, exclusions, and retrieval outcomes.",
+              icon: "GitBranch"
+            }
+          ]
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-workflow",
+        pageId: "page-home",
+        sectionType: "workflow_steps",
+        title: "The Systematic Review Workflow",
+        subtitle: "A structured, reproducible progression from initial search query to peer-reviewed publication.",
+        content: {
+          steps: [
+            {
+              stepNumber: "01",
+              title: "Protocol & Search Logging",
+              description: "Define inclusion/exclusion criteria, search strategies, and database sources with immutable versioning."
+            },
+            {
+              stepNumber: "02",
+              title: "Deduplication & Library",
+              description: "Merge duplicate entries via multi-tier algorithms (exact DOI, title match, fuzzy similarity) with human oversight."
+            },
+            {
+              stepNumber: "03",
+              title: "Two-Stage Screening",
+              description: "Screen titles and abstracts, followed by full-text PDFs with mandatory structured exclusion reason recording."
+            },
+            {
+              stepNumber: "04",
+              title: "Extraction & Appraisal",
+              description: "Extract structured outcomes into verified matrices and appraise methodological validity using standard tools."
+            },
+            {
+              stepNumber: "05",
+              title: "PRISMA & Manuscript Export",
+              description: "Export real-time PRISMA 2020 flow diagrams, journal evidence tables, and formatted manuscript drafts to DOCX and XLSX."
+            }
+          ]
+        },
+        sortOrder: 3,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-metrics",
+        pageId: "page-home",
+        sectionType: "metrics_display",
+        title: "Engineered for Research Integrity",
+        subtitle: "Transparent, auditable data metrics backing every review.",
+        content: {
+          metrics: [
+            { label: "Audit Verification", value: "100%", description: "Every screening decision and duplicate merge is logged with timestamp & reviewer ID." },
+            { label: "Citation Hallucinations", value: "0", description: "Mandatory quote and page number validation ensures zero fabricated references." },
+            { label: "Data Isolation", value: "Private by Default", description: "Row-Level Security (RLS) guarantees your research files are never exposed." }
+          ]
+        },
+        sortOrder: 4,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-testimonials",
+        pageId: "page-home",
+        sectionType: "testimonials",
+        title: "Trusted by Evidence Synthesis Teams",
+        subtitle: "Real researchers on how IB-SLR streamlines rigorous reviews without compromising academic integrity.",
+        content: {},
+        sortOrder: 5,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-pricing",
+        pageId: "page-home",
+        sectionType: "pricing_table",
+        title: "Transparent, Academic-Friendly Pricing",
+        subtitle: "From individual graduate theses to multi-center clinical systematic reviews.",
+        content: {},
+        sortOrder: 6,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-faq",
+        pageId: "page-home",
+        sectionType: "faq_accordion",
+        title: "Frequently Asked Questions",
+        subtitle: "Everything you need to know about methodology, AI evidence grounding, and security.",
+        content: {},
+        sortOrder: 7,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-cta",
+        pageId: "page-home",
+        sectionType: "cta_banner",
+        title: "Advance Your Literature Review Today",
+        subtitle: "Join researchers worldwide in building transparent, reproducible systematic reviews with IB-SLR.",
+        content: {
+          primaryCtaText: "Create Free Academic Account",
+          primaryCtaUrl: "/register",
+          secondaryCtaText: "Contact Institutional Sales",
+          secondaryCtaUrl: "/contact"
+        },
+        sortOrder: 8,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-features",
+    slug: "/features",
+    title: "Features | IB-SLR",
+    description: "Comprehensive overview of IB-SLR systematic review capabilities.",
+    seoMetadata: {
+      metaTitle: "Features — IB-SLR Systematic Review Workspace",
+      metaDescription: "Explore all modules of IB-SLR: Protocol, literature import, screening, extraction, appraisal, and PRISMA reporting.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-feat-hero",
+        pageId: "page-features",
+        sectionType: "hero",
+        title: "Comprehensive SLR Capabilities",
+        subtitle: "From initial protocol formulation to journal table publication, discover the complete suite of systematic review instruments.",
+        content: {
+          badge: "PLATFORM ARCHITECTURE",
+          primaryCtaText: "Start Free Project",
+          primaryCtaUrl: "/register",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-feat-grid",
+        pageId: "page-features",
+        sectionType: "feature_grid",
+        title: "End-to-End Methodological Support",
+        subtitle: "Every stage is backed by audit trails and exportable matrices.",
+        content: {
+          features: [
+            { title: "Protocol Builder", description: "Design PICO criteria, study scope, and search strategies.", icon: "FileText" },
+            { title: "Search Provenance", description: "Preserve exact search strings, databases queried, and timestamped hits.", icon: "Database" },
+            { title: "Reference Deduplication", description: "Intelligent matching with manual survivor record verification.", icon: "CopyCheck" },
+            { title: "Title/Abstract Screening", description: "Fast keyboard-driven decisions with predefined exclusion rationale.", icon: "Eye" },
+            { title: "Full-Text PDF Viewer", description: "Integrated PDF reader with annotation, search, and page evidence extraction.", icon: "FileSearch" },
+            { title: "Conflict Adjudication", description: "Automated flagging of divergent reviewer judgments for third-party resolution.", icon: "CheckCircle" },
+            { title: "Data Extraction Studio", description: "Customizable tabular templates with AI pre-fill and mandatory reviewer verification.", icon: "Table" },
+            { title: "Risk of Bias Frameworks", description: "Built-in checklists for RCTs, observational studies, and qualitative designs.", icon: "Shield" },
+            { title: "PRISMA 2020 Flow Engine", description: "Deterministic calculation of all PRISMA nodes with live SVG export.", icon: "Share2" }
+          ]
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-how-it-works",
+    slug: "/how-it-works",
+    title: "How It Works | IB-SLR",
+    description: "Step-by-step walkthrough of the systematic literature review methodology in IB-SLR.",
+    seoMetadata: {
+      metaTitle: "How It Works — Systematic Review Methodology | IB-SLR",
+      metaDescription: "Discover how IB-SLR structures the systematic literature review process from protocol to PRISMA reporting.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-hiw-hero",
+        pageId: "page-how-it-works",
+        sectionType: "hero",
+        title: "From Query to Publication",
+        subtitle: "How IB-SLR guides your research team through every phase of a systematic review while preserving complete audit provenance.",
+        content: {
+          badge: "METHODOLOGICAL WORKFLOW",
+          primaryCtaText: "Begin Review",
+          primaryCtaUrl: "/register",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-hiw-steps",
+        pageId: "page-how-it-works",
+        sectionType: "workflow_steps",
+        title: "Five Steps to an Audit-Proof Review",
+        subtitle: "Follow international best practices with integrated verification safeguards.",
+        content: {
+          steps: [
+            { stepNumber: "Step 1", title: "Protocol Conception", description: "Define research questions (PICO), inclusion/exclusion boundaries, and database sources." },
+            { stepNumber: "Step 2", title: "Literature Ingestion", description: "Import RIS/BibTeX files and execute automated multi-tier deduplication." },
+            { stepNumber: "Step 3", title: "Independent Screening", description: "Conduct blinded screening with custom exclusion reason codes and conflict flags." },
+            { stepNumber: "Step 4", title: "Extraction & Appraisal", description: "Extract critical clinical/scientific variables with verified quotes and evaluate bias." },
+            { stepNumber: "Step 5", title: "Synthesis & PRISMA Export", description: "Generate formatted journal tables, PRISMA flowcharts, and manuscript drafts." }
+          ]
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-for-researchers",
+    slug: "/for-researchers",
+    title: "For Researchers | IB-SLR",
+    description: "Designed for independent researchers, PhD candidates, and clinical academics.",
+    seoMetadata: {
+      metaTitle: "IB-SLR for Independent Researchers & Scholars",
+      metaDescription: "Accelerate your literature reviews and postgraduate theses with rigorous AI-assisted workflows.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-res-hero",
+        pageId: "page-for-researchers",
+        sectionType: "hero",
+        title: "Engineered for Scholarly Rigor",
+        subtitle: "Spend less time wrangling spreadsheets and more time synthesizing evidence. IB-SLR provides the tooling independent scholars need to publish high-impact reviews.",
+        content: {
+          badge: "INDIVIDUAL RESEARCHERS",
+          primaryCtaText: "Get Started Free",
+          primaryCtaUrl: "/register",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-res-content",
+        pageId: "page-for-researchers",
+        sectionType: "rich_text",
+        title: "Why Independent Scholars Choose IB-SLR",
+        subtitle: "Maintain complete methodological control with tools tailored for solitary and small-team reviews.",
+        content: {
+          body: `Systematic reviews demand hundreds of hours of painstaking bibliographic management, title checking, and manual table generation. IB-SLR cuts screening and extraction overhead by up to 60% without compromising evidence integrity.
+          
+Key benefits for researchers:
+- **Zero Hallucination AI**: The AI assistant provides paragraph-anchored suggestions you can verify in seconds.
+- **Keyboard-Driven Screening**: Rapidly review hundreds of abstracts with ergonomic hotkeys.
+- **Instant PRISMA 2020**: Never spend another evening recalculating flow numbers across spreadsheets.
+- **Direct Journal Export**: Export evidence matrices directly into formatted Word (.docx) and Excel (.xlsx) files ready for journal submission.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-for-institutions",
+    slug: "/for-institutions",
+    title: "For Institutions | IB-SLR",
+    description: "Enterprise and department-level systematic review infrastructure for universities and medical centers.",
+    seoMetadata: {
+      metaTitle: "IB-SLR for Universities & Research Institutions",
+      metaDescription: "Scale institutional evidence syntheses with centralized governance, SSO, and strict data isolation.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-inst-hero",
+        pageId: "page-for-institutions",
+        sectionType: "hero",
+        title: "Institutional Evidence Synthesis Infrastructure",
+        subtitle: "Equip your faculty, medical school, and academic library with an enterprise-ready platform that enforces reproducibility and research compliance.",
+        content: {
+          badge: "ENTERPRISE & ACADEMIA",
+          primaryCtaText: "Request Institutional Demo",
+          primaryCtaUrl: "/contact",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-inst-content",
+        pageId: "page-for-institutions",
+        sectionType: "rich_text",
+        title: "Institutional Governance & Scalability",
+        subtitle: "Compliance, data security, and seamless departmental administration.",
+        content: {
+          body: `Universities and healthcare institutions require research platforms that adhere to strict data sovereignty and research governance mandates.
+
+Institutional capabilities include:
+- **Single Sign-On (SSO / SAML)**: Seamless integration with university identity providers (Okta, Azure AD, Shibboleth).
+- **Tenant Isolation**: Each laboratory and department operates within a strictly partitioned workspace with Row-Level Security (RLS).
+- **Audit Logging**: Comprehensive traceability for administrative compliance, ethics reviews, and grant reporting.
+- **Dedicated Training & Onboarding**: Methodology consultation for librarians and departmental research coordinators.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-pricing",
+    slug: "/pricing",
+    title: "Pricing | IB-SLR",
+    description: "Transparent, academic-friendly pricing for individuals and institutions.",
+    seoMetadata: {
+      metaTitle: "Pricing & Plans — IB-SLR",
+      metaDescription: "Choose the right plan for your systematic literature review, from free academic tiers to institutional lab subscriptions.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-price-hero",
+        pageId: "page-pricing",
+        sectionType: "hero",
+        title: "Transparent, Accessible Research Pricing",
+        subtitle: "Simple plans designed for researchers at every stage of their career.",
+        content: {
+          badge: "PRICING PLANS",
+          primaryCtaText: "Sign Up Free",
+          primaryCtaUrl: "/register",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-price-table",
+        pageId: "page-pricing",
+        sectionType: "pricing_table",
+        title: "Compare Plans",
+        subtitle: "All plans include our core PRISMA 2020 engine and evidence-grounded screening.",
+        content: {},
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-price-faq",
+        pageId: "page-pricing",
+        sectionType: "faq_accordion",
+        title: "Billing & Subscription FAQ",
+        subtitle: "Common questions about academic discounts, institutional invoicing, and plan changes.",
+        content: {},
+        sortOrder: 3,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-resources",
+    slug: "/resources",
+    title: "Resources | IB-SLR",
+    description: "Educational guides, PRISMA 2020 checklists, and systematic review methodology resources.",
+    seoMetadata: {
+      metaTitle: "Resources & Methodology Guides — IB-SLR",
+      metaDescription: "Access curated guides on SLR methodology, search strategies, and risk-of-bias evaluation.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-res-hero",
+        pageId: "page-resources",
+        sectionType: "hero",
+        title: "Systematic Review Knowledge Hub",
+        subtitle: "Standards, checklists, and best practices curated by evidence synthesis specialists.",
+        content: {
+          badge: "KNOWLEDGE BASE",
+          primaryCtaText: "View Documentation",
+          primaryCtaUrl: "/how-it-works",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-res-rich",
+        pageId: "page-resources",
+        sectionType: "rich_text",
+        title: "Essential SLR Frameworks & Checklists",
+        subtitle: "Official guidelines supported by IB-SLR.",
+        content: {
+          body: `### Core Methodological Frameworks
+- **PRISMA 2020 Statement**: Preferred Reporting Items for Systematic Reviews and Meta-Analyses.
+- **Cochrane Handbook for Systematic Reviews of Interventions**: Gold-standard reference for healthcare reviews.
+- **JBI Manual for Evidence Synthesis**: Comprehensive guidance for qualitative, scoping, and umbrella reviews.
+- **PICO & SPIDER Frameworks**: Structured formulation of research questions and criteria.
+
+### Best Practices for Search Strategy Reporting
+When publishing your systematic review, ensure you document:
+1. Exact database query strings (including boolean operators and field tags).
+2. Date of search execution and date ranges covered.
+3. Language and publication status filters applied.
+4. Name and institutional credentials of the information specialist or librarian.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-blog",
+    slug: "/blog",
+    title: "Blog & Articles | IB-SLR",
+    description: "Insights on evidence synthesis, research technology, and systematic review methodologies.",
+    seoMetadata: {
+      metaTitle: "IB-SLR Blog — Evidence Synthesis Insights",
+      metaDescription: "Read the latest articles on AI research ethics, PRISMA standards, and systematic review execution.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-blog-hero",
+        pageId: "page-blog",
+        sectionType: "hero",
+        title: "Evidence Synthesis Insights",
+        subtitle: "Articles on systematic literature reviews, research reproducibility, and responsible AI.",
+        content: {
+          badge: "METHODOLOGY BLOG",
+          primaryCtaText: "Explore Articles",
+          primaryCtaUrl: "#articles",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-blog-content",
+        pageId: "page-blog",
+        sectionType: "rich_text",
+        title: "Latest Publications",
+        subtitle: "Peer-reviewed insights and methodological discussions.",
+        content: {
+          body: `#### 1. Why Citation Hallucination is Fatal to Evidence Synthesis
+*Published on November 2026 by IB-SLR Research Team*
+Generic LLMs are notorious for inventing authoritative-sounding academic references. We explore why strict document grounding, bounding boxes, and human adjudication are non-negotiable in academic software.
+
+#### 2. Mastering Dual-Reviewer Blinding: Avoiding Cognitive Bias
+*Published on October 2026 by Dr. Elena Vance*
+A practical guide to structuring independent title/abstract screening, establishing inter-rater reliability (Cohen's Kappa), and resolving screening conflicts without bias.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-about",
+    slug: "/about",
+    title: "About | IB-SLR",
+    description: "The mission, values, and academic philosophy behind IB-SLR.",
+    seoMetadata: {
+      metaTitle: "About Us — The Mission of IB-SLR",
+      metaDescription: "Learn how IB-SLR was founded to uphold evidence integrity and modernize systematic literature reviews.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-abt-hero",
+        pageId: "page-about",
+        sectionType: "hero",
+        title: "Our Mission: Research Integrity at Scale",
+        subtitle: "IB-SLR was founded to replace chaotic spreadsheets and opaque tools with a grounded, audit-proof systematic review workspace.",
+        content: {
+          badge: "ABOUT IB-SLR",
+          primaryCtaText: "Meet the Platform",
+          primaryCtaUrl: "/features",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-abt-rich",
+        pageId: "page-about",
+        sectionType: "rich_text",
+        title: "Principles That Guide Everything We Build",
+        subtitle: "Science demands transparency, reproducibility, and human accountability.",
+        content: {
+          body: `### 1. Evidence Above All
+We do not believe in black-box AI that issues commands. In IB-SLR, AI serves as a diligent assistant that points researchers to verbatim text, page numbers, and empirical data. The scientific judgment remains strictly with the human researcher.
+
+### 2. Privacy & Data Sovereignty
+Your research ideas, unpublished protocols, and confidential PDFs belong exclusively to your workspace. We enforce strict multi-tenant Row-Level Security and never monetize or train models on user research data.
+
+### 3. Accessible & Calm Design
+Research is cognitively demanding. Our user interface is deliberately quiet, modern, and uncluttered. No distracting gamification, flashy neon accents, or unhelpful chatbot interruptions.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-contact",
+    slug: "/contact",
+    title: "Contact | IB-SLR",
+    description: "Get in touch with the IB-SLR team for inquiries, institutional demos, or research support.",
+    seoMetadata: {
+      metaTitle: "Contact the IB-SLR Team",
+      metaDescription: "Reach our academic support team or request an institutional consultation.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-cnt-hero",
+        pageId: "page-contact",
+        sectionType: "hero",
+        title: "Get in Touch With Our Team",
+        subtitle: "Have questions about methodological compliance, institutional licensing, or custom integrations? We're here to help.",
+        content: {
+          badge: "ACADEMIC SUPPORT",
+          primaryCtaText: "Send an Email",
+          primaryCtaUrl: "mailto:contact@ib-slr.local",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-cnt-rich",
+        pageId: "page-contact",
+        sectionType: "rich_text",
+        title: "Direct Contact Channels",
+        subtitle: "Reach our team across dedicated departments.",
+        content: {
+          body: `- **General & Research Inquiries**: contact@ib-slr.local
+- **Technical & User Support**: support@ib-slr.local
+- **Institutional Partnerships & University Licensing**: institutions@ib-slr.local
+- **Security & Privacy Office**: security@ib-slr.local
+
+*Our academic support desk operates Monday through Friday, 09:00 - 18:00 UTC.*`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-privacy",
+    slug: "/privacy",
+    title: "Privacy Policy | IB-SLR",
+    description: "Privacy policy, data protection, and AI data processing disclosures for IB-SLR.",
+    seoMetadata: {
+      metaTitle: "Privacy Policy — IB-SLR",
+      metaDescription: "Learn how IB-SLR protects your literature reviews, documents, and personal information.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-priv-hero",
+        pageId: "page-privacy",
+        sectionType: "hero",
+        title: "Privacy Policy & Data Sovereignty",
+        subtitle: "We prioritize researcher privacy, data isolation, and total transparency in AI processing.",
+        content: {
+          badge: "PRIVACY COMMITMENT",
+          primaryCtaText: "Review Security Architecture",
+          primaryCtaUrl: "/security",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-priv-rich",
+        pageId: "page-privacy",
+        sectionType: "rich_text",
+        title: "Data Processing Terms",
+        subtitle: "Last updated: November 2026",
+        content: {
+          body: `### 1. Information We Collect
+We collect personal information necessary to deliver and secure our systematic review platform:
+- Profile details (Name, institutional email address, hashed passwords).
+- Review metadata (Project names, research questions, protocols, and criteria).
+- Uploaded research references and PDF documents.
+
+### 2. Zero AI Training on Private Manuscripts
+Your research papers, extracted data, and unpublished protocols are **never used to train public or foundation AI models**. All document processing occurs strictly within isolated execution boundaries.
+
+### 3. Row-Level Security & Tenant Partitioning
+Every research record in IB-SLR is governed by PostgreSQL Row-Level Security. No user, team, or institution can access another tenant's project without explicit workspace invitation.
+
+### 4. Right to Deletion & Data Portability
+You retain full ownership of your research. You may export all project data (citations, decisions, extraction tables, PRISMA logs) at any time in XLSX, CSV, or DOCX formats, or request complete account erasure.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-terms",
+    slug: "/terms",
+    title: "Terms of Service | IB-SLR",
+    description: "Terms and conditions governing the use of the IB-SLR systematic review SaaS platform.",
+    seoMetadata: {
+      metaTitle: "Terms of Service — IB-SLR",
+      metaDescription: "Read the terms of service, user responsibilities, and intellectual property terms for IB-SLR.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-trm-hero",
+        pageId: "page-terms",
+        sectionType: "hero",
+        title: "Terms of Service",
+        subtitle: "The legal framework for using the IB-SLR research platform.",
+        content: {
+          badge: "LEGAL TERMS",
+          primaryCtaText: "Return to Homepage",
+          primaryCtaUrl: "/",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-trm-rich",
+        pageId: "page-terms",
+        sectionType: "rich_text",
+        title: "User Agreement",
+        subtitle: "Effective as of November 2026",
+        content: {
+          body: `### 1. Acceptance of Terms
+By creating an account on IB-SLR, you agree to comply with these Terms of Service, all applicable laws, and international research ethics standards.
+
+### 2. User Responsibilities & Copyright Compliance
+Users are solely responsible for ensuring they possess appropriate licenses or copyright permissions for any third-party scientific articles or proprietary PDFs uploaded to their workspace.
+
+### 3. Scientific Disclaimers
+IB-SLR provides software tools and AI-assisted extraction drafts. The software does not provide medical, legal, or statistical certification. Researchers maintain ultimate scientific responsibility for all findings published using the platform.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  },
+  {
+    id: "page-security",
+    slug: "/security",
+    title: "Security Architecture | IB-SLR",
+    description: "Detailed overview of security protocols, RLS, encryption, and auditability in IB-SLR.",
+    seoMetadata: {
+      metaTitle: "Security Standards & Multi-Tenant Isolation — IB-SLR",
+      metaDescription: "Learn about the security boundaries, encryption, and access controls engineered into IB-SLR.",
+    },
+    status: "published",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    sections: [
+      {
+        id: "sec-sec-hero",
+        pageId: "page-security",
+        sectionType: "hero",
+        title: "Security Built Into Every Layer",
+        subtitle: "Enterprise-grade isolation, cryptographic safeguards, and immutable audit trails protecting your research data.",
+        content: {
+          badge: "APPLICATION SECURITY",
+          primaryCtaText: "Review Architecture",
+          primaryCtaUrl: "/how-it-works",
+        },
+        sortOrder: 1,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      },
+      {
+        id: "sec-sec-rich",
+        pageId: "page-security",
+        sectionType: "rich_text",
+        title: "Core Security Controls",
+        subtitle: "How IB-SLR protects research assets.",
+        content: {
+          body: `### 1. Database Row-Level Security (RLS)
+Security is implemented directly at the database engine level. Every table enforces PostgreSQL RLS policies that verify workspace and project membership for every single query.
+
+### 2. Encrypted Document Storage
+Uploaded PDFs and manuscript files are stored in private, encrypted buckets. Access is granted exclusively via short-lived, signed cryptographic URLs. Platform administrators have **no default access** to private tenant files.
+
+### 3. Immutable Audit Trails
+Critical research milestones—including protocol lock, duplicate record merges, blinded screening decisions, and extraction overrides—are permanently recorded in an immutable audit ledger.
+
+### 4. Defense Against Prompt Injections
+All extracted document text is treated as untrusted input. Dedicated boundary tags and input sanitization prevent malicious text inside papers from altering AI screening behavior.`
+        },
+        sortOrder: 2,
+        isVisible: true,
+        status: "published",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      }
+    ]
+  }
+];
