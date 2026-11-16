@@ -5,6 +5,7 @@ import { getCurrentSession } from "../lib/auth/session";
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import { AnnouncementBanner } from "../components/layout/AnnouncementBanner";
+import { LanguageProvider } from "../components/i18n/LanguageContext";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -36,18 +37,20 @@ export default async function RootLayout({
   const session = await getCurrentSession();
 
   return (
-    <html lang="en">
+    <html lang="id">
       <body className="min-h-screen flex flex-col bg-[#F7F8FA] text-[#17212B] antialiased">
-        <AnnouncementBanner announcement={settings.announcement} />
-        <Navbar settings={settings} navItems={headerNav} session={session} />
-        <main className="flex-1">{children}</main>
-        <Footer
-          settings={settings}
-          col1Items={col1}
-          col2Items={col2}
-          col3Items={col3}
-          legalItems={legal}
-        />
+        <LanguageProvider>
+          <AnnouncementBanner announcement={settings.announcement} />
+          <Navbar settings={settings} navItems={headerNav} session={session} />
+          <main className="flex-1">{children}</main>
+          <Footer
+            settings={settings}
+            col1Items={col1}
+            col2Items={col2}
+            col3Items={col3}
+            legalItems={legal}
+          />
+        </LanguageProvider>
       </body>
     </html>
   );

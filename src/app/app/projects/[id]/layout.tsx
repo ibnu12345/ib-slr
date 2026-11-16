@@ -5,6 +5,7 @@ import { getCurrentSession } from "../../../../lib/auth/session";
 import { getProjectById } from "../../../../lib/db";
 import { ProjectNavTabs } from "./ProjectNavTabs";
 import { ArrowLeft, BookOpen, ShieldCheck, Lock } from "lucide-react";
+import { LanguageSwitcher } from "../../../../components/i18n/LanguageSwitcher";
 
 export const dynamic = "force-dynamic";
 
@@ -41,7 +42,8 @@ export default async function ProjectLayout({ params, children }: Props) {
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
+          <LanguageSwitcher variant="compact" />
           <span className="px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase bg-[#EFF7F6] text-[#2F7D78] border border-[#2F7D78]/20">
             {project.reviewType.replace("_", " ")}
           </span>

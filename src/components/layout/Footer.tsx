@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { BookOpen, ShieldCheck, Github, Twitter, Linkedin } from "lucide-react";
 import { SiteSettings, NavigationItem } from "../../lib/types/cms";
+import { LanguageSwitcher } from "../i18n/LanguageSwitcher";
 
 interface FooterProps {
   settings: SiteSettings;
@@ -139,8 +140,9 @@ export function Footer({ settings, col1Items, col2Items, col3Items, legalItems }
 
         {/* Bottom Legal & Copyright Bar */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#667085]">
-          <div>
-            &copy; {currentYear} {settings.brandName || "IB-SLR"}. All rights reserved.
+          <div className="flex items-center gap-4">
+            <span>&copy; {currentYear} {settings.brandName || "IB-SLR"}. All rights reserved.</span>
+            <LanguageSwitcher variant="footer" />
           </div>
           <div className="flex items-center space-x-4">
             {legalItems.map((item) => (

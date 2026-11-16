@@ -1291,15 +1291,27 @@ export async function getUserWorkspaces(userId: string): Promise<Workspace[]> {
   return db.workspaces.filter((w) => w.ownerId === userId);
 }
 
+export function resolveProjectId(id: string): string {
+  if (id === "demo-1" || id === "demo") return "prj-demo-1";
+  return id;
+}
+
 export async function getProjects(userId?: string): Promise<Project[]> {
   const db = getDb();
   if (!userId) return db.projects;
-  return db.projects.filter((p) => p.createdBy === userId || p.workspaceId.includes("demo"));
+  return db.projects.filter(
+    (p) => p.createdBy === userId || p.workspaceId.includes("demo") || p.id === "prj-demo-1"
+  );
+}
+
+export async function getProjectsByUserId(userId: string): Promise<Project[]> {
+  return getProjects(userId);
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
   const db = getDb();
-  const project = db.projects.find((p) => p.id === id);
+  const normalizedId = resolveProjectId(id);
+  const project = db.projects.find((p) => p.id === normalizedId || p.id === id);
   return project || null;
 }
 
@@ -1342,7 +1354,8 @@ export async function createProject(
 
 export async function getProtocolByProjectId(projectId: string): Promise<Protocol | null> {
   const db = getDb();
-  const proto = db.protocols.find((p) => p.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  const proto = db.protocols.find((p) => p.projectId === id || p.projectId === projectId);
   return proto || null;
 }
 
@@ -1391,7 +1404,8 @@ export async function lockProtocol(
 
 export async function getCriteriaByProjectId(projectId: string): Promise<EligibilityCriterion[]> {
   const db = getDb();
-  return db.eligibilityCriteria.filter((c) => c.projectId === projectId).sort((a, b) => a.sortOrder - b.sortOrder);
+  const id = resolveProjectId(projectId);
+  return db.eligibilityCriteria.filter((c) => c.projectId === id || c.projectId === projectId).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function saveCriterion(
@@ -1433,7 +1447,8 @@ export async function deleteCriterion(
 
 export async function getSearchRunsByProjectId(projectId: string): Promise<SearchRun[]> {
   const db = getDb();
-  return db.searchRuns.filter((s) => s.projectId === projectId).sort((a, b) => new Date(b.searchDate).getTime() - new Date(a.searchDate).getTime());
+  const id = resolveProjectId(projectId);
+  return db.searchRuns.filter((s) => s.projectId === id || s.projectId === projectId).sort((a, b) => new Date(b.searchDate).getTime() - new Date(a.searchDate).getTime());
 }
 
 export async function createSearchRun(
@@ -1459,7 +1474,8 @@ export async function getArticlesByProjectId(
   filters?: { screeningStatus?: string; search?: string }
 ): Promise<Article[]> {
   const db = getDb();
-  let list = db.articles.filter((a) => a.projectId === projectId && !a.isDuplicate);
+  const id = resolveProjectId(projectId);
+  let list = db.articles.filter((a) => (a.projectId === id || a.projectId === projectId) && !a.isDuplicate);
 
   if (filters?.screeningStatus && filters.screeningStatus !== "all") {
     list = list.filter((a) => a.screeningStatus === filters.screeningStatus);
@@ -1558,17 +1574,18 @@ export async function importArticlesBatch(
 
 export async function runDuplicateDetection(projectId: string): Promise<DuplicateCandidate[]> {
   const db = getDb();
-  const projectArticles = db.articles.filter((a) => a.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  const projectArticles = db.articles.filter((a) => a.projectId === id || a.projectId === projectId);
 
   const result = detectDuplicates(projectArticles);
   const newCandidates: DuplicateCandidate[] = [];
 
-  db.duplicateCandidates = db.duplicateCandidates.filter((c) => c.projectId !== projectId || c.status !== "pending");
+  db.duplicateCandidates = db.duplicateCandidates.filter((c) => (c.projectId !== id && c.projectId !== projectId) || c.status !== "pending");
 
   for (const pair of result.candidatePairs) {
     const candidate: DuplicateCandidate = {
       id: `dup-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
-      projectId,
+      projectId: id,
       articleAId: pair.articleA.id,
       articleBId: pair.articleB.id,
       confidenceScore: pair.confidenceScore,
@@ -1585,7 +1602,8 @@ export async function runDuplicateDetection(projectId: string): Promise<Duplicat
 
 export async function getDuplicateCandidates(projectId: string): Promise<Array<DuplicateCandidate & { articleA?: Article; articleB?: Article }>> {
   const db = getDb();
-  const candidates = db.duplicateCandidates.filter((c) => c.projectId === projectId && c.status === "pending");
+  const id = resolveProjectId(projectId);
+  const candidates = db.duplicateCandidates.filter((c) => (c.projectId === id || c.projectId === projectId) && c.status === "pending");
 
   return candidates.map((c) => ({
     ...c,
@@ -1667,7 +1685,8 @@ export async function dismissDuplicateCandidate(
 
 export async function getExclusionReasons(projectId: string, stage?: ScreeningStage): Promise<ExclusionReason[]> {
   const db = getDb();
-  let reasons = db.exclusionReasons.filter((r) => r.projectId === "global" || r.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  let reasons = db.exclusionReasons.filter((r) => r.projectId === "global" || r.projectId === id || r.projectId === projectId);
   if (stage) {
     reasons = reasons.filter((r) => r.stage === stage);
   }
@@ -1685,7 +1704,8 @@ export async function recordScreeningDecision(
   notes?: string
 ): Promise<{ decision: ScreeningDecision; status: Article["screeningStatus"] }> {
   const db = getDb();
-  const article = db.articles.find((a) => a.id === articleId && a.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  const article = db.articles.find((a) => a.id === articleId && (a.projectId === id || a.projectId === projectId));
   if (!article) throw new Error("Article not found.");
 
   // Save or update decision
@@ -1787,8 +1807,9 @@ export async function getScreeningConflicts(
   status: "open" | "resolved" = "open"
 ): Promise<Array<ScreeningConflict & { article?: Article }>> {
   const db = getDb();
+  const id = resolveProjectId(projectId);
   const conflicts = db.screeningConflicts.filter(
-    (c) => c.projectId === projectId && c.status === status
+    (c) => (c.projectId === id || c.projectId === projectId) && c.status === status
   );
 
   return conflicts.map((c) => ({
@@ -1834,13 +1855,15 @@ export async function adjudicateConflict(
 
 export async function getPrismaEvents(projectId: string): Promise<PrismaEvent[]> {
   const db = getDb();
-  return db.prismaEvents.filter((e) => e.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  return db.prismaEvents.filter((e) => e.projectId === id || e.projectId === projectId);
 }
 
 export async function getProjectPrismaCounts(projectId: string): Promise<PrismaCounts> {
   const db = getDb();
-  const events = db.prismaEvents.filter((e) => e.projectId === projectId);
-  const articles = db.articles.filter((a) => a.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  const events = db.prismaEvents.filter((e) => e.projectId === id || e.projectId === projectId);
+  const articles = db.articles.filter((a) => a.projectId === id || a.projectId === projectId);
 
   return calculatePrismaCounts(events, articles);
 }
@@ -1897,7 +1920,8 @@ export async function updateArticlePdf(
 
 export async function getExtractionTemplates(projectId: string): Promise<ExtractionTemplate[]> {
   const db = getDb();
-  return db.extractionTemplates.filter((t) => t.projectId === projectId || t.projectId === "global");
+  const id = resolveProjectId(projectId);
+  return db.extractionTemplates.filter((t) => t.projectId === id || t.projectId === projectId || t.projectId === "global");
 }
 
 export async function getExtractionTemplateById(templateId: string): Promise<ExtractionTemplate | undefined> {
@@ -1932,7 +1956,8 @@ export async function getExtractedDataRecords(
   articleId?: string
 ): Promise<ExtractedDataRecord[]> {
   const db = getDb();
-  let list = db.extractedDataRecords.filter((r) => r.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  let list = db.extractedDataRecords.filter((r) => r.projectId === id || r.projectId === projectId);
   if (articleId) {
     list = list.filter((r) => r.articleId === articleId);
   }
@@ -2033,7 +2058,8 @@ export async function getAppraisalRecords(
   articleId?: string
 ): Promise<AppraisalRecord[]> {
   const db = getDb();
-  let list = db.appraisalRecords.filter((r) => r.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  let list = db.appraisalRecords.filter((r) => r.projectId === id || r.projectId === projectId);
   if (articleId) {
     list = list.filter((r) => r.articleId === articleId);
   }
@@ -2072,7 +2098,8 @@ export async function saveAppraisalRecord(
 
 export async function getThematicCodes(projectId: string): Promise<ThematicCode[]> {
   const db = getDb();
-  return db.thematicCodes.filter((c) => c.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  return db.thematicCodes.filter((c) => c.projectId === id || c.projectId === projectId);
 }
 
 export async function saveThematicCode(
@@ -2118,7 +2145,8 @@ export async function getThematicExcerpts(
   articleId?: string
 ): Promise<ThematicExcerpt[]> {
   const db = getDb();
-  let list = db.thematicExcerpts.filter((e) => e.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  let list = db.thematicExcerpts.filter((e) => e.projectId === id || e.projectId === projectId);
   if (articleId) {
     list = list.filter((e) => e.articleId === articleId);
   }
@@ -2168,10 +2196,11 @@ export async function deleteThematicExcerpt(
 
 export async function getSynthesisSummary(projectId: string): Promise<SynthesisSummary> {
   const db = getDb();
-  const projectArticles = db.articles.filter((a) => a.projectId === projectId && !a.isDuplicate);
-  const records = db.extractedDataRecords.filter((r) => r.projectId === projectId);
-  const codes = db.thematicCodes.filter((c) => c.projectId === projectId);
-  const excerpts = db.thematicExcerpts.filter((e) => e.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  const projectArticles = db.articles.filter((a) => (a.projectId === id || a.projectId === projectId) && !a.isDuplicate);
+  const records = db.extractedDataRecords.filter((r) => r.projectId === id || r.projectId === projectId);
+  const codes = db.thematicCodes.filter((c) => c.projectId === id || c.projectId === projectId);
+  const excerpts = db.thematicExcerpts.filter((e) => e.projectId === id || e.projectId === projectId);
 
   // Timeline
   const yearCounts: Record<number, number> = {};
@@ -2245,7 +2274,8 @@ export async function getManuscriptByProjectId(
   projectId: string
 ): Promise<ProjectManuscript | undefined> {
   const db = getDb();
-  return db.manuscripts.find((m) => m.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  return db.manuscripts.find((m) => m.projectId === id || m.projectId === projectId);
 }
 
 export async function saveManuscript(
@@ -2276,7 +2306,8 @@ export async function getTableDefinitions(
   projectId: string
 ): Promise<JournalTableDefinition[]> {
   const db = getDb();
-  return db.tableDefinitions.filter((t) => t.projectId === projectId);
+  const id = resolveProjectId(projectId);
+  return db.tableDefinitions.filter((t) => t.projectId === id || t.projectId === projectId);
 }
 
 export async function saveTableDefinition(

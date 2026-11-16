@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "../../../../components/i18n/LanguageContext";
 import {
   LayoutDashboard,
   FileText,
@@ -26,22 +27,23 @@ interface Props {
 
 export function ProjectNavTabs({ projectId }: Props) {
   const pathname = usePathname();
+  const { isId } = useLanguage();
 
   const tabs = [
-    { label: "Overview", href: `/app/projects/${projectId}/overview`, icon: LayoutDashboard },
-    { label: "Protocol", href: `/app/projects/${projectId}/protocol`, icon: FileText },
-    { label: "Search Strategy", href: `/app/projects/${projectId}/search`, icon: Search },
-    { label: "Import Center", href: `/app/projects/${projectId}/import`, icon: UploadCloud },
-    { label: "Reference Library", href: `/app/projects/${projectId}/library`, icon: Library },
-    { label: "Deduplication", href: `/app/projects/${projectId}/deduplication`, icon: CopyCheck },
-    { label: "Screening: Title/Abstract", href: `/app/projects/${projectId}/screening/title-abstract`, icon: CheckSquare },
-    { label: "Screening: Full-Text", href: `/app/projects/${projectId}/screening/full-text`, icon: FileSearch },
-    { label: "Conflicts", href: `/app/projects/${projectId}/conflicts`, icon: AlertTriangle },
-    { label: "Data Extraction", href: `/app/projects/${projectId}/extraction`, icon: Database },
-    { label: "Appraisal (RoB)", href: `/app/projects/${projectId}/appraisal`, icon: ShieldAlert },
-    { label: "Synthesis", href: `/app/projects/${projectId}/synthesis`, icon: Layers },
-    { label: "PRISMA 2020", href: `/app/projects/${projectId}/prisma`, icon: GitBranch },
-    { label: "Publication Studio", href: `/app/projects/${projectId}/publication`, icon: Award },
+    { label: isId ? "Ringkasan" : "Overview", href: `/app/projects/${projectId}/overview`, icon: LayoutDashboard },
+    { label: isId ? "Protokol PICO" : "Protocol", href: `/app/projects/${projectId}/protocol`, icon: FileText },
+    { label: isId ? "Strategi Pencarian" : "Search Strategy", href: `/app/projects/${projectId}/search`, icon: Search },
+    { label: isId ? "Pusat Impor" : "Import Center", href: `/app/projects/${projectId}/import`, icon: UploadCloud },
+    { label: isId ? "Perpustakaan Referensi" : "Reference Library", href: `/app/projects/${projectId}/library`, icon: Library },
+    { label: isId ? "Deduplikasi" : "Deduplication", href: `/app/projects/${projectId}/deduplication`, icon: CopyCheck },
+    { label: isId ? "Screening: Judul/Abstrak" : "Screening: Title/Abstract", href: `/app/projects/${projectId}/screening/title-abstract`, icon: CheckSquare },
+    { label: isId ? "Screening: Teks Lengkap" : "Screening: Full-Text", href: `/app/projects/${projectId}/screening/full-text`, icon: FileSearch },
+    { label: isId ? "Konflik Penilaian" : "Conflicts", href: `/app/projects/${projectId}/conflicts`, icon: AlertTriangle },
+    { label: isId ? "Ekstraksi Data" : "Data Extraction", href: `/app/projects/${projectId}/extraction`, icon: Database },
+    { label: isId ? "Penilaian RoB 2" : "Appraisal (RoB)", href: `/app/projects/${projectId}/appraisal`, icon: ShieldAlert },
+    { label: isId ? "Sintesis Bukti" : "Synthesis", href: `/app/projects/${projectId}/synthesis`, icon: Layers },
+    { label: isId ? "Diagram PRISMA" : "PRISMA 2020", href: `/app/projects/${projectId}/prisma`, icon: GitBranch },
+    { label: isId ? "Studio Publikasi" : "Publication Studio", href: `/app/projects/${projectId}/publication`, icon: Award },
   ];
 
   return (

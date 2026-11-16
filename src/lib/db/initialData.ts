@@ -59,8 +59,11 @@ export const defaultPricingPlans: PricingPlan[] = [
     tagline: "Essential SLR tooling for solo students and independent scholars.",
     priceMonthly: 0,
     priceAnnual: 0,
+    priceIdr: "Gratis",
+    billingPeriodLabel: "selamanya",
     features: [
-      "1 Active Systematic Review Project",
+      "1 Active Systematic Review Project (Gratis Selamanya)",
+      "Top-Up Fleksibel: Tambah 1X Proyek Aktif hanya Rp 10.000",
       "Up to 1,000 References Imported",
       "Title & Abstract Screening with Exclusion Reasons",
       "Manual Data Extraction Matrix",
@@ -72,12 +75,34 @@ export const defaultPricingPlans: PricingPlan[] = [
     sortOrder: 1,
   },
   {
+    id: "plan-pay-per-project",
+    name: "Pay-Per-Project Pass",
+    tierKey: "pay_per_project",
+    tagline: "Beli kuota tambahan 1x proyek aktif tanpa perlu langganan bulanan.",
+    priceMonthly: 0.65,
+    priceAnnual: 0.65,
+    priceIdr: "Rp 10.000",
+    billingPeriodLabel: "/ 1x proyek aktif",
+    features: [
+      "+1 Slot Active Systematic Review Project Tambahan",
+      "Bayar sekali Rp 10.000 (tanpa komitmen bulanan)",
+      "Bebas dipakai setelah kuota 1 proyek gratis terpakai",
+      "Ekstraksi Data & PRISMA 2020 Lengkap",
+      "PDF Viewer & Ekstraksi Teks Otomatis",
+      "Masa aktif fleksibel mengikuti siklus publikasi riset"
+    ],
+    isFeatured: false,
+    sortOrder: 2,
+  },
+  {
     id: "plan-researcher",
     name: "Professional Researcher",
     tierKey: "pro_researcher",
     tagline: "Advanced AI-assisted extraction and dual-reviewer workflows for funded researchers.",
     priceMonthly: 29,
     priceAnnual: 290,
+    priceIdr: "Rp 450.000",
+    billingPeriodLabel: "/ bulan",
     features: [
       "Unlimited Review Projects",
       "Up to 25,000 References per Review",
@@ -89,7 +114,7 @@ export const defaultPricingPlans: PricingPlan[] = [
       "Priority Email & Slack Support"
     ],
     isFeatured: true,
-    sortOrder: 2,
+    sortOrder: 3,
   },
   {
     id: "plan-institution",
@@ -98,6 +123,8 @@ export const defaultPricingPlans: PricingPlan[] = [
     tagline: "Department-wide governance, dedicated HIPAA/FERPA tenancy, and custom AI adapters.",
     priceMonthly: 99,
     priceAnnual: 990,
+    priceIdr: "Rp 1.500.000",
+    billingPeriodLabel: "/ bulan",
     features: [
       "Unlimited Workspaces & Team Seats",
       "Centralized License & Usage Management",
@@ -108,7 +135,7 @@ export const defaultPricingPlans: PricingPlan[] = [
       "Dedicated Research Methodology Onboarding"
     ],
     isFeatured: false,
-    sortOrder: 3,
+    sortOrder: 4,
   },
 ];
 

@@ -7,6 +7,8 @@ import { Menu, X, BookOpen, Shield, LayoutDashboard, UserCheck, LogOut } from "l
 import { SiteSettings, NavigationItem } from "../../lib/types/cms";
 import { UserSession } from "../../lib/types/auth";
 import { logoutAction } from "../../lib/auth/actions";
+import { LanguageSwitcher } from "../i18n/LanguageSwitcher";
+import { useLanguage } from "../i18n/LanguageContext";
 
 interface NavbarProps {
   settings: SiteSettings;
@@ -17,6 +19,7 @@ interface NavbarProps {
 export function Navbar({ settings, navItems, session }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { t, isId } = useLanguage();
 
   const handleLogout = async () => {
     await logoutAction();
@@ -38,7 +41,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   {settings.brandName || "IB-SLR"}
                 </span>
                 <span className="text-[10px] uppercase font-medium tracking-wider text-[#667085] -mt-1 hidden sm:block">
-                  {settings.tagline || "From Literature to Evidence"}
+                  {isId ? "Dari Literatur Menjadi Bukti" : settings.tagline || "From Literature to Evidence"}
                 </span>
               </div>
             </Link>
@@ -66,8 +69,10 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
             })}
           </nav>
 
-          {/* Desktop Auth / App CTAs */}
+          {/* Desktop Auth / App CTAs & Language Switcher */}
           <div className="hidden md:flex items-center gap-3">
+            <LanguageSwitcher variant="header" />
+
             {session ? (
               <div className="flex items-center gap-2">
                 {session.role === "admin" || session.role === "super_admin" ? (
@@ -76,7 +81,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-[#17324D] bg-[#EFF7F6] border border-[#2F7D78]/30 hover:bg-[#D8EDE9] transition-colors"
                   >
                     <Shield className="w-3.5 h-3.5 text-[#2F7D78]" />
-                    Admin CMS
+                    {t("nav_admin_cms", "Admin CMS")}
                   </Link>
                 ) : null}
 
@@ -85,7 +90,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold text-white bg-[#17324D] hover:bg-[#12273D] shadow-sm transition-colors"
                 >
                   <LayoutDashboard className="w-3.5 h-3.5" />
-                  Workspace
+                  {t("nav_workspace", "Workspace")}
                 </Link>
 
                 <div className="flex items-center gap-2 pl-2 border-l border-[#E4E7EC]">
@@ -95,8 +100,8 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   <button
                     onClick={handleLogout}
                     className="p-1.5 text-[#667085] hover:text-[#B42318] hover:bg-[#FEF3F2] rounded-md transition-colors"
-                    title="Log out"
-                    aria-label="Log out"
+                    title={t("nav_logout", "Log out")}
+                    aria-label={t("nav_logout", "Log out")}
                   >
                     <LogOut className="w-4 h-4" />
                   </button>
@@ -108,20 +113,21 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   href="/login"
                   className="px-3.5 py-1.5 text-sm font-medium text-[#17212B] hover:text-[#17324D] hover:bg-[#F7F8FA] rounded-md transition-colors"
                 >
-                  Log In
+                  {t("nav_login", "Masuk")}
                 </Link>
                 <Link
                   href="/register"
                   className="px-4 py-1.5 text-sm font-semibold text-white bg-[#17324D] hover:bg-[#12273D] rounded-md shadow-sm transition-colors"
                 >
-                  Get Started Free
+                  {t("nav_register", "Daftar Gratis")}
                 </Link>
               </div>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex md:hidden items-center">
+          {/* Mobile Menu Button & Language Switcher */}
+          <div className="flex md:hidden items-center gap-2">
+            <LanguageSwitcher variant="compact" />
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-md text-[#667085] hover:text-[#17212B] hover:bg-[#F7F8FA]"
@@ -167,7 +173,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full text-center px-4 py-2 rounded-md text-sm font-semibold text-white bg-[#17324D]"
                 >
-                  Go to Workspace
+                  {t("nav_workspace", "Go to Workspace")}
                 </Link>
                 <button
                   onClick={() => {
@@ -176,7 +182,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   }}
                   className="w-full text-center px-4 py-2 rounded-md text-sm font-medium text-[#B42318] hover:bg-[#FEF3F2]"
                 >
-                  Log Out
+                  {t("nav_logout", "Log Out")}
                 </button>
               </>
             ) : (
@@ -186,14 +192,14 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-center px-3 py-2 rounded-md text-sm font-medium border border-[#E4E7EC] text-[#17212B]"
                 >
-                  Log In
+                  {t("nav_login", "Masuk")}
                 </Link>
                 <Link
                   href="/register"
                   onClick={() => setMobileMenuOpen(false)}
                   className="text-center px-3 py-2 rounded-md text-sm font-semibold text-white bg-[#17324D]"
                 >
-                  Get Started
+                  {t("nav_register", "Daftar Gratis")}
                 </Link>
               </div>
             )}

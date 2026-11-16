@@ -86,6 +86,8 @@ export interface PricingPlan {
   tagline: string;
   priceMonthly: number; // In USD or currency units
   priceAnnual: number;
+  priceIdr?: string;
+  billingPeriodLabel?: string;
   features: string[];
   isFeatured: boolean;
   sortOrder: number;

@@ -137,14 +137,19 @@ export default function NewProjectPage() {
             />
           </div>
 
-          <div className="p-4 rounded-lg bg-[#EFF7F6] border border-[#2F7D78]/25 text-xs text-[#17324D] space-y-1">
-            <span className="font-bold flex items-center gap-1.5 text-[#2F7D78]">
-              <Sparkles className="w-4 h-4" />
-              Prinsip Metodologis IB-SLR:
+          <div className="p-4 rounded-xl bg-gradient-to-r from-[#EFF7F6] to-white border border-[#2F7D78]/25 text-xs text-[#17324D] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+              <span className="font-bold flex items-center gap-1.5 text-[#2F7D78]">
+                <Sparkles className="w-4 h-4" />
+                Ketentuan Kuota & Pay-Per-Project:
+              </span>
+              <p className="text-[#667085] mt-0.5 leading-relaxed">
+                Paket gratis mencakup 1x proyek aktif. Setelah itu, opsi top-up 1X Proyek Aktif tambahan tersedia seharga <strong>Rp 10.000</strong> per proyek tanpa perlu berlangganan bulanan.
+              </p>
+            </div>
+            <span className="shrink-0 px-2.5 py-1 rounded bg-[#18794E] text-white text-[10px] font-bold">
+              Rp 10.000 / 1X Pass
             </span>
-            <p className="text-[#667085] leading-relaxed">
-              Setelah proyek dibuat, Anda akan diarahkan ke Protocol Builder untuk merumuskan kriteria inklusi/eksklusi dan strategi pencarian sebelum literatur diimpor.
-            </p>
           </div>
 
           <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E4E7EC]">

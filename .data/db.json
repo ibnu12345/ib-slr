@@ -1121,11 +1121,14 @@
       "id": "plan-academic",
       "name": "Academic Free",
       "tierKey": "academic_free",
-      "tagline": "Essential SLR tooling for solo students and independent scholars.",
+      "tagline": "Pondasi riset SLR esensial untuk mahasiswa, akademisi, dan peneliti mandiri.",
       "priceMonthly": 0,
       "priceAnnual": 0,
+      "priceIdr": "Gratis",
+      "billingPeriodLabel": "selamanya",
       "features": [
-        "1 Active Systematic Review Project",
+        "1 Active Systematic Review Project (Gratis Selamanya)",
+        "Top-Up Fleksibel: Tambah 1X Proyek Aktif hanya Rp 10.000",
         "Up to 1,000 References Imported",
         "Title & Abstract Screening with Exclusion Reasons",
         "Manual Data Extraction Matrix",
@@ -1137,12 +1140,34 @@
       "sortOrder": 1
     },
     {
+      "id": "plan-pay-per-project",
+      "name": "Pay-Per-Project Pass",
+      "tierKey": "pay_per_project",
+      "tagline": "Beli kuota tambahan 1x proyek aktif tanpa perlu langganan bulanan.",
+      "priceMonthly": 0.65,
+      "priceAnnual": 0.65,
+      "priceIdr": "Rp 10.000",
+      "billingPeriodLabel": "/ 1x proyek aktif",
+      "features": [
+        "+1 Slot Active Systematic Review Project Tambahan",
+        "Bayar sekali Rp 10.000 (tanpa komitmen bulanan)",
+        "Bebas dipakai setelah kuota 1 proyek gratis terpakai",
+        "Ekstraksi Data & PRISMA 2020 Lengkap",
+        "PDF Viewer & Ekstraksi Teks Otomatis",
+        "Masa aktif fleksibel mengikuti siklus publikasi riset"
+      ],
+      "isFeatured": false,
+      "sortOrder": 2
+    },
+    {
       "id": "plan-researcher",
       "name": "Professional Researcher",
       "tierKey": "pro_researcher",
       "tagline": "Advanced AI-assisted extraction and dual-reviewer workflows for funded researchers.",
       "priceMonthly": 29,
       "priceAnnual": 290,
+      "priceIdr": "Rp 450.000",
+      "billingPeriodLabel": "/ bulan",
       "features": [
         "Unlimited Review Projects",
         "Up to 25,000 References per Review",
@@ -1154,7 +1179,7 @@
         "Priority Email & Slack Support"
       ],
       "isFeatured": true,
-      "sortOrder": 2
+      "sortOrder": 3
     },
     {
       "id": "plan-institution",
@@ -1163,6 +1188,8 @@
       "tagline": "Department-wide governance, dedicated HIPAA/FERPA tenancy, and custom AI adapters.",
       "priceMonthly": 99,
       "priceAnnual": 990,
+      "priceIdr": "Rp 1.500.000",
+      "billingPeriodLabel": "/ bulan",
       "features": [
         "Unlimited Workspaces & Team Seats",
         "Centralized License & Usage Management",
@@ -1173,7 +1200,7 @@
         "Dedicated Research Methodology Onboarding"
       ],
       "isFeatured": false,
-      "sortOrder": 3
+      "sortOrder": 4
     }
   ],
   "testimonials": [
@@ -1197,6 +1224,195 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "log-1794831617702-88w1j",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794831617607-of9g8",
+      "details": {
+        "email": "reset.test.1794831617517@university.edu"
+      },
+      "createdAt": "2026-11-16T12:20:17.702Z"
+    },
+    {
+      "id": "log-1794831617610-e9dbe",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794831617607-of9g8",
+      "details": {
+        "email": "reset.test.1794831617517@university.edu"
+      },
+      "createdAt": "2026-11-16T12:20:17.610Z"
+    },
+    {
+      "id": "log-1794831617607-1ilwy",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794831617607-of9g8",
+      "details": {
+        "email": "reset.test.1794831617517@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T12:20:17.607Z"
+    },
+    {
+      "id": "log-1794831617513-29eq6",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794831617508-m0a8n",
+      "details": {
+        "email": "verify.test.1794831617411@university.edu"
+      },
+      "createdAt": "2026-11-16T12:20:17.513Z"
+    },
+    {
+      "id": "log-1794831617508-4boeb",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794831617508-m0a8n",
+      "details": {
+        "email": "verify.test.1794831617411@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T12:20:17.508Z"
+    },
+    {
+      "id": "log-1794831617406-c1gw1",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794831617406-096w7",
+      "details": {
+        "email": "test.researcher.1794831617313@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T12:20:17.406Z"
+    },
+    {
+      "id": "log-1794831599428-y5t8w",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794831599335-u34f0",
+      "details": {
+        "email": "reset.test.1794831599240@university.edu"
+      },
+      "createdAt": "2026-11-16T12:19:59.428Z"
+    },
+    {
+      "id": "log-1794831599337-b9t9k",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794831599335-u34f0",
+      "details": {
+        "email": "reset.test.1794831599240@university.edu"
+      },
+      "createdAt": "2026-11-16T12:19:59.337Z"
+    },
+    {
+      "id": "log-1794831599335-49sno",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794831599335-u34f0",
+      "details": {
+        "email": "reset.test.1794831599240@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T12:19:59.335Z"
+    },
+    {
+      "id": "log-1794831599236-zjzt4",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794831599230-9p2t6",
+      "details": {
+        "email": "verify.test.1794831599129@university.edu"
+      },
+      "createdAt": "2026-11-16T12:19:59.236Z"
+    },
+    {
+      "id": "log-1794831599230-ciyi3",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794831599230-9p2t6",
+      "details": {
+        "email": "verify.test.1794831599129@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T12:19:59.230Z"
+    },
+    {
+      "id": "log-1794831599126-kl7hl",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794831599125-9vcl2",
+      "details": {
+        "email": "test.researcher.1794831599041@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T12:19:59.126Z"
+    },
+    {
+      "id": "log-1794830200178-w3zgy",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794830200084-hto80",
+      "details": {
+        "email": "reset.test.1794830199994@university.edu"
+      },
+      "createdAt": "2026-11-16T11:56:40.178Z"
+    },
+    {
+      "id": "log-1794830200087-jzrwj",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794830200084-hto80",
+      "details": {
+        "email": "reset.test.1794830199994@university.edu"
+      },
+      "createdAt": "2026-11-16T11:56:40.087Z"
+    },
+    {
+      "id": "log-1794830200084-w9i9g",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794830200084-hto80",
+      "details": {
+        "email": "reset.test.1794830199994@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:56:40.084Z"
+    },
+    {
+      "id": "log-1794830199991-fkx3k",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794830199985-rry54",
+      "details": {
+        "email": "verify.test.1794830199893@university.edu"
+      },
+      "createdAt": "2026-11-16T11:56:39.991Z"
+    },
+    {
+      "id": "log-1794830199985-aiihq",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794830199985-rry54",
+      "details": {
+        "email": "verify.test.1794830199893@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:56:39.985Z"
+    },
+    {
+      "id": "log-1794830199890-rq7ou",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794830199890-f6f6t",
+      "details": {
+        "email": "test.researcher.1794830199802@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:56:39.890Z"
+    },
     {
       "id": "log-1794829303088-4jqdg",
       "action": "PASSWORD_RESET_COMPLETED",
@@ -1616,6 +1832,105 @@
       "mfaEnabled": false,
       "createdAt": "2026-11-16T11:41:43.000Z",
       "updatedAt": "2026-11-16T11:41:43.088Z"
+    },
+    {
+      "id": "usr-1794830199890-f6f6t",
+      "email": "test.researcher.1794830199802@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$pw.5I9dBJS8cOp8Gm4IPaelWeO8Adli83hP0vaXxkbxjyi6t27JQq",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:56:39.890Z",
+      "updatedAt": "2026-11-16T11:56:39.890Z"
+    },
+    {
+      "id": "usr-1794830199985-rry54",
+      "email": "verify.test.1794830199893@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$IfpNB3U77B.U3gROGcJGvO.TGuiJaqm6mqcBNa2sOz3H.K8JJf0cO",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:56:39.985Z",
+      "updatedAt": "2026-11-16T11:56:39.991Z"
+    },
+    {
+      "id": "usr-1794830200084-hto80",
+      "email": "reset.test.1794830199994@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$dSzUjAToZOBuLmWCYxo7LugjPYpN4v7onolnXs2n/jj4QST49Psq6",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:56:40.084Z",
+      "updatedAt": "2026-11-16T11:56:40.178Z"
+    },
+    {
+      "id": "usr-1794831599125-9vcl2",
+      "email": "test.researcher.1794831599041@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$Utm264sCg8yMC.cL9rYUSe4yyEMbIEkUdTrJ7/Jrp17BjHzpGnL5y",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T12:19:59.125Z",
+      "updatedAt": "2026-11-16T12:19:59.125Z"
+    },
+    {
+      "id": "usr-1794831599230-9p2t6",
+      "email": "verify.test.1794831599129@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$wkzHuGu.yEDUa.R17Hv.SuA2rFzfkwkGacXeGrZZkKyRyNzhpiWui",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T12:19:59.230Z",
+      "updatedAt": "2026-11-16T12:19:59.236Z"
+    },
+    {
+      "id": "usr-1794831599335-u34f0",
+      "email": "reset.test.1794831599240@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$S7CKql32BRW46Yh/iBPKsuKLHWq0TgA3BzBovxUb5ZXUrIFWfzgZ6",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T12:19:59.335Z",
+      "updatedAt": "2026-11-16T12:19:59.428Z"
+    },
+    {
+      "id": "usr-1794831617406-096w7",
+      "email": "test.researcher.1794831617313@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$Cyjus3Y9q0QH5WNILxBJ6uAbYAxw1vAGWxd7fs/pUmoQrx9sQyQMC",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T12:20:17.406Z",
+      "updatedAt": "2026-11-16T12:20:17.406Z"
+    },
+    {
+      "id": "usr-1794831617508-m0a8n",
+      "email": "verify.test.1794831617411@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$TKtNPh2vtjUxXz1B104hCes8mCRzGMhU4.z8MdxINpbix3lYlPK3O",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T12:20:17.508Z",
+      "updatedAt": "2026-11-16T12:20:17.513Z"
+    },
+    {
+      "id": "usr-1794831617607-of9g8",
+      "email": "reset.test.1794831617517@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$49UKwsNu2u12zH2ZXWfK8.TmkbH9zVhpajeVlbliSZLyenmyTN6FS",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T12:20:17.607Z",
+      "updatedAt": "2026-11-16T12:20:17.702Z"
     }
   ],
   "verificationTokens": [],
@@ -1842,7 +2157,17 @@
       "updatedAt": "2026-11-16T11:34:25.687Z"
     }
   ],
-  "duplicateCandidates": [],
+  "duplicateCandidates": [
+    {
+      "id": "dup-1794831031994-1xmc6",
+      "projectId": "prj-demo-1",
+      "articleAId": "art-1",
+      "articleBId": "art-3",
+      "confidenceScore": 100,
+      "matchReason": "exact_doi",
+      "status": "pending"
+    }
+  ],
   "screeningDecisions": [],
   "screeningConflicts": [],
   "exclusionReasons": [
@@ -2090,7 +2415,220 @@
       "updatedAt": "2026-11-16T11:34:25.687Z"
     }
   ],
-  "aiScreeningSuggestions": [],
+  "aiScreeningSuggestions": [
+    {
+      "id": "ai-scr-1794831038183-x5re",
+      "articleId": "art-1",
+      "recommendation": "exclude",
+      "confidenceRating": "high",
+      "rationale": "Artikel memenuhi 1 kriteria eksklusi protokol. Disarankan untuk Dikeluarkan (Exclude) dengan bukti kutipan terverifikasi.",
+      "evidenceQuotes": [
+        {
+          "quote": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial.",
+          "section": "Abstract & Background",
+          "pageNumber": 1
+        },
+        {
+          "quote": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial.",
+          "section": "Abstract & Background",
+          "pageNumber": 1
+        }
+      ],
+      "criteriaEvaluations": [
+        {
+          "criterionId": "crit-inc-1",
+          "criterionType": "inclusion",
+          "description": "Adults (>= 18 years) with confirmed clinical diagnosis of Type 2 Diabetes Mellitus.",
+          "matched": true,
+          "evidence": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-exc-1",
+          "criterionType": "exclusion",
+          "description": "Patients with Type 1 Diabetes, gestational diabetes, or secondary diabetes.",
+          "matched": true,
+          "evidence": "Artikel menyebutkan pasien Type 1 Diabetes",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-inc-2",
+          "criterionType": "inclusion",
+          "description": "Randomized controlled trials (RCTs) with parallel or cluster designs.",
+          "matched": true,
+          "evidence": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-exc-2",
+          "criterionType": "exclusion",
+          "description": "Non-randomized observational cohorts, case reports, editorials, or conference abstracts lacking full peer review.",
+          "matched": false,
+          "evidence": "Tidak ada indikasi eksklusi ini dalam teks.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-inc-3",
+          "criterionType": "inclusion",
+          "description": "Interventions utilizing digital health tools (apps, wearable telemetry, or algorithmic feedback) for >= 12 weeks duration.",
+          "matched": true,
+          "evidence": "Sesuai dengan kriteria inklusi berdasarkan teks.",
+          "pageNumber": 1
+        }
+      ],
+      "model": "ib-slr-grounded-ai-v1",
+      "promptVersion": "2026.11.evidence.1",
+      "tokenUsage": {
+        "promptTokens": 732,
+        "completionTokens": 250,
+        "totalTokens": 982
+      },
+      "createdAt": "2026-11-16T12:10:38.183Z"
+    },
+    {
+      "id": "ai-scr-1794831046452-duzd",
+      "articleId": "art-2",
+      "recommendation": "include",
+      "confidenceRating": "high",
+      "rationale": "Artikel memenuhi kriteria populasi dan intervensi yang disyaratkan dalam protokol tanpa terpicunya kriteria eksklusi. Disarankan Diikutsertakan (Include).",
+      "evidenceQuotes": [
+        {
+          "quote": "Methods: In this 26-week multicenter trial across 8 academic medical centers in the United States, 280 adults with suboptimally controlled type 2 diabetes on basal-bolus or basal-plus insulin were randomized to AI-guided telemetry (n=140) or nurse telephone titration (n=140).",
+          "section": "Design & Participants",
+          "pageNumber": 2
+        },
+        {
+          "quote": "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial.",
+          "section": "Objective & Abstract",
+          "pageNumber": 1
+        },
+        {
+          "quote": "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial.",
+          "section": "Objective & Abstract",
+          "pageNumber": 1
+        }
+      ],
+      "criteriaEvaluations": [
+        {
+          "criterionId": "crit-inc-1",
+          "criterionType": "inclusion",
+          "description": "Adults (>= 18 years) with confirmed clinical diagnosis of Type 2 Diabetes Mellitus.",
+          "matched": true,
+          "evidence": "Methods: In this 26-week multicenter trial across 8 academic medical centers in the United States, 280 adults with suboptimally controlled type 2 diabetes on basal-bolus or basal-plus insulin were randomized to AI-guided telemetry (n=140) or nurse telephone titration (n=140).",
+          "pageNumber": 2
+        },
+        {
+          "criterionId": "crit-exc-1",
+          "criterionType": "exclusion",
+          "description": "Patients with Type 1 Diabetes, gestational diabetes, or secondary diabetes.",
+          "matched": false,
+          "evidence": "Tidak ada indikasi eksklusi ini dalam teks.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-inc-2",
+          "criterionType": "inclusion",
+          "description": "Randomized controlled trials (RCTs) with parallel or cluster designs.",
+          "matched": true,
+          "evidence": "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-exc-2",
+          "criterionType": "exclusion",
+          "description": "Non-randomized observational cohorts, case reports, editorials, or conference abstracts lacking full peer review.",
+          "matched": false,
+          "evidence": "Tidak ada indikasi eksklusi ini dalam teks.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-inc-3",
+          "criterionType": "inclusion",
+          "description": "Interventions utilizing digital health tools (apps, wearable telemetry, or algorithmic feedback) for >= 12 weeks duration.",
+          "matched": true,
+          "evidence": "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial.",
+          "pageNumber": 1
+        }
+      ],
+      "model": "ib-slr-grounded-ai-v1",
+      "promptVersion": "2026.11.evidence.1",
+      "tokenUsage": {
+        "promptTokens": 438,
+        "completionTokens": 250,
+        "totalTokens": 688
+      },
+      "createdAt": "2026-11-16T12:10:46.452Z"
+    },
+    {
+      "id": "ai-scr-1794831047041-wgmw",
+      "articleId": "art-3",
+      "recommendation": "include",
+      "confidenceRating": "high",
+      "rationale": "Artikel memenuhi kriteria populasi dan intervensi yang disyaratkan dalam protokol tanpa terpicunya kriteria eksklusi. Disarankan Diikutsertakan (Include).",
+      "evidenceQuotes": [
+        {
+          "quote": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+          "section": "Title",
+          "pageNumber": 1
+        },
+        {
+          "quote": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+          "section": "Title",
+          "pageNumber": 1
+        }
+      ],
+      "criteriaEvaluations": [
+        {
+          "criterionId": "crit-inc-1",
+          "criterionType": "inclusion",
+          "description": "Adults (>= 18 years) with confirmed clinical diagnosis of Type 2 Diabetes Mellitus.",
+          "matched": true,
+          "evidence": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-exc-1",
+          "criterionType": "exclusion",
+          "description": "Patients with Type 1 Diabetes, gestational diabetes, or secondary diabetes.",
+          "matched": false,
+          "evidence": "Tidak ada indikasi eksklusi ini dalam teks.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-inc-2",
+          "criterionType": "inclusion",
+          "description": "Randomized controlled trials (RCTs) with parallel or cluster designs.",
+          "matched": true,
+          "evidence": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-exc-2",
+          "criterionType": "exclusion",
+          "description": "Non-randomized observational cohorts, case reports, editorials, or conference abstracts lacking full peer review.",
+          "matched": false,
+          "evidence": "Tidak ada indikasi eksklusi ini dalam teks.",
+          "pageNumber": 1
+        },
+        {
+          "criterionId": "crit-inc-3",
+          "criterionType": "inclusion",
+          "description": "Interventions utilizing digital health tools (apps, wearable telemetry, or algorithmic feedback) for >= 12 weeks duration.",
+          "matched": null,
+          "evidence": "Informasi tidak cukup eksplisit dalam teks untuk memverifikasi kriteria ini.",
+          "pageNumber": 1
+        }
+      ],
+      "model": "ib-slr-grounded-ai-v1",
+      "promptVersion": "2026.11.evidence.1",
+      "tokenUsage": {
+        "promptTokens": 70,
+        "completionTokens": 250,
+        "totalTokens": 320
+      },
+      "createdAt": "2026-11-16T12:10:47.041Z"
+    }
+  ],
   "appraisalRecords": [
     {
       "id": "app-art-1",
