@@ -22,6 +22,15 @@ import {
   DuplicateCandidate,
 } from "../types/research";
 import {
+  ScreeningDecision,
+  ScreeningConflict,
+  ExclusionReason,
+  PrismaEvent,
+  PrismaCounts,
+  ScreeningStage,
+  ScreeningDecisionType,
+} from "../types/screening";
+import {
   defaultSiteSettings,
   defaultNavigationItems,
   defaultPricingPlans,
@@ -31,6 +40,7 @@ import {
 } from "./initialData";
 import { normalizeDoi, normalizeTitle } from "../importers/parsers";
 import { detectDuplicates } from "../importers/deduplication";
+import { defaultExclusionReasons, calculatePrismaCounts } from "../screening/prismaLedger";
 
 export interface StoredUser extends UserProfile {
   passwordHash: string;
@@ -59,7 +69,7 @@ export interface DatabaseSchema {
   users: StoredUser[];
   verificationTokens: VerificationToken[];
   passwordResetTokens: PasswordResetToken[];
-  // Research Core Domain
+  // Research Core
   workspaces: Workspace[];
   projects: Project[];
   protocols: Protocol[];
@@ -67,6 +77,11 @@ export interface DatabaseSchema {
   searchRuns: SearchRun[];
   articles: Article[];
   duplicateCandidates: DuplicateCandidate[];
+  // Screening & PRISMA
+  screeningDecisions: ScreeningDecision[];
+  screeningConflicts: ScreeningConflict[];
+  exclusionReasons: ExclusionReason[];
+  prismaEvents: PrismaEvent[];
 }
 
 const DATA_DIR = path.join(process.cwd(), ".data");
@@ -112,7 +127,6 @@ function getInitialDatabase(): DatabaseSchema {
     },
   ];
 
-  // Default workspace and demo project
   const defaultWorkspaces: Workspace[] = [
     {
       id: "ws-demo-1",
@@ -302,6 +316,19 @@ function getInitialDatabase(): DatabaseSchema {
     searchRuns: defaultSearchRuns,
     articles: defaultArticles,
     duplicateCandidates: [],
+    screeningDecisions: [],
+    screeningConflicts: [],
+    exclusionReasons: defaultExclusionReasons,
+    prismaEvents: [
+      {
+        id: "ev-init-1",
+        projectId: "prj-demo-1",
+        eventType: "records_identified",
+        deltaCount: 3,
+        reason: "Initial PubMed search run import",
+        createdAt: new Date().toISOString(),
+      },
+    ],
   };
 }
 
@@ -313,7 +340,6 @@ export function getDb(): DatabaseSchema {
     if (fs.existsSync(DB_FILE)) {
       const raw = fs.readFileSync(DB_FILE, "utf-8");
       const parsed = JSON.parse(raw);
-      // Ensure arrays exist for backward compatibility
       memoryDb = {
         ...getInitialDatabase(),
         ...parsed,
@@ -324,6 +350,10 @@ export function getDb(): DatabaseSchema {
         searchRuns: parsed.searchRuns || getInitialDatabase().searchRuns,
         articles: parsed.articles || getInitialDatabase().articles,
         duplicateCandidates: parsed.duplicateCandidates || [],
+        screeningDecisions: parsed.screeningDecisions || [],
+        screeningConflicts: parsed.screeningConflicts || [],
+        exclusionReasons: parsed.exclusionReasons || defaultExclusionReasons,
+        prismaEvents: parsed.prismaEvents || getInitialDatabase().prismaEvents,
       };
       return memoryDb!;
     }
@@ -776,7 +806,6 @@ export async function createProject(
 
   db.projects.push(newProject);
 
-  // Initialize a default PICO protocol for the new project
   const newProtocol: Protocol = {
     id: `proto-${newProject.id}`,
     projectId: newProject.id,
@@ -986,6 +1015,18 @@ export async function importArticlesBatch(
     createdArticles.push(newArt);
   }
 
+  // Emit PRISMA event: records identified
+  const prismaEvent: PrismaEvent = {
+    id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    projectId,
+    eventType: "records_identified",
+    deltaCount: createdArticles.length,
+    reason: `Imported via ${sourceDatabase}`,
+    triggeredBy: userEmail || userId,
+    createdAt: new Date().toISOString(),
+  };
+  db.prismaEvents.push(prismaEvent);
+
   createAuditLogSync(
     "IMPORT_REFERENCES",
     "article_batch",
@@ -1010,7 +1051,6 @@ export async function runDuplicateDetection(projectId: string): Promise<Duplicat
   const result = detectDuplicates(projectArticles);
   const newCandidates: DuplicateCandidate[] = [];
 
-  // Remove pending candidates for this project before re-evaluating
   db.duplicateCandidates = db.duplicateCandidates.filter((c) => c.projectId !== projectId || c.status !== "pending");
 
   for (const pair of result.candidatePairs) {
@@ -1056,7 +1096,6 @@ export async function mergeDuplicateArticles(
 
   if (!survivor || !duplicate) return false;
 
-  // Mark duplicate non-destructively
   duplicate.isDuplicate = true;
   duplicate.mergedIntoId = survivor.id;
   duplicate.updatedAt = new Date().toISOString();
@@ -1067,6 +1106,17 @@ export async function mergeDuplicateArticles(
     candidate.resolvedBy = userEmail || userId;
     candidate.resolvedAt = new Date().toISOString();
   }
+
+  // Emit PRISMA event: duplicate removed
+  db.prismaEvents.push({
+    id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    projectId: survivor.projectId,
+    eventType: "duplicates_removed",
+    deltaCount: 1,
+    reason: `Merged into survivor article ID ${survivor.id}`,
+    triggeredBy: userEmail || userId,
+    createdAt: new Date().toISOString(),
+  });
 
   createAuditLogSync(
     "MERGE_DUPLICATES",
@@ -1097,4 +1147,188 @@ export async function dismissDuplicateCandidate(
   createAuditLogSync("DISMISS_DUPLICATE_CANDIDATE", "duplicate_candidate", candidateId, { candidateId }, userId, userEmail);
   saveDb(db);
   return true;
+}
+
+// =====================================================================
+// SCREENING & PRISMA 2020 ENGINE
+// =====================================================================
+
+export async function getExclusionReasons(projectId: string, stage?: ScreeningStage): Promise<ExclusionReason[]> {
+  const db = getDb();
+  let reasons = db.exclusionReasons.filter((r) => r.projectId === "global" || r.projectId === projectId);
+  if (stage) {
+    reasons = reasons.filter((r) => r.stage === stage);
+  }
+  return reasons.sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+export async function recordScreeningDecision(
+  projectId: string,
+  articleId: string,
+  reviewerId: string,
+  reviewerName: string,
+  stage: ScreeningStage,
+  decision: ScreeningDecisionType,
+  exclusionReason?: string,
+  notes?: string
+): Promise<{ decision: ScreeningDecision; status: Article["screeningStatus"] }> {
+  const db = getDb();
+  const article = db.articles.find((a) => a.id === articleId && a.projectId === projectId);
+  if (!article) throw new Error("Article not found.");
+
+  // Save or update decision
+  const existingIndex = db.screeningDecisions.findIndex(
+    (d) => d.articleId === articleId && d.reviewerId === reviewerId && d.stage === stage
+  );
+
+  const decisionRecord: ScreeningDecision = {
+    id: existingIndex >= 0 ? db.screeningDecisions[existingIndex].id : `dec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    projectId,
+    articleId,
+    reviewerId,
+    reviewerName,
+    stage,
+    decision,
+    exclusionReason,
+    notes,
+    createdAt: existingIndex >= 0 ? db.screeningDecisions[existingIndex].createdAt : new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  if (existingIndex >= 0) {
+    db.screeningDecisions[existingIndex] = decisionRecord;
+  } else {
+    db.screeningDecisions.push(decisionRecord);
+  }
+
+  // Check for dual reviewer conflicts at this stage
+  const decisionsForArticle = db.screeningDecisions.filter(
+    (d) => d.articleId === articleId && d.stage === stage
+  );
+
+  let newStatus: Article["screeningStatus"] = decision === "include" ? "included" : decision === "exclude" ? "excluded" : "unclear";
+
+  if (decisionsForArticle.length > 1) {
+    const hasInclude = decisionsForArticle.some((d) => d.decision === "include");
+    const hasExclude = decisionsForArticle.some((d) => d.decision === "exclude");
+
+    if (hasInclude && hasExclude) {
+      newStatus = "conflict";
+      // Create conflict record if not exists
+      const existingConflict = db.screeningConflicts.find(
+        (c) => c.articleId === articleId && c.stage === stage && c.status === "open"
+      );
+      if (!existingConflict) {
+        db.screeningConflicts.push({
+          id: `conf-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+          projectId,
+          articleId,
+          stage,
+          decisions: decisionsForArticle,
+          status: "open",
+        });
+      }
+    }
+  }
+
+  article.screeningStatus = newStatus;
+  article.updatedAt = new Date().toISOString();
+
+  // Record PRISMA event
+  if (stage === "title_abstract" && decision === "exclude") {
+    db.prismaEvents.push({
+      id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      projectId,
+      eventType: "records_excluded_title_abstract",
+      deltaCount: 1,
+      reason: exclusionReason || "Kriteria Umum",
+      metadata: { articleId, reviewerId },
+      triggeredBy: reviewerName,
+      createdAt: new Date().toISOString(),
+    });
+  } else if (stage === "full_text" && decision === "exclude") {
+    db.prismaEvents.push({
+      id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      projectId,
+      eventType: "reports_excluded_full_text",
+      deltaCount: 1,
+      reason: exclusionReason || "Kriteria Umum",
+      metadata: { articleId, reviewerId },
+      triggeredBy: reviewerName,
+      createdAt: new Date().toISOString(),
+    });
+  }
+
+  createAuditLogSync("SCREENING_DECISION", "screening_decision", decisionRecord.id, {
+    articleId,
+    stage,
+    decision,
+    exclusionReason,
+  }, reviewerId, reviewerName);
+
+  saveDb(db);
+  return { decision: decisionRecord, status: newStatus };
+}
+
+export async function getScreeningConflicts(
+  projectId: string,
+  status: "open" | "resolved" = "open"
+): Promise<Array<ScreeningConflict & { article?: Article }>> {
+  const db = getDb();
+  const conflicts = db.screeningConflicts.filter(
+    (c) => c.projectId === projectId && c.status === status
+  );
+
+  return conflicts.map((c) => ({
+    ...c,
+    article: db.articles.find((a) => a.id === c.articleId),
+  }));
+}
+
+export async function adjudicateConflict(
+  conflictId: string,
+  resolvedDecision: ScreeningDecisionType,
+  exclusionReason?: string,
+  adjudicatorId?: string,
+  adjudicatorName?: string,
+  adjudicationNotes?: string
+): Promise<boolean> {
+  const db = getDb();
+  const conflict = db.screeningConflicts.find((c) => c.id === conflictId);
+  if (!conflict) return false;
+
+  conflict.status = "resolved";
+  conflict.resolvedDecision = resolvedDecision;
+  conflict.resolvedExclusionReason = exclusionReason;
+  conflict.adjudicatedBy = adjudicatorName || adjudicatorId;
+  conflict.adjudicationNotes = adjudicationNotes;
+  conflict.resolvedAt = new Date().toISOString();
+
+  const article = db.articles.find((a) => a.id === conflict.articleId);
+  if (article) {
+    article.screeningStatus = resolvedDecision === "include" ? "included" : resolvedDecision === "exclude" ? "excluded" : "unclear";
+    article.updatedAt = new Date().toISOString();
+  }
+
+  createAuditLogSync("ADJUDICATE_CONFLICT", "screening_conflict", conflictId, {
+    resolvedDecision,
+    exclusionReason,
+    adjudicationNotes,
+  }, adjudicatorId, adjudicatorName);
+
+  saveDb(db);
+  return true;
+}
+
+export async function getPrismaEvents(projectId: string): Promise<PrismaEvent[]> {
+  const db = getDb();
+  return db.prismaEvents.filter((e) => e.projectId === projectId);
+}
+
+export async function getProjectPrismaCounts(projectId: string): Promise<PrismaCounts> {
+  const db = getDb();
+  const events = db.prismaEvents.filter((e) => e.projectId === projectId);
+  const articles = db.articles.filter((a) => a.projectId === projectId);
+
+  return calculatePrismaCounts(events, articles);
 }

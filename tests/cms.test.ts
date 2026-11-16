@@ -24,7 +24,7 @@ describe("Milestone 1: CMS & Data-Driven Public Marketing Site", () => {
   });
 
   it("should update site settings and record an immutable audit log", async () => {
-    const originalLogs = await getAuditLogs(10);
+    const originalLogs = await getAuditLogs(200);
     const initialLogCount = originalLogs.length;
 
     await updateSiteSettings(
@@ -36,7 +36,7 @@ describe("Milestone 1: CMS & Data-Driven Public Marketing Site", () => {
     const updated = await getSiteSettings();
     expect(updated.contactEmail).toBe("lead-researcher@ib-slr.local");
 
-    const newLogs = await getAuditLogs(10);
+    const newLogs = await getAuditLogs(200);
     expect(newLogs.length).toBeGreaterThan(initialLogCount);
     expect(newLogs[0].action).toBe("UPDATE_SITE_SETTINGS");
     expect(newLogs[0].userEmail).toBe("admin@ib-slr.local");

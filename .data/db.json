@@ -1198,6 +1198,132 @@
   ],
   "auditLogs": [
     {
+      "id": "log-1794826543373-abe15",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794826543291-yg2fy",
+      "details": {
+        "email": "reset.test.1794826543208@university.edu"
+      },
+      "createdAt": "2026-11-16T10:55:43.373Z"
+    },
+    {
+      "id": "log-1794826543293-eigsy",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794826543291-yg2fy",
+      "details": {
+        "email": "reset.test.1794826543208@university.edu"
+      },
+      "createdAt": "2026-11-16T10:55:43.293Z"
+    },
+    {
+      "id": "log-1794826543291-270bo",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826543291-yg2fy",
+      "details": {
+        "email": "reset.test.1794826543208@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:55:43.291Z"
+    },
+    {
+      "id": "log-1794826543205-i4ncd",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794826543201-q25rh",
+      "details": {
+        "email": "verify.test.1794826543120@university.edu"
+      },
+      "createdAt": "2026-11-16T10:55:43.205Z"
+    },
+    {
+      "id": "log-1794826543201-i33pn",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826543201-q25rh",
+      "details": {
+        "email": "verify.test.1794826543120@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:55:43.201Z"
+    },
+    {
+      "id": "log-1794826543118-ou435",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826543118-plolp",
+      "details": {
+        "email": "test.researcher.1794826543036@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:55:43.118Z"
+    },
+    {
+      "id": "log-1794826524862-jg5n9",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794826524781-t4754",
+      "details": {
+        "email": "reset.test.1794826524699@university.edu"
+      },
+      "createdAt": "2026-11-16T10:55:24.862Z"
+    },
+    {
+      "id": "log-1794826524783-c2hc7",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794826524781-t4754",
+      "details": {
+        "email": "reset.test.1794826524699@university.edu"
+      },
+      "createdAt": "2026-11-16T10:55:24.783Z"
+    },
+    {
+      "id": "log-1794826524781-17q9s",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826524781-t4754",
+      "details": {
+        "email": "reset.test.1794826524699@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:55:24.781Z"
+    },
+    {
+      "id": "log-1794826524697-0xbnv",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794826524693-klj1f",
+      "details": {
+        "email": "verify.test.1794826524613@university.edu"
+      },
+      "createdAt": "2026-11-16T10:55:24.697Z"
+    },
+    {
+      "id": "log-1794826524693-8s5ty",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826524693-klj1f",
+      "details": {
+        "email": "verify.test.1794826524613@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:55:24.693Z"
+    },
+    {
+      "id": "log-1794826524610-q538x",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826524610-oezne",
+      "details": {
+        "email": "test.researcher.1794826524527@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:55:24.610Z"
+    },
+    {
       "id": "log-1794826091546-nazml",
       "action": "PASSWORD_RESET_COMPLETED",
       "entityType": "user",
@@ -1424,6 +1550,72 @@
       "mfaEnabled": false,
       "createdAt": "2026-11-16T10:48:11.464Z",
       "updatedAt": "2026-11-16T10:48:11.546Z"
+    },
+    {
+      "id": "usr-1794826524610-oezne",
+      "email": "test.researcher.1794826524527@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$pL9YhRALMG30msb0vg0JPegI7Qj8/MBZxRFW0PfVWkiyP5Y6lhfd.",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:55:24.610Z",
+      "updatedAt": "2026-11-16T10:55:24.610Z"
+    },
+    {
+      "id": "usr-1794826524693-klj1f",
+      "email": "verify.test.1794826524613@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$ZfLCucmVVftVuoiyFaDBf.OSdJwMudOD74E3A8wglCixYSPd3Bq.a",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:55:24.693Z",
+      "updatedAt": "2026-11-16T10:55:24.697Z"
+    },
+    {
+      "id": "usr-1794826524781-t4754",
+      "email": "reset.test.1794826524699@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$7bPSm8WEaPgyJ.sEGAn/6eIMBW8eQyKjncZMyyHE3F3e2ZGnaotue",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:55:24.781Z",
+      "updatedAt": "2026-11-16T10:55:24.862Z"
+    },
+    {
+      "id": "usr-1794826543118-plolp",
+      "email": "test.researcher.1794826543036@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$0ms/re35pj88eEV7Vthdvujj3EHauCYwk1NuKqsXt.w/zLXQkilPW",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:55:43.118Z",
+      "updatedAt": "2026-11-16T10:55:43.118Z"
+    },
+    {
+      "id": "usr-1794826543201-q25rh",
+      "email": "verify.test.1794826543120@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$8l2ROi3yBZq4mDms65ZIJOsdCpJY4.RZHDm0DGV5FfynCTuYiRGyW",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:55:43.201Z",
+      "updatedAt": "2026-11-16T10:55:43.205Z"
+    },
+    {
+      "id": "usr-1794826543291-yg2fy",
+      "email": "reset.test.1794826543208@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$pqn6toPGCbNhOaAHhLu8CuDRr0KBMfVe5kGNp/TneI1bBq/90G6/G",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:55:43.291Z",
+      "updatedAt": "2026-11-16T10:55:43.373Z"
     }
   ],
   "verificationTokens": [],
@@ -1586,5 +1778,67 @@
       "updatedAt": "2026-11-16T10:48:11.216Z"
     }
   ],
-  "duplicateCandidates": []
+  "duplicateCandidates": [],
+  "screeningDecisions": [],
+  "screeningConflicts": [],
+  "exclusionReasons": [
+    {
+      "id": "ex-1",
+      "projectId": "global",
+      "code": "WRONG_POPULATION",
+      "label": "Populasi Tidak Sesuai (Ineligible Population)",
+      "stage": "title_abstract",
+      "sortOrder": 1
+    },
+    {
+      "id": "ex-2",
+      "projectId": "global",
+      "code": "WRONG_INTERVENTION",
+      "label": "Intervensi Tidak Sesuai (Ineligible Intervention)",
+      "stage": "title_abstract",
+      "sortOrder": 2
+    },
+    {
+      "id": "ex-3",
+      "projectId": "global",
+      "code": "WRONG_STUDY_DESIGN",
+      "label": "Desain Studi Tidak Memenuhi Syarat (Ineligible Study Design)",
+      "stage": "title_abstract",
+      "sortOrder": 3
+    },
+    {
+      "id": "ex-4",
+      "projectId": "global",
+      "code": "WRONG_OUTCOME",
+      "label": "Luaran / Hasil Tidak Dilaporkan (Ineligible Outcome)",
+      "stage": "full_text",
+      "sortOrder": 4
+    },
+    {
+      "id": "ex-5",
+      "projectId": "global",
+      "code": "NO_FULL_TEXT",
+      "label": "Teks Lengkap Tidak Dapat Diakses (Full Text Not Retrieved)",
+      "stage": "full_text",
+      "sortOrder": 5
+    },
+    {
+      "id": "ex-6",
+      "projectId": "global",
+      "code": "FOREIGN_LANGUAGE",
+      "label": "Bahasa di Luar Kriteria Inklusi (Language Limitation)",
+      "stage": "title_abstract",
+      "sortOrder": 6
+    }
+  ],
+  "prismaEvents": [
+    {
+      "id": "ev-init-1",
+      "projectId": "prj-demo-1",
+      "eventType": "records_identified",
+      "deltaCount": 3,
+      "reason": "Initial PubMed search run import",
+      "createdAt": "2026-11-16T10:55:24.525Z"
+    }
+  ]
 }
