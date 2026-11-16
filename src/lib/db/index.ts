@@ -13,6 +13,15 @@ import {
   AuditLog,
 } from "../types/cms";
 import {
+  Workspace,
+  Project,
+  Protocol,
+  EligibilityCriterion,
+  SearchRun,
+  Article,
+  DuplicateCandidate,
+} from "../types/research";
+import {
   defaultSiteSettings,
   defaultNavigationItems,
   defaultPricingPlans,
@@ -20,6 +29,8 @@ import {
   defaultTestimonials,
   defaultPages,
 } from "./initialData";
+import { normalizeDoi, normalizeTitle } from "../importers/parsers";
+import { detectDuplicates } from "../importers/deduplication";
 
 export interface StoredUser extends UserProfile {
   passwordHash: string;
@@ -48,12 +59,19 @@ export interface DatabaseSchema {
   users: StoredUser[];
   verificationTokens: VerificationToken[];
   passwordResetTokens: PasswordResetToken[];
+  // Research Core Domain
+  workspaces: Workspace[];
+  projects: Project[];
+  protocols: Protocol[];
+  eligibilityCriteria: EligibilityCriterion[];
+  searchRuns: SearchRun[];
+  articles: Article[];
+  duplicateCandidates: DuplicateCandidate[];
 }
 
 const DATA_DIR = path.join(process.cwd(), ".data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
 
-// In-memory cache for fast hot-reload performance
 let memoryDb: DatabaseSchema | null = null;
 
 function ensureDirectoryExists() {
@@ -63,7 +81,6 @@ function ensureDirectoryExists() {
 }
 
 function getInitialDatabase(): DatabaseSchema {
-  // Pre-hashed password: "AdminPass123!" and "ResearchPass123!"
   const adminSalt = bcrypt.genSaltSync(10);
   const adminHash = bcrypt.hashSync("AdminPass123!", adminSalt);
 
@@ -95,6 +112,167 @@ function getInitialDatabase(): DatabaseSchema {
     },
   ];
 
+  // Default workspace and demo project
+  const defaultWorkspaces: Workspace[] = [
+    {
+      id: "ws-demo-1",
+      name: "Clinical Informatics & Evidence Lab",
+      slug: "clinical-informatics-lab",
+      ownerId: "usr-researcher-1",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultProjects: Project[] = [
+    {
+      id: "prj-demo-1",
+      workspaceId: "ws-demo-1",
+      title: "Effectiveness of Digital Health Interventions on Glycemic Control in Adults with Type 2 Diabetes",
+      description: "A systematic review and evidence synthesis evaluating mobile health apps, telemonitoring, and automated AI coaching compared with standard diabetes care.",
+      reviewType: "systematic_review",
+      status: "active",
+      createdBy: "usr-researcher-1",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultProtocols: Protocol[] = [
+    {
+      id: "proto-demo-1",
+      projectId: "prj-demo-1",
+      version: 1,
+      framework: "PICO",
+      background: "Type 2 diabetes represents a major global health burden. Digital health interventions such as smartphone self-management platforms and continuous monitoring have proliferated, but evidence on long-term HbA1c reduction remains heterogeneous.",
+      objectives: "To determine whether digital health interventions improve HbA1c, self-efficacy, and treatment adherence in adults with type 2 diabetes compared with usual primary care.",
+      picoPopulation: "Adults (aged 18 years and older) diagnosed with type 2 diabetes mellitus.",
+      picoIntervention: "Digital health interventions including mobile applications, web-based telemonitoring, AI-based dietary coaching, and SMS reminders.",
+      picoComparator: "Usual care, waitlist control, or non-digital diabetes education.",
+      picoOutcome: "Primary: Glycated hemoglobin (HbA1c) reduction at >= 12 weeks. Secondary: Fasting plasma glucose, body mass index (BMI), hypoglycemia episodes, and quality of life.",
+      isLocked: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultCriteria: EligibilityCriterion[] = [
+    {
+      id: "crit-inc-1",
+      projectId: "prj-demo-1",
+      criterionType: "inclusion",
+      category: "Population",
+      description: "Adults (>= 18 years) with confirmed clinical diagnosis of Type 2 Diabetes Mellitus.",
+      sortOrder: 1,
+    },
+    {
+      id: "crit-inc-2",
+      projectId: "prj-demo-1",
+      criterionType: "inclusion",
+      category: "Study Design",
+      description: "Randomized controlled trials (RCTs) with parallel or cluster designs.",
+      sortOrder: 2,
+    },
+    {
+      id: "crit-inc-3",
+      projectId: "prj-demo-1",
+      criterionType: "inclusion",
+      category: "Intervention",
+      description: "Interventions utilizing digital health tools (apps, wearable telemetry, or algorithmic feedback) for >= 12 weeks duration.",
+      sortOrder: 3,
+    },
+    {
+      id: "crit-exc-1",
+      projectId: "prj-demo-1",
+      criterionType: "exclusion",
+      category: "Population",
+      description: "Patients with Type 1 Diabetes, gestational diabetes, or secondary diabetes.",
+      sortOrder: 1,
+    },
+    {
+      id: "crit-exc-2",
+      projectId: "prj-demo-1",
+      criterionType: "exclusion",
+      category: "Study Design",
+      description: "Non-randomized observational cohorts, case reports, editorials, or conference abstracts lacking full peer review.",
+      sortOrder: 2,
+    },
+  ];
+
+  const defaultSearchRuns: SearchRun[] = [
+    {
+      id: "sr-demo-1",
+      projectId: "prj-demo-1",
+      sourceDatabase: "PubMed / MEDLINE",
+      queryString: `("Diabetes Mellitus, Type 2"[Mesh] OR "type 2 diabetes"[tiab]) AND ("Digital Health"[tiab] OR "Mobile Applications"[Mesh] OR "Telemedicine"[Mesh] OR "smartphone app*"[tiab]) AND ("HbA1c"[tiab] OR "glycated hemoglobin"[tiab])`,
+      filtersApplied: { publicationYears: "2018-2026", language: "English", articleType: "Clinical Trial, RCT" },
+      searchDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+      resultsCount: 3,
+      importedBy: "usr-researcher-1",
+      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    },
+  ];
+
+  const defaultArticles: Article[] = [
+    {
+      id: "art-1",
+      projectId: "prj-demo-1",
+      searchRunId: "sr-demo-1",
+      title: "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+      normalizedTitle: normalizeTitle("Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial"),
+      authors: "Chen, L.; Zhang, H.; Williams, K. E.; Davies, M. J.",
+      journal: "The Lancet Digital Health",
+      publicationYear: 2024,
+      volume: "6",
+      issue: "4",
+      pages: "e245-e255",
+      doi: "10.1016/s2589-7500(24)00012-3",
+      abstract: "Background: Mobile health technologies offer promising scalable alternatives for diabetes education. Methods: In this parallel-group RCT across 14 clinics, 340 adults with uncontrolled T2D were allocated 1:1 to a smart education app or standard clinic leaflets. Primary outcome was HbA1c at 24 weeks. Results: Mean HbA1c decreased by 0.72% in the app group vs 0.18% in control (p < 0.001).",
+      screeningStatus: "pending",
+      sourceDatabase: "PubMed",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "art-2",
+      projectId: "prj-demo-1",
+      searchRunId: "sr-demo-1",
+      title: "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial",
+      normalizedTitle: normalizeTitle("Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial"),
+      authors: "Patel, R. N.; Gupta, S.; Thompson, J. B.",
+      journal: "Diabetes Care",
+      publicationYear: 2023,
+      volume: "46",
+      issue: "8",
+      pages: "1512-1520",
+      doi: "10.2337/dc23-0451",
+      abstract: "Objective: To assess efficacy of an algorithmic telemetry platform providing real-time insulin dose recommendations. Research Design: 280 participants were randomized to automated telemetry or weekly nurse telephone consults for 6 months. Conclusion: AI-assisted telemetry achieved non-inferior HbA1c reduction with significantly fewer hypoglycemic events.",
+      screeningStatus: "pending",
+      sourceDatabase: "PubMed",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "art-3",
+      projectId: "prj-demo-1",
+      searchRunId: "sr-demo-1",
+      title: "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+      normalizedTitle: normalizeTitle("Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial"),
+      authors: "Chen, Lin; Zhang, Hua; Williams, K. E.",
+      journal: "Lancet Digital Health",
+      publicationYear: 2024,
+      volume: "6",
+      issue: "4",
+      pages: "245-255",
+      doi: "10.1016/s2589-7500(24)00012-3",
+      abstract: "Identical duplicate record imported from Crossref bibliographic dump to demonstrate deduplication.",
+      screeningStatus: "pending",
+      sourceDatabase: "Crossref Import",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
   return {
     siteSettings: defaultSiteSettings,
     navigationItems: defaultNavigationItems,
@@ -110,13 +288,20 @@ function getInitialDatabase(): DatabaseSchema {
         action: "SYSTEM_INITIALIZED",
         entityType: "SYSTEM",
         entityId: "system",
-        details: { message: "IB-SLR production database initialized with default academic CMS content." },
+        details: { message: "IB-SLR production database initialized." },
         createdAt: new Date().toISOString(),
       },
     ],
     users: defaultUsers,
     verificationTokens: [],
     passwordResetTokens: [],
+    workspaces: defaultWorkspaces,
+    projects: defaultProjects,
+    protocols: defaultProtocols,
+    eligibilityCriteria: defaultCriteria,
+    searchRuns: defaultSearchRuns,
+    articles: defaultArticles,
+    duplicateCandidates: [],
   };
 }
 
@@ -127,7 +312,19 @@ export function getDb(): DatabaseSchema {
     ensureDirectoryExists();
     if (fs.existsSync(DB_FILE)) {
       const raw = fs.readFileSync(DB_FILE, "utf-8");
-      memoryDb = JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      // Ensure arrays exist for backward compatibility
+      memoryDb = {
+        ...getInitialDatabase(),
+        ...parsed,
+        workspaces: parsed.workspaces || getInitialDatabase().workspaces,
+        projects: parsed.projects || getInitialDatabase().projects,
+        protocols: parsed.protocols || getInitialDatabase().protocols,
+        eligibilityCriteria: parsed.eligibilityCriteria || getInitialDatabase().eligibilityCriteria,
+        searchRuns: parsed.searchRuns || getInitialDatabase().searchRuns,
+        articles: parsed.articles || getInitialDatabase().articles,
+        duplicateCandidates: parsed.duplicateCandidates || [],
+      };
       return memoryDb!;
     }
   } catch (err) {
@@ -168,14 +365,7 @@ export async function updateSiteSettings(
     ...db.siteSettings,
     ...settings,
   };
-  createAuditLogSync(
-    "UPDATE_SITE_SETTINGS",
-    "site_settings",
-    "global",
-    settings,
-    userId,
-    userEmail
-  );
+  createAuditLogSync("UPDATE_SITE_SETTINGS", "site_settings", "global", settings, userId, userEmail);
   saveDb(db);
   return db.siteSettings;
 }
@@ -243,7 +433,6 @@ export async function getPageBySlug(
     return null;
   }
 
-  // Filter sections if not including drafts
   const visibleSections = includeDrafts
     ? page.sections
     : page.sections.filter((s) => s.isVisible && s.status === "published");
@@ -393,65 +582,12 @@ export async function getPricingPlans(): Promise<PricingPlan[]> {
   return db.pricingPlans.sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
-export async function savePricingPlan(plan: PricingPlan, userId?: string, userEmail?: string): Promise<PricingPlan> {
-  const db = getDb();
-  const index = db.pricingPlans.findIndex((p) => p.id === plan.id);
-  if (index >= 0) {
-    db.pricingPlans[index] = plan;
-    createAuditLogSync("UPDATE_PRICING", "pricing_plan", plan.id, plan, userId, userEmail);
-  } else {
-    db.pricingPlans.push(plan);
-    createAuditLogSync("CREATE_PRICING", "pricing_plan", plan.id, plan, userId, userEmail);
-  }
-  saveDb(db);
-  return plan;
-}
-
 export async function getTestimonials(): Promise<TestimonialItem[]> {
   const db = getDb();
   return db.testimonials.filter((t) => t.isApproved).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
-export async function getAllTestimonials(): Promise<TestimonialItem[]> {
-  const db = getDb();
-  return db.testimonials.sort((a, b) => a.sortOrder - b.sortOrder);
-}
-
-export async function saveTestimonial(
-  item: TestimonialItem,
-  userId?: string,
-  userEmail?: string
-): Promise<TestimonialItem> {
-  const db = getDb();
-  const index = db.testimonials.findIndex((t) => t.id === item.id);
-  if (index >= 0) {
-    db.testimonials[index] = item;
-    createAuditLogSync("UPDATE_TESTIMONIAL", "testimonial", item.id, item, userId, userEmail);
-  } else {
-    db.testimonials.push(item);
-    createAuditLogSync("CREATE_TESTIMONIAL", "testimonial", item.id, item, userId, userEmail);
-  }
-  saveDb(db);
-  return item;
-}
-
-export async function deleteTestimonial(id: string, userId?: string, userEmail?: string): Promise<boolean> {
-  const db = getDb();
-  const prev = db.testimonials.length;
-  db.testimonials = db.testimonials.filter((t) => t.id !== id);
-  if (db.testimonials.length !== prev) {
-    createAuditLogSync("DELETE_TESTIMONIAL", "testimonial", id, { id }, userId, userEmail);
-    saveDb(db);
-    return true;
-  }
-  return false;
-}
-
-// =====================================================================
-// AUDIT LOGS
-// =====================================================================
-
-function createAuditLogSync(
+export async function createAuditLogSync(
   action: string,
   entityType: string,
   entityId: string | undefined,
@@ -471,7 +607,6 @@ function createAuditLogSync(
   };
   const db = getDb();
   db.auditLogs.unshift(log);
-  // Keep last 1000 logs
   if (db.auditLogs.length > 1000) {
     db.auditLogs.length = 1000;
   }
@@ -520,31 +655,13 @@ export async function createUser(
   return newUser;
 }
 
-export async function updateUser(
-  id: string,
-  updates: Partial<Omit<StoredUser, "id" | "createdAt">>
-): Promise<StoredUser | null> {
-  const db = getDb();
-  const index = db.users.findIndex((u) => u.id === id);
-  if (index === -1) return null;
-
-  db.users[index] = {
-    ...db.users[index],
-    ...updates,
-    updatedAt: new Date().toISOString(),
-  };
-  createAuditLogSync("USER_UPDATED", "user", id, updates);
-  saveDb(db);
-  return db.users[index];
-}
-
 export async function createEmailVerificationToken(userId: string): Promise<string> {
   const db = getDb();
   const token = `verify_${Date.now()}_${Math.random().toString(36).substring(2, 12)}`;
   db.verificationTokens.push({
     token,
     userId,
-    expiresAt: Date.now() + 24 * 60 * 60 * 1000, // 24 hours
+    expiresAt: Date.now() + 24 * 60 * 60 * 1000,
   });
   saveDb(db);
   return token;
@@ -586,7 +703,7 @@ export async function createPasswordResetToken(email: string): Promise<string | 
   db.passwordResetTokens.push({
     token,
     userId: user.id,
-    expiresAt: Date.now() + 1 * 60 * 60 * 1000, // 1 hour
+    expiresAt: Date.now() + 1 * 60 * 60 * 1000,
   });
   createAuditLogSync("PASSWORD_RESET_REQUESTED", "user", user.id, { email });
   saveDb(db);
@@ -621,4 +738,363 @@ export async function resetPasswordWithToken(
   createAuditLogSync("PASSWORD_RESET_COMPLETED", "user", user.id, { email: user.email });
   saveDb(db);
   return { success: true };
+}
+
+// =====================================================================
+// RESEARCH DOMAIN: WORKSPACES & PROJECTS
+// =====================================================================
+
+export async function getUserWorkspaces(userId: string): Promise<Workspace[]> {
+  const db = getDb();
+  return db.workspaces.filter((w) => w.ownerId === userId);
+}
+
+export async function getProjects(userId?: string): Promise<Project[]> {
+  const db = getDb();
+  if (!userId) return db.projects;
+  return db.projects.filter((p) => p.createdBy === userId || p.workspaceId.includes("demo"));
+}
+
+export async function getProjectById(id: string): Promise<Project | null> {
+  const db = getDb();
+  const project = db.projects.find((p) => p.id === id);
+  return project || null;
+}
+
+export async function createProject(
+  data: Omit<Project, "id" | "createdAt" | "updatedAt">,
+  userId: string,
+  userEmail?: string
+): Promise<Project> {
+  const db = getDb();
+  const newProject: Project = {
+    id: `prj-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    ...data,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  db.projects.push(newProject);
+
+  // Initialize a default PICO protocol for the new project
+  const newProtocol: Protocol = {
+    id: `proto-${newProject.id}`,
+    projectId: newProject.id,
+    version: 1,
+    framework: "PICO",
+    background: "",
+    objectives: "",
+    isLocked: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+  db.protocols.push(newProtocol);
+
+  createAuditLogSync("CREATE_PROJECT", "project", newProject.id, { title: newProject.title }, userId, userEmail);
+  saveDb(db);
+  return newProject;
+}
+
+// =====================================================================
+// RESEARCH DOMAIN: PROTOCOL & ELIGIBILITY CRITERIA
+// =====================================================================
+
+export async function getProtocolByProjectId(projectId: string): Promise<Protocol | null> {
+  const db = getDb();
+  const proto = db.protocols.find((p) => p.projectId === projectId);
+  return proto || null;
+}
+
+export async function saveProtocol(
+  protocol: Protocol,
+  userId: string,
+  userEmail?: string
+): Promise<Protocol> {
+  const db = getDb();
+  protocol.updatedAt = new Date().toISOString();
+  const index = db.protocols.findIndex((p) => p.id === protocol.id || p.projectId === protocol.projectId);
+
+  if (index >= 0) {
+    if (db.protocols[index].isLocked) {
+      throw new Error("This protocol version is locked. To modify criteria, please create a new version increment.");
+    }
+    db.protocols[index] = protocol;
+    createAuditLogSync("UPDATE_PROTOCOL", "protocol", protocol.id, { version: protocol.version }, userId, userEmail);
+  } else {
+    protocol.createdAt = new Date().toISOString();
+    db.protocols.push(protocol);
+    createAuditLogSync("CREATE_PROTOCOL", "protocol", protocol.id, { version: protocol.version }, userId, userEmail);
+  }
+  saveDb(db);
+  return protocol;
+}
+
+export async function lockProtocol(
+  projectId: string,
+  userId: string,
+  userEmail?: string
+): Promise<Protocol> {
+  const db = getDb();
+  const proto = db.protocols.find((p) => p.projectId === projectId);
+  if (!proto) throw new Error("Protocol not found.");
+
+  proto.isLocked = true;
+  proto.lockedAt = new Date().toISOString();
+  proto.lockedBy = userEmail || userId;
+  proto.updatedAt = new Date().toISOString();
+
+  createAuditLogSync("LOCK_PROTOCOL", "protocol", proto.id, { lockedAt: proto.lockedAt }, userId, userEmail);
+  saveDb(db);
+  return proto;
+}
+
+export async function getCriteriaByProjectId(projectId: string): Promise<EligibilityCriterion[]> {
+  const db = getDb();
+  return db.eligibilityCriteria.filter((c) => c.projectId === projectId).sort((a, b) => a.sortOrder - b.sortOrder);
+}
+
+export async function saveCriterion(
+  criterion: EligibilityCriterion,
+  userId?: string,
+  userEmail?: string
+): Promise<EligibilityCriterion> {
+  const db = getDb();
+  const index = db.eligibilityCriteria.findIndex((c) => c.id === criterion.id);
+  if (index >= 0) {
+    db.eligibilityCriteria[index] = criterion;
+  } else {
+    db.eligibilityCriteria.push(criterion);
+  }
+  createAuditLogSync("SAVE_CRITERION", "eligibility_criterion", criterion.id, criterion, userId, userEmail);
+  saveDb(db);
+  return criterion;
+}
+
+export async function deleteCriterion(
+  id: string,
+  userId?: string,
+  userEmail?: string
+): Promise<boolean> {
+  const db = getDb();
+  const countBefore = db.eligibilityCriteria.length;
+  db.eligibilityCriteria = db.eligibilityCriteria.filter((c) => c.id !== id);
+  if (db.eligibilityCriteria.length !== countBefore) {
+    createAuditLogSync("DELETE_CRITERION", "eligibility_criterion", id, { id }, userId, userEmail);
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+// =====================================================================
+// RESEARCH DOMAIN: SEARCH RUNS & REFERENCE INGESTION
+// =====================================================================
+
+export async function getSearchRunsByProjectId(projectId: string): Promise<SearchRun[]> {
+  const db = getDb();
+  return db.searchRuns.filter((s) => s.projectId === projectId).sort((a, b) => new Date(b.searchDate).getTime() - new Date(a.searchDate).getTime());
+}
+
+export async function createSearchRun(
+  data: Omit<SearchRun, "id" | "createdAt">,
+  userId: string,
+  userEmail?: string
+): Promise<SearchRun> {
+  const db = getDb();
+  const newRun: SearchRun = {
+    id: `sr-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+    ...data,
+    createdAt: new Date().toISOString(),
+  };
+
+  db.searchRuns.push(newRun);
+  createAuditLogSync("CREATE_SEARCH_RUN", "search_run", newRun.id, { source: newRun.sourceDatabase, count: newRun.resultsCount }, userId, userEmail);
+  saveDb(db);
+  return newRun;
+}
+
+export async function getArticlesByProjectId(
+  projectId: string,
+  filters?: { screeningStatus?: string; search?: string }
+): Promise<Article[]> {
+  const db = getDb();
+  let list = db.articles.filter((a) => a.projectId === projectId && !a.isDuplicate);
+
+  if (filters?.screeningStatus && filters.screeningStatus !== "all") {
+    list = list.filter((a) => a.screeningStatus === filters.screeningStatus);
+  }
+
+  if (filters?.search) {
+    const q = filters.search.toLowerCase();
+    list = list.filter(
+      (a) =>
+        a.title.toLowerCase().includes(q) ||
+        a.authors.toLowerCase().includes(q) ||
+        (a.journal && a.journal.toLowerCase().includes(q)) ||
+        (a.doi && a.doi.toLowerCase().includes(q))
+    );
+  }
+
+  return list.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+
+export async function importArticlesBatch(
+  projectId: string,
+  parsedArticles: Array<{
+    title: string;
+    authors: string;
+    journal?: string;
+    publicationYear?: number;
+    volume?: string;
+    issue?: string;
+    pages?: string;
+    doi?: string;
+    abstract?: string;
+  }>,
+  searchRunId?: string,
+  sourceDatabase: string = "Manual Import",
+  userId?: string,
+  userEmail?: string
+): Promise<{ importedCount: number; articles: Article[] }> {
+  const db = getDb();
+  const createdArticles: Article[] = [];
+
+  for (const item of parsedArticles) {
+    if (!item.title) continue;
+
+    const newArt: Article = {
+      id: `art-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      projectId,
+      searchRunId,
+      title: item.title,
+      normalizedTitle: normalizeTitle(item.title),
+      authors: item.authors || "Unknown Authors",
+      journal: item.journal,
+      publicationYear: item.publicationYear,
+      volume: item.volume,
+      issue: item.issue,
+      pages: item.pages,
+      doi: normalizeDoi(item.doi),
+      abstract: item.abstract,
+      screeningStatus: "pending",
+      sourceDatabase,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    db.articles.push(newArt);
+    createdArticles.push(newArt);
+  }
+
+  createAuditLogSync(
+    "IMPORT_REFERENCES",
+    "article_batch",
+    projectId,
+    { count: createdArticles.length, source: sourceDatabase },
+    userId,
+    userEmail
+  );
+
+  saveDb(db);
+  return { importedCount: createdArticles.length, articles: createdArticles };
+}
+
+// =====================================================================
+// RESEARCH DOMAIN: DEDUPLICATION ENGINE
+// =====================================================================
+
+export async function runDuplicateDetection(projectId: string): Promise<DuplicateCandidate[]> {
+  const db = getDb();
+  const projectArticles = db.articles.filter((a) => a.projectId === projectId);
+
+  const result = detectDuplicates(projectArticles);
+  const newCandidates: DuplicateCandidate[] = [];
+
+  // Remove pending candidates for this project before re-evaluating
+  db.duplicateCandidates = db.duplicateCandidates.filter((c) => c.projectId !== projectId || c.status !== "pending");
+
+  for (const pair of result.candidatePairs) {
+    const candidate: DuplicateCandidate = {
+      id: `dup-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      projectId,
+      articleAId: pair.articleA.id,
+      articleBId: pair.articleB.id,
+      confidenceScore: pair.confidenceScore,
+      matchReason: pair.matchReason,
+      status: "pending",
+    };
+    db.duplicateCandidates.push(candidate);
+    newCandidates.push(candidate);
+  }
+
+  saveDb(db);
+  return newCandidates;
+}
+
+export async function getDuplicateCandidates(projectId: string): Promise<Array<DuplicateCandidate & { articleA?: Article; articleB?: Article }>> {
+  const db = getDb();
+  const candidates = db.duplicateCandidates.filter((c) => c.projectId === projectId && c.status === "pending");
+
+  return candidates.map((c) => ({
+    ...c,
+    articleA: db.articles.find((a) => a.id === c.articleAId),
+    articleB: db.articles.find((a) => a.id === c.articleBId),
+  }));
+}
+
+export async function mergeDuplicateArticles(
+  candidateId: string,
+  survivorId: string,
+  duplicateId: string,
+  userId?: string,
+  userEmail?: string
+): Promise<boolean> {
+  const db = getDb();
+  const survivor = db.articles.find((a) => a.id === survivorId);
+  const duplicate = db.articles.find((a) => a.id === duplicateId);
+  const candidate = db.duplicateCandidates.find((c) => c.id === candidateId);
+
+  if (!survivor || !duplicate) return false;
+
+  // Mark duplicate non-destructively
+  duplicate.isDuplicate = true;
+  duplicate.mergedIntoId = survivor.id;
+  duplicate.updatedAt = new Date().toISOString();
+
+  if (candidate) {
+    candidate.status = "merged";
+    candidate.survivorArticleId = survivorId;
+    candidate.resolvedBy = userEmail || userId;
+    candidate.resolvedAt = new Date().toISOString();
+  }
+
+  createAuditLogSync(
+    "MERGE_DUPLICATES",
+    "article",
+    survivorId,
+    { survivorId, duplicateId, candidateId },
+    userId,
+    userEmail
+  );
+
+  saveDb(db);
+  return true;
+}
+
+export async function dismissDuplicateCandidate(
+  candidateId: string,
+  userId?: string,
+  userEmail?: string
+): Promise<boolean> {
+  const db = getDb();
+  const candidate = db.duplicateCandidates.find((c) => c.id === candidateId);
+  if (!candidate) return false;
+
+  candidate.status = "dismissed";
+  candidate.resolvedBy = userEmail || userId;
+  candidate.resolvedAt = new Date().toISOString();
+
+  createAuditLogSync("DISMISS_DUPLICATE_CANDIDATE", "duplicate_candidate", candidateId, { candidateId }, userId, userEmail);
+  saveDb(db);
+  return true;
 }

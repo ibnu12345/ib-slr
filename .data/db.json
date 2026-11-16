@@ -1198,6 +1198,69 @@
   ],
   "auditLogs": [
     {
+      "id": "log-1794826091546-nazml",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794826091464-ezoq4",
+      "details": {
+        "email": "reset.test.1794826091389@university.edu"
+      },
+      "createdAt": "2026-11-16T10:48:11.546Z"
+    },
+    {
+      "id": "log-1794826091466-xn37o",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794826091464-ezoq4",
+      "details": {
+        "email": "reset.test.1794826091389@university.edu"
+      },
+      "createdAt": "2026-11-16T10:48:11.466Z"
+    },
+    {
+      "id": "log-1794826091464-qxrla",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826091464-ezoq4",
+      "details": {
+        "email": "reset.test.1794826091389@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:48:11.464Z"
+    },
+    {
+      "id": "log-1794826091386-tis24",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794826091383-msr8c",
+      "details": {
+        "email": "verify.test.1794826091307@university.edu"
+      },
+      "createdAt": "2026-11-16T10:48:11.386Z"
+    },
+    {
+      "id": "log-1794826091383-eyou0",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826091383-msr8c",
+      "details": {
+        "email": "verify.test.1794826091307@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:48:11.383Z"
+    },
+    {
+      "id": "log-1794826091304-5lupy",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794826091304-ntdim",
+      "details": {
+        "email": "test.researcher.1794826091218@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T10:48:11.304Z"
+    },
+    {
       "id": "log-1794825240250-j3cph",
       "action": "PASSWORD_RESET_COMPLETED",
       "entityType": "user",
@@ -1328,8 +1391,200 @@
       "mfaEnabled": false,
       "createdAt": "2026-11-16T10:34:00.171Z",
       "updatedAt": "2026-11-16T10:34:00.250Z"
+    },
+    {
+      "id": "usr-1794826091304-ntdim",
+      "email": "test.researcher.1794826091218@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$dJYEmqGDqdNfU.zBdZ3uwuD3jlFqtARIy2zCrA1ELQjvOqdfzyDCi",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:48:11.304Z",
+      "updatedAt": "2026-11-16T10:48:11.304Z"
+    },
+    {
+      "id": "usr-1794826091383-msr8c",
+      "email": "verify.test.1794826091307@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$aXHRA9yKLEkkrriewNTXL.m4eEm03AGOGHVS6gsGuuJMtbIymLjUG",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:48:11.383Z",
+      "updatedAt": "2026-11-16T10:48:11.386Z"
+    },
+    {
+      "id": "usr-1794826091464-ezoq4",
+      "email": "reset.test.1794826091389@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$kB5VGG2IARiYpltAB7QpV.Qg9xrBIJBxMRAkuV1pYXOYY01sguC3O",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T10:48:11.464Z",
+      "updatedAt": "2026-11-16T10:48:11.546Z"
     }
   ],
   "verificationTokens": [],
-  "passwordResetTokens": []
+  "passwordResetTokens": [],
+  "workspaces": [
+    {
+      "id": "ws-demo-1",
+      "name": "Clinical Informatics & Evidence Lab",
+      "slug": "clinical-informatics-lab",
+      "ownerId": "usr-researcher-1",
+      "createdAt": "2026-11-16T10:48:10.381Z",
+      "updatedAt": "2026-11-16T10:48:10.381Z"
+    }
+  ],
+  "projects": [
+    {
+      "id": "prj-demo-1",
+      "workspaceId": "ws-demo-1",
+      "title": "Effectiveness of Digital Health Interventions on Glycemic Control in Adults with Type 2 Diabetes",
+      "description": "A systematic review and evidence synthesis evaluating mobile health apps, telemonitoring, and automated AI coaching compared with standard diabetes care.",
+      "reviewType": "systematic_review",
+      "status": "active",
+      "createdBy": "usr-researcher-1",
+      "createdAt": "2026-11-16T10:48:10.541Z",
+      "updatedAt": "2026-11-16T10:48:10.541Z"
+    }
+  ],
+  "protocols": [
+    {
+      "id": "proto-demo-1",
+      "projectId": "prj-demo-1",
+      "version": 1,
+      "framework": "PICO",
+      "background": "Type 2 diabetes represents a major global health burden. Digital health interventions such as smartphone self-management platforms and continuous monitoring have proliferated, but evidence on long-term HbA1c reduction remains heterogeneous.",
+      "objectives": "To determine whether digital health interventions improve HbA1c, self-efficacy, and treatment adherence in adults with type 2 diabetes compared with usual primary care.",
+      "picoPopulation": "Adults (aged 18 years and older) diagnosed with type 2 diabetes mellitus.",
+      "picoIntervention": "Digital health interventions including mobile applications, web-based telemonitoring, AI-based dietary coaching, and SMS reminders.",
+      "picoComparator": "Usual care, waitlist control, or non-digital diabetes education.",
+      "picoOutcome": "Primary: Glycated hemoglobin (HbA1c) reduction at >= 12 weeks. Secondary: Fasting plasma glucose, body mass index (BMI), hypoglycemia episodes, and quality of life.",
+      "isLocked": false,
+      "createdAt": "2026-11-16T10:48:10.721Z",
+      "updatedAt": "2026-11-16T10:48:10.721Z"
+    }
+  ],
+  "eligibilityCriteria": [
+    {
+      "id": "crit-inc-1",
+      "projectId": "prj-demo-1",
+      "criterionType": "inclusion",
+      "category": "Population",
+      "description": "Adults (>= 18 years) with confirmed clinical diagnosis of Type 2 Diabetes Mellitus.",
+      "sortOrder": 1
+    },
+    {
+      "id": "crit-inc-2",
+      "projectId": "prj-demo-1",
+      "criterionType": "inclusion",
+      "category": "Study Design",
+      "description": "Randomized controlled trials (RCTs) with parallel or cluster designs.",
+      "sortOrder": 2
+    },
+    {
+      "id": "crit-inc-3",
+      "projectId": "prj-demo-1",
+      "criterionType": "inclusion",
+      "category": "Intervention",
+      "description": "Interventions utilizing digital health tools (apps, wearable telemetry, or algorithmic feedback) for >= 12 weeks duration.",
+      "sortOrder": 3
+    },
+    {
+      "id": "crit-exc-1",
+      "projectId": "prj-demo-1",
+      "criterionType": "exclusion",
+      "category": "Population",
+      "description": "Patients with Type 1 Diabetes, gestational diabetes, or secondary diabetes.",
+      "sortOrder": 1
+    },
+    {
+      "id": "crit-exc-2",
+      "projectId": "prj-demo-1",
+      "criterionType": "exclusion",
+      "category": "Study Design",
+      "description": "Non-randomized observational cohorts, case reports, editorials, or conference abstracts lacking full peer review.",
+      "sortOrder": 2
+    }
+  ],
+  "searchRuns": [
+    {
+      "id": "sr-demo-1",
+      "projectId": "prj-demo-1",
+      "sourceDatabase": "PubMed / MEDLINE",
+      "queryString": "(\"Diabetes Mellitus, Type 2\"[Mesh] OR \"type 2 diabetes\"[tiab]) AND (\"Digital Health\"[tiab] OR \"Mobile Applications\"[Mesh] OR \"Telemedicine\"[Mesh] OR \"smartphone app*\"[tiab]) AND (\"HbA1c\"[tiab] OR \"glycated hemoglobin\"[tiab])",
+      "filtersApplied": {
+        "publicationYears": "2018-2026",
+        "language": "English",
+        "articleType": "Clinical Trial, RCT"
+      },
+      "searchDate": "2026-11-13T10:48:11.048Z",
+      "resultsCount": 3,
+      "importedBy": "usr-researcher-1",
+      "createdAt": "2026-11-13T10:48:11.048Z"
+    }
+  ],
+  "articles": [
+    {
+      "id": "art-1",
+      "projectId": "prj-demo-1",
+      "searchRunId": "sr-demo-1",
+      "title": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+      "normalizedTitle": "mobile app delivered self management education versus usual care in adults with type 2 diabetes a randomized controlled trial",
+      "authors": "Chen, L.; Zhang, H.; Williams, K. E.; Davies, M. J.",
+      "journal": "The Lancet Digital Health",
+      "publicationYear": 2024,
+      "volume": "6",
+      "issue": "4",
+      "pages": "e245-e255",
+      "doi": "10.1016/s2589-7500(24)00012-3",
+      "abstract": "Background: Mobile health technologies offer promising scalable alternatives for diabetes education. Methods: In this parallel-group RCT across 14 clinics, 340 adults with uncontrolled T2D were allocated 1:1 to a smart education app or standard clinic leaflets. Primary outcome was HbA1c at 24 weeks. Results: Mean HbA1c decreased by 0.72% in the app group vs 0.18% in control (p < 0.001).",
+      "screeningStatus": "pending",
+      "sourceDatabase": "PubMed",
+      "createdAt": "2026-11-16T10:48:11.216Z",
+      "updatedAt": "2026-11-16T10:48:11.216Z"
+    },
+    {
+      "id": "art-2",
+      "projectId": "prj-demo-1",
+      "searchRunId": "sr-demo-1",
+      "title": "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial",
+      "normalizedTitle": "artificial intelligence guided glycemic telemetry in ambulatory type 2 diabetes care a multicenter randomized trial",
+      "authors": "Patel, R. N.; Gupta, S.; Thompson, J. B.",
+      "journal": "Diabetes Care",
+      "publicationYear": 2023,
+      "volume": "46",
+      "issue": "8",
+      "pages": "1512-1520",
+      "doi": "10.2337/dc23-0451",
+      "abstract": "Objective: To assess efficacy of an algorithmic telemetry platform providing real-time insulin dose recommendations. Research Design: 280 participants were randomized to automated telemetry or weekly nurse telephone consults for 6 months. Conclusion: AI-assisted telemetry achieved non-inferior HbA1c reduction with significantly fewer hypoglycemic events.",
+      "screeningStatus": "pending",
+      "sourceDatabase": "PubMed",
+      "createdAt": "2026-11-16T10:48:11.216Z",
+      "updatedAt": "2026-11-16T10:48:11.216Z"
+    },
+    {
+      "id": "art-3",
+      "projectId": "prj-demo-1",
+      "searchRunId": "sr-demo-1",
+      "title": "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial",
+      "normalizedTitle": "mobile app delivered self management education versus usual care in adults with type 2 diabetes a randomized controlled trial",
+      "authors": "Chen, Lin; Zhang, Hua; Williams, K. E.",
+      "journal": "Lancet Digital Health",
+      "publicationYear": 2024,
+      "volume": "6",
+      "issue": "4",
+      "pages": "245-255",
+      "doi": "10.1016/s2589-7500(24)00012-3",
+      "abstract": "Identical duplicate record imported from Crossref bibliographic dump to demonstrate deduplication.",
+      "screeningStatus": "pending",
+      "sourceDatabase": "Crossref Import",
+      "createdAt": "2026-11-16T10:48:11.216Z",
+      "updatedAt": "2026-11-16T10:48:11.216Z"
+    }
+  ],
+  "duplicateCandidates": []
 }
