@@ -37,7 +37,7 @@ export default async function RootLayout({
   const session = await getCurrentSession();
 
   return (
-    <html lang="id">
+    <html lang="en">
       <body className="min-h-screen flex flex-col bg-[#F7F8FA] text-[#17212B] antialiased">
         <LanguageProvider>
           <AnnouncementBanner announcement={settings.announcement} />

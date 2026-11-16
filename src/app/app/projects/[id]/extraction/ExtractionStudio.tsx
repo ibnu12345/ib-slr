@@ -31,6 +31,7 @@ import {
 } from "lucide-react";
 import { PdfArticleViewer } from "../../../../../components/research/PdfArticleViewer";
 import { runAIExtractionForArticleAction, verifyExtractionFieldAction } from "../../../../../lib/ai/actions";
+import { generateVosviewerRis } from "../../../../../lib/export/vosviewer";
 
 interface Props {
   projectId: string;
@@ -205,6 +206,17 @@ export function ExtractionStudio({
     document.body.removeChild(link);
   };
 
+  const handleExportVosviewer = () => {
+    const ris = generateVosviewerRis(articles, records);
+    const blob = new Blob([ris], { type: "application/x-research-info-systems;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `IB-SLR_${projectId}_VOSviewer_Corpus.ris`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleAddCustomField = () => {
     if (!newFieldName.trim() || !currentTemplate) return;
     const key = newFieldKey.trim() || newFieldName.toLowerCase().replace(/[^a-z0-9]/g, "_");
@@ -285,10 +297,19 @@ export function ExtractionStudio({
             <button
               type="button"
               onClick={handleExportCSV}
-              className="px-3.5 py-1.5 rounded-lg bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors"
+              className="px-3 py-1.5 rounded-lg border border-[#E4E7EC] bg-white hover:bg-gray-50 text-xs font-semibold text-[#17324D] flex items-center gap-1.5 shadow-xs transition-colors"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Ekspor Matriks (CSV)</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleExportVosviewer}
+              className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors"
+              title="Unduh format RIS untuk analisis bibliometrik dan visualisasi peta sains di VOSviewer"
+            >
+              <Download className="w-3.5 h-3.5" />
+              <span>Ekspor VOSviewer (.ris)</span>
             </button>
           </div>
         </div>

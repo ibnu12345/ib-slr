@@ -11,14 +11,14 @@ interface LanguageContextType {
 }
 
 const LanguageContext = createContext<LanguageContextType>({
-  language: "id",
+  language: "en",
   setLanguage: () => {},
   t: (key, fallback) => fallback || String(key),
-  isId: true,
+  isId: false,
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("id");
+  const [language, setLanguageState] = useState<Language>("en");
 
   useEffect(() => {
     // Read from localStorage or cookie

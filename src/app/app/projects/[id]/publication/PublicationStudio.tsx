@@ -31,6 +31,7 @@ import {
   FileCode,
 } from "lucide-react";
 import { saveManuscriptAction } from "../../../../../lib/publication/actions";
+import { generateVosviewerRis, generateVosviewerCsv } from "../../../../../lib/export/vosviewer";
 
 interface Props {
   project: Project;
@@ -250,6 +251,28 @@ export function PublicationStudio({
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = `IB-SLR_References_${project.id}.bib`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDownloadVosviewerRis = () => {
+    const ris = generateVosviewerRis(articles, extractedRecords);
+    const blob = new Blob([ris], { type: "application/x-research-info-systems;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `IB-SLR_${project.id}_VOSviewer_Corpus.ris`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDownloadVosviewerCsv = () => {
+    const csv = generateVosviewerCsv(articles, extractedRecords);
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `IB-SLR_${project.id}_VOSviewer_Bibliographic.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -785,6 +808,58 @@ export function PublicationStudio({
                 <span>Buka Diagram PRISMA</span>
               </a>
             </div>
+
+            {/* Export 6: VOSviewer Science Mapping Bundle */}
+            <div className="bg-gradient-to-br from-indigo-50/50 to-white border-2 border-indigo-200 rounded-xl p-5 shadow-sm space-y-4 hover:border-indigo-400 transition-colors flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="w-9 h-9 rounded-lg bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs">
+                  VOS
+                </div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-[#17324D]">Dataset Khusus VOSviewer</h4>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-indigo-600 text-white font-semibold">
+                    Bibliometrik
+                  </span>
+                </div>
+                <p className="text-xs text-[#667085] leading-relaxed">
+                  Format RIS & CSV siap pakai untuk visualisasi peta klaster co-occurrence kata kunci, jaringan penulis (co-authorship), dan analisis bibliometrik di VOSviewer.
+                </p>
+              </div>
+
+              <div className="space-y-2 pt-2">
+                <button
+                  type="button"
+                  onClick={handleDownloadVosviewerRis}
+                  className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold flex items-center justify-center gap-1.5 shadow-xs transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Unduh VOSviewer RIS (.ris)</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDownloadVosviewerCsv}
+                  className="w-full py-1.5 rounded-lg border border-indigo-300 bg-white hover:bg-indigo-50 text-indigo-800 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Unduh VOSviewer CSV (.csv)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* VOSviewer Tutorial Guide */}
+          <div className="bg-[#EFF7F6] border border-[#2F7D78]/25 rounded-xl p-5 text-xs text-[#17324D] space-y-2">
+            <div className="flex items-center gap-2 font-bold text-[#2F7D78]">
+              <Sparkles className="w-4 h-4" />
+              <span>Panduan Import ke VOSviewer:</span>
+            </div>
+            <ol className="list-decimal list-inside space-y-1.5 text-[#667085] leading-relaxed pl-1">
+              <li>Buka software <strong>VOSviewer</strong> di komputer Anda.</li>
+              <li>Klik tombol <strong>&quot;Create...&quot;</strong> di panel kiri.</li>
+              <li>Pilih opsi <strong>&quot;Create a map based on text data&quot;</strong> (untuk klaster kata kunci dari judul & abstrak) atau <strong>&quot;Create a map based on bibliographic data&quot;</strong> (untuk jaringan kolaborasi penulis).</li>
+              <li>Pilih <strong>&quot;Read data from reference manager files&quot;</strong>, lalu unggah file <code>.ris</code> yang baru Anda unduh di atas.</li>
+              <li>Ikuti wizard threshold frekuensi kemunculan kata kunci, dan klik <strong>Finish</strong> untuk melihat visualisasi peta sains interaktif!</li>
+            </ol>
           </div>
         </div>
       )}
