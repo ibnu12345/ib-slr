@@ -12,6 +12,7 @@ import {
   History,
   LayoutDashboard,
   ExternalLink,
+  Activity,
 } from "lucide-react";
 
 export default async function AdminLayout({
@@ -100,6 +101,14 @@ export default async function AdminLayout({
             >
               <History className="w-4 h-4 text-[#3E9C96]" />
               <span>Audit & Revision Logs</span>
+            </Link>
+
+            <Link
+              href="/admin/operations"
+              className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-200 hover:text-white hover:bg-[#244A70] transition-colors"
+            >
+              <Activity className="w-4 h-4 text-[#3E9C96]" />
+              <span>SaaS Operations & Health</span>
             </Link>
           </nav>
         </div>

@@ -1198,6 +1198,132 @@
   ],
   "auditLogs": [
     {
+      "id": "log-1794829303088-4jqdg",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794829303000-0kg67",
+      "details": {
+        "email": "reset.test.1794829302906@university.edu"
+      },
+      "createdAt": "2026-11-16T11:41:43.088Z"
+    },
+    {
+      "id": "log-1794829303003-rs4o3",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794829303000-0kg67",
+      "details": {
+        "email": "reset.test.1794829302906@university.edu"
+      },
+      "createdAt": "2026-11-16T11:41:43.003Z"
+    },
+    {
+      "id": "log-1794829303000-cghzi",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794829303000-0kg67",
+      "details": {
+        "email": "reset.test.1794829302906@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:41:43.000Z"
+    },
+    {
+      "id": "log-1794829302903-md7sd",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794829302898-r1t6l",
+      "details": {
+        "email": "verify.test.1794829302810@university.edu"
+      },
+      "createdAt": "2026-11-16T11:41:42.903Z"
+    },
+    {
+      "id": "log-1794829302898-ogo0a",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794829302898-r1t6l",
+      "details": {
+        "email": "verify.test.1794829302810@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:41:42.898Z"
+    },
+    {
+      "id": "log-1794829302807-mdths",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794829302807-wjvus",
+      "details": {
+        "email": "test.researcher.1794829302716@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:41:42.807Z"
+    },
+    {
+      "id": "log-1794829200278-fvz5q",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794829200177-6o2kn",
+      "details": {
+        "email": "reset.test.1794829200078@university.edu"
+      },
+      "createdAt": "2026-11-16T11:40:00.278Z"
+    },
+    {
+      "id": "log-1794829200180-kqffr",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794829200177-6o2kn",
+      "details": {
+        "email": "reset.test.1794829200078@university.edu"
+      },
+      "createdAt": "2026-11-16T11:40:00.180Z"
+    },
+    {
+      "id": "log-1794829200177-qinbv",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794829200177-6o2kn",
+      "details": {
+        "email": "reset.test.1794829200078@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:40:00.177Z"
+    },
+    {
+      "id": "log-1794829200075-532hi",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794829200068-6t6tf",
+      "details": {
+        "email": "verify.test.1794829199976@university.edu"
+      },
+      "createdAt": "2026-11-16T11:40:00.075Z"
+    },
+    {
+      "id": "log-1794829200068-7gmxx",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794829200068-6t6tf",
+      "details": {
+        "email": "verify.test.1794829199976@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:40:00.068Z"
+    },
+    {
+      "id": "log-1794829199972-d6l39",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794829199972-9ix5h",
+      "details": {
+        "email": "test.researcher.1794829199883@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T11:39:59.972Z"
+    },
+    {
       "id": "log-1794829108667-djlcl",
       "action": "PASSWORD_RESET_COMPLETED",
       "entityType": "user",
@@ -1424,6 +1550,72 @@
       "mfaEnabled": false,
       "createdAt": "2026-11-16T11:38:28.583Z",
       "updatedAt": "2026-11-16T11:38:28.667Z"
+    },
+    {
+      "id": "usr-1794829199972-9ix5h",
+      "email": "test.researcher.1794829199883@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$/lzjzljIQhoPqsQdHOyzZ.phuEg3JOKunwmONquQ4.lcvZmsbZ/LC",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:39:59.972Z",
+      "updatedAt": "2026-11-16T11:39:59.972Z"
+    },
+    {
+      "id": "usr-1794829200068-6t6tf",
+      "email": "verify.test.1794829199976@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$bJr8zjNbiBEgCjPGR4aGPerGsfJG8Kva7NZ67oR4vnhFWvJ8CMeGm",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:40:00.068Z",
+      "updatedAt": "2026-11-16T11:40:00.075Z"
+    },
+    {
+      "id": "usr-1794829200177-6o2kn",
+      "email": "reset.test.1794829200078@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$T2MGCOVpofAKJcZVPFIG/epB1E0uVWWbpYxrZrET/m2DOrq0hwVN6",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:40:00.177Z",
+      "updatedAt": "2026-11-16T11:40:00.278Z"
+    },
+    {
+      "id": "usr-1794829302807-wjvus",
+      "email": "test.researcher.1794829302716@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$PfJk/cornyJYkSfEg/emC.Mt01wDXzFKdoMCKM.5RCXZAWsFXSDHy",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:41:42.807Z",
+      "updatedAt": "2026-11-16T11:41:42.807Z"
+    },
+    {
+      "id": "usr-1794829302898-r1t6l",
+      "email": "verify.test.1794829302810@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$Qedff6FtXxe6EvxYCdbWxuGv8ibGG6RTd4lfqoZ/a/5QVTXhkdPUW",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:41:42.898Z",
+      "updatedAt": "2026-11-16T11:41:42.903Z"
+    },
+    {
+      "id": "usr-1794829303000-0kg67",
+      "email": "reset.test.1794829302906@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$ZtngdgVroIV9I37PERDYqe5Gw0PsPGQogpVHA6Qz0csJcrsZUyCqu",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T11:41:43.000Z",
+      "updatedAt": "2026-11-16T11:41:43.088Z"
     }
   ],
   "verificationTokens": [],

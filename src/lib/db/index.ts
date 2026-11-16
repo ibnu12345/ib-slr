@@ -41,7 +41,7 @@ import {
   AIExtractionSuggestion,
 } from "../types/ai";
 import { AppraisalRecord } from "../types/appraisal";
-import { ThematicCode, ThematicExcerpt } from "../types/synthesis";
+import { ThematicCode, ThematicExcerpt, SynthesisSummary } from "../types/synthesis";
 import { ProjectManuscript, JournalTableDefinition } from "../types/publication";
 import {
   defaultSiteSettings,
