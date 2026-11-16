@@ -9,6 +9,7 @@ import { UserSession } from "../../lib/types/auth";
 import { logoutAction } from "../../lib/auth/actions";
 import { LanguageSwitcher } from "../i18n/LanguageSwitcher";
 import { useLanguage } from "../i18n/LanguageContext";
+import { translateNavLabel } from "../../lib/i18n/cmsTranslations";
 
 interface NavbarProps {
   settings: SiteSettings;
@@ -63,7 +64,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   target={item.isExternal ? "_blank" : undefined}
                   rel={item.isExternal ? "noopener noreferrer" : undefined}
                 >
-                  {item.label}
+                  {translateNavLabel(item.label, item.url, isId)}
                 </Link>
               );
             })}
@@ -149,7 +150,7 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
               onClick={() => setMobileMenuOpen(false)}
               className="block px-3 py-2 rounded-md text-base font-medium text-[#17212B] hover:bg-[#F7F8FA]"
             >
-              {item.label}
+              {translateNavLabel(item.label, item.url, isId)}
             </Link>
           ))}
 

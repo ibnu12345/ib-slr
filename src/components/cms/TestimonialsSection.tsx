@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import { Quote } from "lucide-react";
 import { PageSection, TestimonialItem } from "../../lib/types/cms";
+import { useLanguage } from "../i18n/LanguageContext";
 
 interface TestimonialsSectionProps {
   section: PageSection;
@@ -8,18 +11,28 @@ interface TestimonialsSectionProps {
 }
 
 export function TestimonialsSection({ section, testimonials = [] }: TestimonialsSectionProps) {
+  const { isId } = useLanguage();
+
   if (testimonials.length === 0) return null;
+
+  const title = isId
+    ? "Dipercaya oleh Peneliti & Tim Sintesis Bukti"
+    : (section.title || "Trusted by Evidence Synthesis Teams");
+
+  const subtitle = isId
+    ? "Simak bagaimana akademisi dan institusi riset memanfaatkan IB-SLR untuk menghasilkan tinjauan pustaka sistematis berkualitas tinggi."
+    : (section.subtitle || "See how researchers conduct transparent, auditable reviews with IB-SLR.");
 
   return (
     <section className="py-16 sm:py-20 bg-[#FFFFFF] border-b border-[#E4E7EC]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#17324D] mb-4">
-            {section.title || "Trusted by Evidence Synthesis Teams"}
+            {title}
           </h2>
-          {section.subtitle && (
+          {subtitle && (
             <p className="text-base text-[#667085] leading-relaxed">
-              {section.subtitle}
+              {subtitle}
             </p>
           )}
         </div>

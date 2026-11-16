@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BookOpen, Lock, Mail, User, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
 import { registerAction } from "../../lib/auth/actions";
+import { useLanguage } from "../../components/i18n/LanguageContext";
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { isId } = useLanguage();
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,10 +59,10 @@ export default function RegisterPage() {
             <BookOpen className="w-6 h-6 text-[#3E9C96]" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-[#17324D]">
-            Create your IB-SLR Account
+            {isId ? "Daftar Akun IB-SLR Baru" : "Create your IB-SLR Account"}
           </h1>
           <p className="text-xs text-[#667085] mt-1">
-            Start managing systematic reviews with verifiable AI assistance
+            {isId ? "Mulai tinjauan pustaka sistematis dengan asistensi AI berakar sitasi nyata" : "Start managing systematic reviews with verifiable AI assistance"}
           </p>
         </div>
 
@@ -103,7 +105,7 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-[#17212B] mb-1">
-                Full Name
+                {isId ? "Nama Lengkap" : "Full Name"}
               </label>
               <div className="relative">
                 <User className="w-4 h-4 text-[#667085] absolute left-3 top-3" />
@@ -120,7 +122,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-xs font-semibold text-[#17212B] mb-1">
-                Academic or Institutional Email
+                {isId ? "Email Akademik / Institusi" : "Academic or Institutional Email"}
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-[#667085] absolute left-3 top-3" />
@@ -137,7 +139,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-xs font-semibold text-[#17212B] mb-1">
-                Password
+                {isId ? "Kata Sandi" : "Password"}
               </label>
               <div className="relative">
                 <Lock className="w-4 h-4 text-[#667085] absolute left-3 top-3" />
@@ -151,7 +153,7 @@ export default function RegisterPage() {
                 />
               </div>
               <p className="text-[11px] text-[#667085] mt-1">
-                Must contain at least 8 characters, an uppercase letter, and a number.
+                {isId ? "Minimal 8 karakter, mengandung huruf besar dan angka." : "Must contain at least 8 characters, an uppercase letter, and a number."}
               </p>
             </div>
 
@@ -165,13 +167,13 @@ export default function RegisterPage() {
                 className="mt-0.5 rounded border-[#E4E7EC] text-[#2F7D78] focus:ring-[#2F7D78]"
               />
               <label htmlFor="terms" className="text-xs text-[#667085] leading-snug">
-                I agree to the{" "}
+                {isId ? "Saya menyetujui " : "I agree to the "}
                 <Link href="/terms" className="text-[#2F7D78] hover:underline font-medium">
-                  Terms of Service
+                  {isId ? "Syarat & Ketentuan" : "Terms of Service"}
                 </Link>{" "}
-                and{" "}
+                {isId ? "dan " : "and "}
                 <Link href="/privacy" className="text-[#2F7D78] hover:underline font-medium">
-                  Privacy Policy
+                  {isId ? "Kebijakan Privasi" : "Privacy Policy"}
                 </Link>
                 .
               </label>
@@ -182,16 +184,16 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full py-2.5 px-4 rounded-lg text-sm font-semibold text-white bg-[#17324D] hover:bg-[#12273D] disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-sm"
             >
-              {loading ? "Creating account..." : "Register Account"}
+              {loading ? (isId ? "Mendaftarkan..." : "Creating account...") : (isId ? "Daftar Akun Baru" : "Register Account")}
               {!loading && <ArrowRight className="w-4 h-4" />}
             </button>
           </form>
         )}
 
         <div className="text-center pt-2 text-xs text-[#667085]">
-          Already have an account?{" "}
+          {isId ? "Sudah memiliki akun?" : "Already have an account?"}{" "}
           <Link href="/login" className="text-[#2F7D78] hover:underline font-semibold">
-            Log in here
+            {isId ? "Masuk di sini" : "Log in here"}
           </Link>
         </div>
       </div>

@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BookOpen, Lock, Mail, AlertCircle, ArrowRight, ShieldCheck, User } from "lucide-react";
 import { loginAction } from "../../lib/auth/actions";
+import { useLanguage } from "../../components/i18n/LanguageContext";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { isId } = useLanguage();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -55,10 +57,10 @@ export default function LoginPage() {
             <BookOpen className="w-6 h-6 text-[#3E9C96]" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-[#17324D]">
-            Sign in to IB-SLR
+            {isId ? "Masuk ke IB-SLR" : "Sign in to IB-SLR"}
           </h1>
           <p className="text-xs text-[#667085] mt-1">
-            Access your systematic literature review workspace
+            {isId ? "Akses ruang kerja tinjauan pustaka sistematis Anda" : "Access your systematic literature review workspace"}
           </p>
         </div>
 
@@ -66,7 +68,7 @@ export default function LoginPage() {
         <div className="bg-[#EFF7F6] border border-[#2F7D78]/20 rounded-lg p-3 text-xs text-[#17324D] space-y-1.5">
           <div className="font-semibold flex items-center gap-1.5 text-[#2F7D78]">
             <ShieldCheck className="w-4 h-4" />
-            <span>Evaluation Demo Credentials:</span>
+            <span>{isId ? "Akun Uji Coba Siap Pakai:" : "Evaluation Demo Credentials:"}</span>
           </div>
           <div className="flex flex-wrap gap-2 pt-1">
             <button
@@ -74,14 +76,14 @@ export default function LoginPage() {
               onClick={() => fillCredentials("admin@ib-slr.local", "AdminPass123!")}
               className="px-2 py-1 bg-white hover:bg-[#F7F8FA] border border-[#2F7D78]/30 rounded text-[11px] font-medium transition-colors"
             >
-              Fill Admin Account
+              {isId ? "Isi Akun Admin" : "Fill Admin Account"}
             </button>
             <button
               type="button"
               onClick={() => fillCredentials("researcher@ib-slr.local", "ResearchPass123!")}
               className="px-2 py-1 bg-white hover:bg-[#F7F8FA] border border-[#2F7D78]/30 rounded text-[11px] font-medium transition-colors"
             >
-              Fill Researcher Account
+              {isId ? "Isi Akun Peneliti" : "Fill Researcher Account"}
             </button>
           </div>
         </div>
@@ -96,7 +98,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-semibold text-[#17212B] mb-1">
-              Email Address
+              {isId ? "Alamat Email" : "Email Address"}
             </label>
             <div className="relative">
               <Mail className="w-4 h-4 text-[#667085] absolute left-3 top-3" />
@@ -114,13 +116,13 @@ export default function LoginPage() {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label className="block text-xs font-semibold text-[#17212B]">
-                Password
+                {isId ? "Kata Sandi" : "Password"}
               </label>
               <Link
                 href="/forgot-password"
                 className="text-xs text-[#2F7D78] hover:underline font-medium"
               >
-                Forgot password?
+                {isId ? "Lupa kata sandi?" : "Forgot password?"}
               </Link>
             </div>
             <div className="relative">
@@ -141,15 +143,15 @@ export default function LoginPage() {
             disabled={loading}
             className="w-full py-2.5 px-4 rounded-lg text-sm font-semibold text-white bg-[#17324D] hover:bg-[#12273D] disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-sm"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? (isId ? "Sedang masuk..." : "Signing in...") : (isId ? "Masuk ke Workspace" : "Sign In")}
             {!loading && <ArrowRight className="w-4 h-4" />}
           </button>
         </form>
 
         <div className="text-center pt-2 text-xs text-[#667085]">
-          Don&apos;t have an account yet?{" "}
+          {isId ? "Belum punya akun?" : "Don't have an account yet?"}{" "}
           <Link href="/register" className="text-[#2F7D78] hover:underline font-semibold">
-            Create an account
+            {isId ? "Daftar sekarang gratis" : "Create an account"}
           </Link>
         </div>
 

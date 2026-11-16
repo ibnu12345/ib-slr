@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   FileText,
@@ -17,6 +19,8 @@ import {
   LucideIcon,
 } from "lucide-react";
 import { PageSection } from "../../lib/types/cms";
+import { useLanguage } from "../i18n/LanguageContext";
+import { featureGridTranslations } from "../../lib/i18n/cmsTranslations";
 
 interface FeatureGridSectionProps {
   section: PageSection;
@@ -41,8 +45,23 @@ const iconMap: Record<string, LucideIcon> = {
 
 export function FeatureGridSection({ section }: FeatureGridSectionProps) {
   const content = section.content || {};
-  const features: Array<{ title: string; description: string; icon?: string }> =
+  const { isId } = useLanguage();
+  const dict = isId ? featureGridTranslations.id : featureGridTranslations.en;
+
+  const title = isId ? dict.title : (section.title || dict.title);
+  const subtitle = isId ? dict.subtitle : (section.subtitle || dict.subtitle);
+
+  const rawFeatures: Array<{ title: string; description: string; icon?: string }> =
     content.features || [];
+
+  const displayFeatures = isId
+    ? dict.features.map((f, idx) => ({
+        ...f,
+        icon: rawFeatures[idx]?.icon || "Sparkles",
+      }))
+    : rawFeatures.length > 0
+    ? rawFeatures
+    : dict.features;
 
   return (
     <section className="py-16 sm:py-20 bg-[#FFFFFF] border-b border-[#E4E7EC]">
@@ -50,19 +69,20 @@ export function FeatureGridSection({ section }: FeatureGridSectionProps) {
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#17324D] mb-4">
-            {section.title || "Built for Methodological Rigor"}
+            {title}
           </h2>
-          {section.subtitle && (
+          {subtitle && (
             <p className="text-base text-[#667085] leading-relaxed">
-              {section.subtitle}
+              {subtitle}
             </p>
           )}
         </div>
 
         {/* Feature Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {features.map((feature, idx) => {
-            const Icon = (feature.icon && iconMap[feature.icon]) || Sparkles;
+          {displayFeatures.map((feature, idx) => {
+            const iconKey = (feature as any).icon || "Sparkles";
+            const Icon = iconMap[iconKey] || Sparkles;
             return (
               <div
                 key={idx}

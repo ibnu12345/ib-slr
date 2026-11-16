@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { ChevronDown, HelpCircle } from "lucide-react";
 import { PageSection, FAQItem } from "../../lib/types/cms";
+import { useLanguage } from "../i18n/LanguageContext";
+import { faqTranslations } from "../../lib/i18n/cmsTranslations";
 
 interface FAQSectionProps {
   section: PageSection;
@@ -10,9 +12,13 @@ interface FAQSectionProps {
 }
 
 export function FAQSection({ section, faqs = [] }: FAQSectionProps) {
-  const [openId, setOpenId] = useState<string | null>(faqs[0]?.id || null);
+  const { isId } = useLanguage();
+  const dict = isId ? faqTranslations.id : faqTranslations.en;
 
-  if (faqs.length === 0) return null;
+  const displayFaqs = isId ? dict.items : (faqs.length > 0 ? faqs : dict.items);
+  const [openId, setOpenId] = useState<string | null>(displayFaqs[0]?.id || null);
+
+  if (displayFaqs.length === 0) return null;
 
   const toggle = (id: string) => {
     setOpenId(openId === id ? null : id);
@@ -24,25 +30,25 @@ export function FAQSection({ section, faqs = [] }: FAQSectionProps) {
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EFF7F6] text-[#2F7D78] text-xs font-semibold uppercase tracking-wider mb-3">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Methodology & Questions</span>
+            <span>{dict.badge}</span>
           </div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#17324D] mb-4">
-            {section.title || "Frequently Asked Questions"}
+            {isId ? dict.title : (section.title || dict.title)}
           </h2>
-          {section.subtitle && (
+          {(section.subtitle || dict.subtitle) && (
             <p className="text-base text-[#667085] leading-relaxed">
-              {section.subtitle}
+              {isId ? dict.subtitle : (section.subtitle || dict.subtitle)}
             </p>
           )}
         </div>
 
         <div className="space-y-3">
-          {faqs.map((faq) => {
+          {displayFaqs.map((faq) => {
             const isOpen = openId === faq.id;
             return (
               <div
                 key={faq.id}
-                className="border border-[#E4E7EC] rounded-xl overflow-hidden transition-colors"
+                className="border border-[#E4E7EC] rounded-xl overflow-hidden transition-colors shadow-sm"
               >
                 <button
                   onClick={() => toggle(faq.id)}
@@ -58,11 +64,10 @@ export function FAQSection({ section, faqs = [] }: FAQSectionProps) {
                     }`}
                   />
                 </button>
+
                 {isOpen && (
-                  <div className="px-6 pb-4 pt-1 bg-[#FFFFFF] border-t border-[#E4E7EC]/40">
-                    <p className="text-xs sm:text-sm text-[#667085] leading-relaxed">
-                      {faq.answer}
-                    </p>
+                  <div className="px-6 pb-5 pt-1 text-xs sm:text-sm text-[#667085] leading-relaxed border-t border-[#E4E7EC]/50 bg-[#F7F8FA]/50">
+                    {faq.answer}
                   </div>
                 )}
               </div>
