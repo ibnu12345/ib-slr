@@ -18,7 +18,10 @@ import {
   Keyboard,
   ShieldCheck,
   AlertCircle,
+  FileText,
 } from "lucide-react";
+import { AIScreeningCard } from "../../../../../../components/research/AIScreeningCard";
+import { PdfArticleViewer } from "../../../../../../components/research/PdfArticleViewer";
 
 interface Props {
   projectId: string;
@@ -40,6 +43,7 @@ export function ScreeningStudio({
   const [articles, setArticles] = useState<Article[]>(initialArticles);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showExcludeModal, setShowExcludeModal] = useState(false);
+  const [showPdfModal, setShowPdfModal] = useState(false);
   const [selectedExclusionReason, setSelectedExclusionReason] = useState(
     exclusionReasons[0]?.label || "Populasi Tidak Sesuai"
   );
@@ -246,19 +250,30 @@ export function ScreeningStudio({
                   <span>•</span>
                   <span>{currentArticle.publicationYear || "N/A"}</span>
                 </div>
-                {currentArticle.doi && (
-                  <div className="mt-1">
-                    <a
-                      href={`https://doi.org/${currentArticle.doi}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xs font-mono text-[#2F7D78] hover:underline inline-flex items-center gap-1"
-                    >
-                      <span>doi:{currentArticle.doi}</span>
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                )}
+                <div className="flex items-center gap-3 mt-2">
+                  {currentArticle.doi && (
+                    <div>
+                      <a
+                        href={`https://doi.org/${currentArticle.doi}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-mono text-[#2F7D78] hover:underline inline-flex items-center gap-1"
+                      >
+                        <span>doi:{currentArticle.doi}</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+                  )}
+
+                  <button
+                    type="button"
+                    onClick={() => setShowPdfModal(true)}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#F7F8FA] border border-[#E4E7EC] text-xs font-semibold text-[#17324D] hover:bg-gray-100 transition-colors"
+                  >
+                    <FileText className="w-3.5 h-3.5 text-[#2F7D78]" />
+                    <span>Buka PDF / Naskah Lengkap</span>
+                  </button>
+                </div>
               </div>
 
               {/* Abstract */}
@@ -270,6 +285,13 @@ export function ScreeningStudio({
                   {currentArticle.abstract || "Tidak ada abstrak yang tercatat pada metadata artikel ini."}
                 </div>
               </div>
+
+              {/* AI Evidence Screening Assistant */}
+              <AIScreeningCard
+                articleId={currentArticle.id}
+                projectId={projectId}
+                onApplyRecommendation={(decision, reason) => handleDecision(decision, reason)}
+              />
 
               {/* Screening Action Buttons */}
               <div className="pt-4 border-t border-[#E4E7EC] grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -453,6 +475,32 @@ export function ScreeningStudio({
               >
                 {submitting ? "Menyimpan..." : "Konfirmasi Eksklusi"}
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* PDF & Full-Text Evidence Modal */}
+      {showPdfModal && currentArticle && (
+        <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-3 sm:p-6 animate-in fade-in duration-200">
+          <div className="bg-white rounded-2xl w-full max-w-5xl h-[88vh] flex flex-col overflow-hidden shadow-2xl">
+            <div className="p-3.5 border-b border-[#E4E7EC] flex items-center justify-between bg-[#F7F8FA]">
+              <div className="flex items-center gap-2">
+                <FileText className="w-4 h-4 text-[#2F7D78]" />
+                <h3 className="text-xs sm:text-sm font-bold text-[#17324D] truncate max-w-xl">
+                  {currentArticle.title}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowPdfModal(false)}
+                className="p-1.5 rounded-lg text-gray-500 hover:bg-gray-200 hover:text-black transition-colors"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <PdfArticleViewer article={currentArticle} />
             </div>
           </div>
         </div>

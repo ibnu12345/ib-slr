@@ -14,6 +14,7 @@ import {
   FileSearch,
   AlertTriangle,
   GitBranch,
+  Database,
 } from "lucide-react";
 
 interface Props {
@@ -33,6 +34,7 @@ export function ProjectNavTabs({ projectId }: Props) {
     { label: "Screening: Title/Abstract", href: `/app/projects/${projectId}/screening/title-abstract`, icon: CheckSquare },
     { label: "Screening: Full-Text", href: `/app/projects/${projectId}/screening/full-text`, icon: FileSearch },
     { label: "Conflicts", href: `/app/projects/${projectId}/conflicts`, icon: AlertTriangle },
+    { label: "Data Extraction", href: `/app/projects/${projectId}/extraction`, icon: Database },
     { label: "PRISMA 2020", href: `/app/projects/${projectId}/prisma`, icon: GitBranch },
   ];
 

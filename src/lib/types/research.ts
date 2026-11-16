@@ -77,6 +77,12 @@ export interface SearchRun {
   createdAt: string;
 }
 
+export interface TextSection {
+  title: string;
+  pageNumber: number;
+  content: string;
+}
+
 export interface Article {
   id: string;
   projectId: string;
@@ -94,6 +100,12 @@ export interface Article {
   screeningStatus: "pending" | "included" | "excluded" | "unclear" | "conflict";
   sourceDatabase?: string;
   pdfUrl?: string;
+  pdfFileName?: string;
+  pdfFileSize?: number;
+  extractedText?: string;
+  textSections?: TextSection[];
+  ocrQuality?: "native" | "ocr_high" | "ocr_medium" | "unreadable";
+  pageCount?: number;
   isDuplicate?: boolean;
   mergedIntoId?: string;
   createdAt: string;

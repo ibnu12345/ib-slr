@@ -31,6 +31,16 @@ import {
   ScreeningDecisionType,
 } from "../types/screening";
 import {
+  ExtractionTemplate,
+  ExtractedDataRecord,
+  ExtractionField,
+  FieldVerificationState,
+} from "../types/extraction";
+import {
+  AIScreeningSuggestion,
+  AIExtractionSuggestion,
+} from "../types/ai";
+import {
   defaultSiteSettings,
   defaultNavigationItems,
   defaultPricingPlans,
@@ -82,6 +92,10 @@ export interface DatabaseSchema {
   screeningConflicts: ScreeningConflict[];
   exclusionReasons: ExclusionReason[];
   prismaEvents: PrismaEvent[];
+  // Extraction & AI
+  extractionTemplates: ExtractionTemplate[];
+  extractedDataRecords: ExtractedDataRecord[];
+  aiScreeningSuggestions: AIScreeningSuggestion[];
 }
 
 const DATA_DIR = path.join(process.cwd(), ".data");
@@ -244,6 +258,38 @@ function getInitialDatabase(): DatabaseSchema {
       abstract: "Background: Mobile health technologies offer promising scalable alternatives for diabetes education. Methods: In this parallel-group RCT across 14 clinics, 340 adults with uncontrolled T2D were allocated 1:1 to a smart education app or standard clinic leaflets. Primary outcome was HbA1c at 24 weeks. Results: Mean HbA1c decreased by 0.72% in the app group vs 0.18% in control (p < 0.001).",
       screeningStatus: "pending",
       sourceDatabase: "PubMed",
+      pdfUrl: "/sample-papers/chen-2024-lancet-digital.pdf",
+      pdfFileName: "Chen_2024_LancetDigitalHealth_T2D_RCT.pdf",
+      pdfFileSize: 1482000,
+      pageCount: 5,
+      ocrQuality: "native",
+      textSections: [
+        {
+          title: "Abstract & Background",
+          pageNumber: 1,
+          content: "Mobile app-delivered self-management education versus usual care in adults with type 2 diabetes: a randomized controlled trial.\n\nBackground: Mobile health technologies offer promising scalable alternatives for diabetes education. However, evidence regarding sustained glycemic control in real-world outpatient settings remains scarce. We hypothesized that an interactive smartphone-delivered self-management platform would result in clinically meaningful HbA1c reductions compared to standard printed clinic education.",
+        },
+        {
+          title: "Methods & Participants",
+          pageNumber: 2,
+          content: "Trial Design and Setting: We conducted an open-label, multicenter, parallel-group randomized controlled trial across 14 ambulatory diabetes clinics in China between January 2022 and September 2023.\n\nParticipants: Eligible individuals were adults aged 18 to 75 years diagnosed with uncontrolled Type 2 Diabetes for at least 6 months, possessing a baseline HbA1c between 7.5% and 11.0% (58–97 mmol/mol), and owning a smartphone. Exclusion criteria included Type 1 Diabetes, gestational diabetes, severe renal impairment (eGFR < 30 mL/min/1.73m2), or active participation in another telemedicine intervention. A total of 340 participants were recruited and randomized 1:1.",
+        },
+        {
+          title: "Interventions & Comparators",
+          pageNumber: 3,
+          content: "Intervention Group (n=170): Participants received the 'DiaSmart' smartphone application providing interactive glucose tracking, algorithm-assisted dietary coaching, physical activity logging, and push-notification medication reminders. Weekly educational modules covered carbohydrate counting, hypoglycemia recognition, and foot care.\n\nControl Group (n=170): Participants received standard clinic leaflets covering routine self-management and continued usual ambulatory care with recommended quarterly physician check-ups.",
+        },
+        {
+          title: "Outcomes & Results",
+          pageNumber: 4,
+          content: "Primary Outcome: The primary outcome was change in glycated hemoglobin (HbA1c) from baseline to 24 weeks.\n\nResults: Among the 340 participants randomized (mean age 54.2 years, 48% female, mean baseline HbA1c 8.4%), 322 completed the 24-week follow-up. In intention-to-treat analysis, mean HbA1c decreased by 0.72% (95% CI: -0.89 to -0.55) in the mobile app group versus 0.18% (95% CI: -0.34 to -0.02) in the control group. The adjusted between-group difference was -0.54% (95% CI: -0.73 to -0.35, p < 0.001). Total follow-up duration was 24 weeks.",
+        },
+        {
+          title: "Discussion & Limitations",
+          pageNumber: 5,
+          content: "Discussion: Smartphone-delivered self-management education achieved clinically meaningful and statistically significant glycemic improvements in adults with type 2 diabetes over 24 weeks without increasing severe hypoglycemia.\n\nLimitations: Participant blinding was not feasible due to the behavioral nature of the digital intervention. Furthermore, long-term durability beyond 24 weeks warrants further investigation in pragmatic community cohorts.",
+        },
+      ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -263,6 +309,38 @@ function getInitialDatabase(): DatabaseSchema {
       abstract: "Objective: To assess efficacy of an algorithmic telemetry platform providing real-time insulin dose recommendations. Research Design: 280 participants were randomized to automated telemetry or weekly nurse telephone consults for 6 months. Conclusion: AI-assisted telemetry achieved non-inferior HbA1c reduction with significantly fewer hypoglycemic events.",
       screeningStatus: "pending",
       sourceDatabase: "PubMed",
+      pdfUrl: "/sample-papers/patel-2023-diabetes-care.pdf",
+      pdfFileName: "Patel_2023_DiabetesCare_AI_Telemetry.pdf",
+      pdfFileSize: 1890000,
+      pageCount: 5,
+      ocrQuality: "native",
+      textSections: [
+        {
+          title: "Objective & Abstract",
+          pageNumber: 1,
+          content: "Artificial intelligence-guided glycemic telemetry in ambulatory type 2 diabetes care: A multicenter randomized trial.\n\nObjective: To determine whether an algorithmic telemetry platform providing real-time insulin titration advice safely reduces HbA1c compared with standard weekly nurse telephone consultations in patients with insulin-treated type 2 diabetes.",
+        },
+        {
+          title: "Design & Participants",
+          pageNumber: 2,
+          content: "Methods: In this 26-week multicenter trial across 8 academic medical centers in the United States, 280 adults with suboptimally controlled type 2 diabetes on basal-bolus or basal-plus insulin were randomized to AI-guided telemetry (n=140) or nurse telephone titration (n=140). Participants had a mean age of 58.1 years (52% female, mean baseline HbA1c 8.9%).",
+        },
+        {
+          title: "Telemetry vs Control",
+          pageNumber: 3,
+          content: "Intervention: Automated cellular glucometers transmitted readings to an FDA-cleared clinical decision support engine that calculated weekly basal and bolus insulin adjustments. Control: Participants submitted weekly glucose logs and received weekly structured nurse telephone consultations.",
+        },
+        {
+          title: "Results & Glycemic Metrics",
+          pageNumber: 4,
+          content: "Results: At 6 months (26 weeks), mean HbA1c decreased by 1.05% in the AI telemetry arm versus 0.98% in the nurse consultation arm (difference -0.07%, 95% CI: -0.29 to 0.15, meeting predefined non-inferiority margin of 0.3%). Notably, level 2 hypoglycemia (<54 mg/dL) was 42% lower in the AI group (0.18 vs 0.31 events per patient-month, p = 0.012).",
+        },
+        {
+          title: "Conclusions",
+          pageNumber: 5,
+          content: "Conclusions: Algorithmic insulin telemetry achieved robust glycemic control comparable to expert nurse titration while significantly reducing hypoglycemic episodes and clinical workload.",
+        },
+      ],
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -282,6 +360,187 @@ function getInitialDatabase(): DatabaseSchema {
       abstract: "Identical duplicate record imported from Crossref bibliographic dump to demonstrate deduplication.",
       screeningStatus: "pending",
       sourceDatabase: "Crossref Import",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultExtractionTemplates: ExtractionTemplate[] = [
+    {
+      id: "tmpl-pico-default",
+      projectId: "prj-demo-1",
+      name: "PICO Clinical Trial & Intervention Review (Standard)",
+      description: "Standard template for extracting participant characteristics, interventions, comparators, and clinical outcomes for systematic reviews.",
+      version: 1,
+      isDefault: true,
+      fields: [
+        {
+          id: "fld-1",
+          key: "study_design",
+          label: "Study Design",
+          type: "select",
+          category: "study_characteristics",
+          options: ["Parallel RCT", "Cluster RCT", "Crossover RCT", "Quasi-experimental", "Prospective Cohort"],
+          required: true,
+          sortOrder: 1,
+        },
+        {
+          id: "fld-2",
+          key: "sample_size",
+          label: "Total Sample Size (N)",
+          type: "number",
+          category: "population",
+          required: true,
+          sortOrder: 2,
+        },
+        {
+          id: "fld-3",
+          key: "country",
+          label: "Country / Setting",
+          type: "text",
+          category: "population",
+          required: true,
+          sortOrder: 3,
+        },
+        {
+          id: "fld-4",
+          key: "intervention_detail",
+          label: "Intervention Description",
+          type: "long_text",
+          category: "interventions",
+          required: true,
+          sortOrder: 4,
+        },
+        {
+          id: "fld-5",
+          key: "comparator_detail",
+          label: "Comparator / Control Protocol",
+          type: "long_text",
+          category: "interventions",
+          required: true,
+          sortOrder: 5,
+        },
+        {
+          id: "fld-6",
+          key: "primary_outcome",
+          label: "Primary Clinical Outcome",
+          type: "text",
+          category: "outcomes",
+          required: true,
+          sortOrder: 6,
+        },
+        {
+          id: "fld-7",
+          key: "follow_up_duration",
+          label: "Follow-up Duration",
+          type: "text",
+          category: "outcomes",
+          required: false,
+          sortOrder: 7,
+        },
+        {
+          id: "fld-8",
+          key: "risk_of_bias_notes",
+          label: "Methodological Limitations / Bias Notes",
+          type: "long_text",
+          category: "methodology",
+          required: false,
+          sortOrder: 8,
+        },
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultExtractedRecords: ExtractedDataRecord[] = [
+    {
+      id: "rec-art-1",
+      projectId: "prj-demo-1",
+      articleId: "art-1",
+      templateId: "tmpl-pico-default",
+      values: {
+        study_design: "Parallel RCT",
+        sample_size: 340,
+        country: "China",
+        intervention_detail: "Mobile app-delivered self-management education application ('DiaSmart') providing interactive glycemic tracking, dietary coaching, and automated medication reminders.",
+        comparator_detail: "Standard clinic leaflets covering routine self-management and usual ambulatory care with recommended quarterly physician check-ups.",
+        primary_outcome: "Mean change in HbA1c from baseline to 24 weeks (-0.72% vs -0.18%, p < 0.001)",
+        follow_up_duration: "24 weeks",
+        risk_of_bias_notes: "Participant blinding was not feasible due to behavioral nature of digital intervention.",
+      },
+      evidence: {
+        study_design: {
+          quote: "We conducted an open-label, multicenter, parallel-group randomized controlled trial across 14 ambulatory diabetes clinics in China",
+          pageNumber: 2,
+          section: "Methods & Participants",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        sample_size: {
+          quote: "A total of 340 participants were recruited and randomized 1:1.",
+          pageNumber: 2,
+          section: "Methods & Participants",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        country: {
+          quote: "across 14 ambulatory diabetes clinics in China between January 2022 and September 2023.",
+          pageNumber: 2,
+          section: "Methods & Participants",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        intervention_detail: {
+          quote: "Participants received the 'DiaSmart' smartphone application providing interactive glucose tracking, algorithm-assisted dietary coaching, physical activity logging, and push-notification medication reminders.",
+          pageNumber: 3,
+          section: "Interventions & Comparators",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        comparator_detail: {
+          quote: "Participants received standard clinic leaflets covering routine self-management and continued usual ambulatory care with recommended quarterly physician check-ups.",
+          pageNumber: 3,
+          section: "Interventions & Comparators",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        primary_outcome: {
+          quote: "At 24 weeks, mean HbA1c decreased by 0.72% in the mobile app group versus 0.18% in the control group (between-group difference -0.54%, p < 0.001).",
+          pageNumber: 4,
+          section: "Outcomes & Results",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        follow_up_duration: {
+          quote: "Total follow-up duration was 24 weeks.",
+          pageNumber: 4,
+          section: "Outcomes & Results",
+          confidenceRating: "high",
+          isFound: true,
+        },
+        risk_of_bias_notes: {
+          quote: "Participant blinding was not feasible due to the behavioral nature of the digital intervention.",
+          pageNumber: 5,
+          section: "Discussion & Limitations",
+          confidenceRating: "high",
+          isFound: true,
+        },
+      },
+      verificationStatus: {
+        study_design: "verified",
+        sample_size: "verified",
+        country: "verified",
+        intervention_detail: "verified",
+        comparator_detail: "pending",
+        primary_outcome: "pending",
+        follow_up_duration: "pending",
+        risk_of_bias_notes: "pending",
+      },
+      status: "in_progress",
+      extractedBy: "ai_assisted",
+      verifiedBy: "Dr. Clara Oswald",
+      verifiedAt: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     },
@@ -329,6 +588,9 @@ function getInitialDatabase(): DatabaseSchema {
         createdAt: new Date().toISOString(),
       },
     ],
+    extractionTemplates: defaultExtractionTemplates,
+    extractedDataRecords: defaultExtractedRecords,
+    aiScreeningSuggestions: [],
   };
 }
 
@@ -354,6 +616,9 @@ export function getDb(): DatabaseSchema {
         screeningConflicts: parsed.screeningConflicts || [],
         exclusionReasons: parsed.exclusionReasons || defaultExclusionReasons,
         prismaEvents: parsed.prismaEvents || getInitialDatabase().prismaEvents,
+        extractionTemplates: parsed.extractionTemplates || getInitialDatabase().extractionTemplates,
+        extractedDataRecords: parsed.extractedDataRecords || getInitialDatabase().extractedDataRecords,
+        aiScreeningSuggestions: parsed.aiScreeningSuggestions || [],
       };
       return memoryDb!;
     }
@@ -1331,4 +1596,183 @@ export async function getProjectPrismaCounts(projectId: string): Promise<PrismaC
   const articles = db.articles.filter((a) => a.projectId === projectId);
 
   return calculatePrismaCounts(events, articles);
+}
+
+// =====================================================================
+// ARTICLE PDF & TEXT EXTRACTION OPERATIONS
+// =====================================================================
+
+export async function getArticleById(articleId: string): Promise<Article | undefined> {
+  const db = getDb();
+  return db.articles.find((a) => a.id === articleId);
+}
+
+export async function updateArticlePdf(
+  articleId: string,
+  data: {
+    pdfUrl?: string;
+    pdfFileName?: string;
+    pdfFileSize?: number;
+    extractedText?: string;
+    textSections?: any[];
+    pageCount?: number;
+    ocrQuality?: "native" | "ocr_high" | "ocr_medium" | "unreadable";
+  },
+  userId?: string,
+  userEmail?: string
+): Promise<Article> {
+  const db = getDb();
+  const article = db.articles.find((a) => a.id === articleId);
+  if (!article) throw new Error("Article not found.");
+
+  if (data.pdfUrl !== undefined) article.pdfUrl = data.pdfUrl;
+  if (data.pdfFileName !== undefined) article.pdfFileName = data.pdfFileName;
+  if (data.pdfFileSize !== undefined) article.pdfFileSize = data.pdfFileSize;
+  if (data.extractedText !== undefined) article.extractedText = data.extractedText;
+  if (data.textSections !== undefined) article.textSections = data.textSections;
+  if (data.pageCount !== undefined) article.pageCount = data.pageCount;
+  if (data.ocrQuality !== undefined) article.ocrQuality = data.ocrQuality;
+  article.updatedAt = new Date().toISOString();
+
+  createAuditLogSync("UPDATE_ARTICLE_PDF", "article", articleId, {
+    fileName: data.pdfFileName,
+    fileSize: data.pdfFileSize,
+    pageCount: data.pageCount,
+  }, userId, userEmail);
+
+  saveDb(db);
+  return article;
+}
+
+// =====================================================================
+// DATA EXTRACTION STUDIO & TEMPLATES
+// =====================================================================
+
+export async function getExtractionTemplates(projectId: string): Promise<ExtractionTemplate[]> {
+  const db = getDb();
+  return db.extractionTemplates.filter((t) => t.projectId === projectId || t.projectId === "global");
+}
+
+export async function getExtractionTemplateById(templateId: string): Promise<ExtractionTemplate | undefined> {
+  const db = getDb();
+  return db.extractionTemplates.find((t) => t.id === templateId);
+}
+
+export async function saveExtractionTemplate(
+  template: ExtractionTemplate,
+  userId?: string,
+  userEmail?: string
+): Promise<ExtractionTemplate> {
+  const db = getDb();
+  const index = db.extractionTemplates.findIndex((t) => t.id === template.id);
+  template.updatedAt = new Date().toISOString();
+
+  if (index >= 0) {
+    db.extractionTemplates[index] = template;
+    createAuditLogSync("UPDATE_EXTRACTION_TEMPLATE", "extraction_template", template.id, { name: template.name }, userId, userEmail);
+  } else {
+    template.createdAt = new Date().toISOString();
+    db.extractionTemplates.push(template);
+    createAuditLogSync("CREATE_EXTRACTION_TEMPLATE", "extraction_template", template.id, { name: template.name }, userId, userEmail);
+  }
+
+  saveDb(db);
+  return template;
+}
+
+export async function getExtractedDataRecords(
+  projectId: string,
+  articleId?: string
+): Promise<ExtractedDataRecord[]> {
+  const db = getDb();
+  let list = db.extractedDataRecords.filter((r) => r.projectId === projectId);
+  if (articleId) {
+    list = list.filter((r) => r.articleId === articleId);
+  }
+  return list;
+}
+
+export async function getExtractedDataRecordById(recordId: string): Promise<ExtractedDataRecord | undefined> {
+  const db = getDb();
+  return db.extractedDataRecords.find((r) => r.id === recordId);
+}
+
+export async function saveExtractedDataRecord(
+  record: ExtractedDataRecord,
+  userId?: string,
+  userEmail?: string
+): Promise<ExtractedDataRecord> {
+  const db = getDb();
+  const index = db.extractedDataRecords.findIndex((r) => r.id === record.id);
+  record.updatedAt = new Date().toISOString();
+
+  if (index >= 0) {
+    db.extractedDataRecords[index] = record;
+  } else {
+    record.createdAt = new Date().toISOString();
+    db.extractedDataRecords.push(record);
+  }
+
+  createAuditLogSync("SAVE_EXTRACTED_DATA", "extracted_data_record", record.id, {
+    articleId: record.articleId,
+    status: record.status,
+  }, userId, userEmail);
+
+  saveDb(db);
+  return record;
+}
+
+export async function verifyExtractedField(
+  recordId: string,
+  fieldKey: string,
+  status: FieldVerificationState,
+  correctedValue?: any,
+  verifier?: string
+): Promise<ExtractedDataRecord> {
+  const db = getDb();
+  const record = db.extractedDataRecords.find((r) => r.id === recordId);
+  if (!record) throw new Error("Extracted data record not found.");
+
+  record.verificationStatus[fieldKey] = status;
+  if (status === "corrected" && correctedValue !== undefined) {
+    record.values[fieldKey] = correctedValue;
+  }
+
+  // Check if all fields in template are verified or corrected
+  const allStatuses = Object.values(record.verificationStatus);
+  const allDone = allStatuses.length > 0 && allStatuses.every((s) => s === "verified" || s === "corrected");
+  if (allDone) {
+    record.status = "verified";
+    record.verifiedBy = verifier || "Reviewer";
+    record.verifiedAt = new Date().toISOString();
+  } else {
+    record.status = "in_progress";
+  }
+
+  record.updatedAt = new Date().toISOString();
+  saveDb(db);
+  return record;
+}
+
+// =====================================================================
+// AI EVIDENCE ASSISTANT OPERATIONS
+// =====================================================================
+
+export async function getAIScreeningSuggestion(articleId: string): Promise<AIScreeningSuggestion | undefined> {
+  const db = getDb();
+  return db.aiScreeningSuggestions.find((s) => s.articleId === articleId);
+}
+
+export async function saveAIScreeningSuggestion(
+  suggestion: AIScreeningSuggestion
+): Promise<AIScreeningSuggestion> {
+  const db = getDb();
+  const index = db.aiScreeningSuggestions.findIndex((s) => s.articleId === suggestion.articleId);
+  if (index >= 0) {
+    db.aiScreeningSuggestions[index] = suggestion;
+  } else {
+    db.aiScreeningSuggestions.push(suggestion);
+  }
+  saveDb(db);
+  return suggestion;
 }
