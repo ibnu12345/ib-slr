@@ -226,8 +226,8 @@
         "metaDescription": "Accelerate your systematic literature review with evidence-grounded AI, dual-reviewer blinding, and auditable PRISMA 2020 reporting."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.504Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.461Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-hero",
@@ -246,8 +246,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-features",
@@ -292,8 +292,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-workflow",
@@ -333,8 +333,8 @@
           "sortOrder": 3,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-metrics",
@@ -364,8 +364,8 @@
           "sortOrder": 4,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-testimonials",
@@ -377,8 +377,8 @@
           "sortOrder": 5,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-pricing",
@@ -390,8 +390,8 @@
           "sortOrder": 6,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-faq",
@@ -403,8 +403,8 @@
           "sortOrder": 7,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-cta",
@@ -421,8 +421,8 @@
           "sortOrder": 8,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -436,8 +436,8 @@
         "metaDescription": "Explore all modules of IB-SLR: Protocol, literature import, screening, extraction, appraisal, and PRISMA reporting."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-feat-hero",
@@ -453,8 +453,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-feat-grid",
@@ -514,8 +514,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -529,8 +529,8 @@
         "metaDescription": "Discover how IB-SLR structures the systematic literature review process from protocol to PRISMA reporting."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-hiw-hero",
@@ -546,8 +546,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-hiw-steps",
@@ -587,8 +587,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -602,8 +602,8 @@
         "metaDescription": "Accelerate your literature reviews and postgraduate theses with rigorous AI-assisted workflows."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-res-hero",
@@ -619,8 +619,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-res-content",
@@ -634,8 +634,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -649,8 +649,8 @@
         "metaDescription": "Scale institutional evidence syntheses with centralized governance, SSO, and strict data isolation."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-inst-hero",
@@ -666,8 +666,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-inst-content",
@@ -681,8 +681,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -696,8 +696,8 @@
         "metaDescription": "Choose the right plan for your systematic literature review, from free academic tiers to institutional lab subscriptions."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-price-hero",
@@ -713,8 +713,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-price-table",
@@ -726,8 +726,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-price-faq",
@@ -739,8 +739,8 @@
           "sortOrder": 3,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -754,8 +754,8 @@
         "metaDescription": "Access curated guides on SLR methodology, search strategies, and risk-of-bias evaluation."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-res-hero",
@@ -771,8 +771,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-res-rich",
@@ -786,8 +786,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -801,8 +801,8 @@
         "metaDescription": "Read the latest articles on AI research ethics, PRISMA standards, and systematic review execution."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-blog-hero",
@@ -818,8 +818,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-blog-content",
@@ -833,8 +833,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -848,8 +848,8 @@
         "metaDescription": "Learn how IB-SLR was founded to uphold evidence integrity and modernize systematic literature reviews."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-abt-hero",
@@ -865,8 +865,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-abt-rich",
@@ -880,8 +880,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -895,8 +895,8 @@
         "metaDescription": "Reach our academic support team or request an institutional consultation."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-cnt-hero",
@@ -912,8 +912,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-cnt-rich",
@@ -927,8 +927,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -942,8 +942,8 @@
         "metaDescription": "Learn how IB-SLR protects your literature reviews, documents, and personal information."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-priv-hero",
@@ -959,8 +959,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-priv-rich",
@@ -974,8 +974,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -989,8 +989,8 @@
         "metaDescription": "Read the terms of service, user responsibilities, and intellectual property terms for IB-SLR."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-trm-hero",
@@ -1006,8 +1006,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-trm-rich",
@@ -1021,8 +1021,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     },
@@ -1036,8 +1036,8 @@
         "metaDescription": "Learn about the security boundaries, encryption, and access controls engineered into IB-SLR."
       },
       "status": "published",
-      "createdAt": "2026-11-16T11:20:09.507Z",
-      "updatedAt": "2026-11-16T11:20:09.507Z",
+      "createdAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T11:34:25.464Z",
       "sections": [
         {
           "id": "sec-sec-hero",
@@ -1053,8 +1053,8 @@
           "sortOrder": 1,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         },
         {
           "id": "sec-sec-rich",
@@ -1068,8 +1068,8 @@
           "sortOrder": 2,
           "isVisible": true,
           "status": "published",
-          "createdAt": "2026-11-16T11:20:09.507Z",
-          "updatedAt": "2026-11-16T11:20:09.507Z"
+          "createdAt": "2026-11-16T11:34:25.464Z",
+          "updatedAt": "2026-11-16T11:34:25.464Z"
         }
       ]
     }
@@ -1198,193 +1198,67 @@
   ],
   "auditLogs": [
     {
-      "id": "log-1794828389749-8t5ft",
+      "id": "log-1794828866064-ttnth",
       "action": "PASSWORD_RESET_COMPLETED",
       "entityType": "user",
-      "entityId": "usr-1794828389664-br3qx",
+      "entityId": "usr-1794828865963-4ir0i",
       "details": {
-        "email": "reset.test.1794828389583@university.edu"
+        "email": "reset.test.1794828865876@university.edu"
       },
-      "createdAt": "2026-11-16T11:26:29.749Z"
+      "createdAt": "2026-11-16T11:34:26.064Z"
     },
     {
-      "id": "log-1794828389666-eo3w6",
+      "id": "log-1794828865966-p5iug",
       "action": "PASSWORD_RESET_REQUESTED",
       "entityType": "user",
-      "entityId": "usr-1794828389664-br3qx",
+      "entityId": "usr-1794828865963-4ir0i",
       "details": {
-        "email": "reset.test.1794828389583@university.edu"
+        "email": "reset.test.1794828865876@university.edu"
       },
-      "createdAt": "2026-11-16T11:26:29.666Z"
+      "createdAt": "2026-11-16T11:34:25.966Z"
     },
     {
-      "id": "log-1794828389664-52ti1",
+      "id": "log-1794828865964-ot3la",
       "action": "USER_REGISTERED",
       "entityType": "user",
-      "entityId": "usr-1794828389664-br3qx",
+      "entityId": "usr-1794828865963-4ir0i",
       "details": {
-        "email": "reset.test.1794828389583@university.edu",
+        "email": "reset.test.1794828865876@university.edu",
         "role": "user"
       },
-      "createdAt": "2026-11-16T11:26:29.664Z"
+      "createdAt": "2026-11-16T11:34:25.964Z"
     },
     {
-      "id": "log-1794828389581-05q6y",
+      "id": "log-1794828865873-l8x49",
       "action": "EMAIL_VERIFIED",
       "entityType": "user",
-      "entityId": "usr-1794828389576-o92lw",
+      "entityId": "usr-1794828865868-ka8lo",
       "details": {
-        "email": "verify.test.1794828389494@university.edu"
+        "email": "verify.test.1794828865779@university.edu"
       },
-      "createdAt": "2026-11-16T11:26:29.581Z"
+      "createdAt": "2026-11-16T11:34:25.873Z"
     },
     {
-      "id": "log-1794828389576-obk4h",
+      "id": "log-1794828865868-kdykx",
       "action": "USER_REGISTERED",
       "entityType": "user",
-      "entityId": "usr-1794828389576-o92lw",
+      "entityId": "usr-1794828865868-ka8lo",
       "details": {
-        "email": "verify.test.1794828389494@university.edu",
+        "email": "verify.test.1794828865779@university.edu",
         "role": "user"
       },
-      "createdAt": "2026-11-16T11:26:29.576Z"
+      "createdAt": "2026-11-16T11:34:25.868Z"
     },
     {
-      "id": "log-1794828389491-afhs9",
+      "id": "log-1794828865777-fs8rh",
       "action": "USER_REGISTERED",
       "entityType": "user",
-      "entityId": "usr-1794828389491-htkwg",
+      "entityId": "usr-1794828865777-ogu93",
       "details": {
-        "email": "test.researcher.1794828389404@university.edu",
+        "email": "test.researcher.1794828865693@university.edu",
         "role": "user"
       },
-      "createdAt": "2026-11-16T11:26:29.491Z"
-    },
-    {
-      "id": "log-1794828050750-1qwoy",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "entityType": "user",
-      "entityId": "usr-1794828050660-hlu6c",
-      "details": {
-        "email": "reset.test.1794828050572@university.edu"
-      },
-      "createdAt": "2026-11-16T11:20:50.750Z"
-    },
-    {
-      "id": "log-1794828050663-ghsma",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "entityType": "user",
-      "entityId": "usr-1794828050660-hlu6c",
-      "details": {
-        "email": "reset.test.1794828050572@university.edu"
-      },
-      "createdAt": "2026-11-16T11:20:50.663Z"
-    },
-    {
-      "id": "log-1794828050660-jkgy7",
-      "action": "USER_REGISTERED",
-      "entityType": "user",
-      "entityId": "usr-1794828050660-hlu6c",
-      "details": {
-        "email": "reset.test.1794828050572@university.edu",
-        "role": "user"
-      },
-      "createdAt": "2026-11-16T11:20:50.660Z"
-    },
-    {
-      "id": "log-1794828050570-891fv",
-      "action": "EMAIL_VERIFIED",
-      "entityType": "user",
-      "entityId": "usr-1794828050565-6kj9j",
-      "details": {
-        "email": "verify.test.1794828050480@university.edu"
-      },
-      "createdAt": "2026-11-16T11:20:50.570Z"
-    },
-    {
-      "id": "log-1794828050565-mswcu",
-      "action": "USER_REGISTERED",
-      "entityType": "user",
-      "entityId": "usr-1794828050565-6kj9j",
-      "details": {
-        "email": "verify.test.1794828050480@university.edu",
-        "role": "user"
-      },
-      "createdAt": "2026-11-16T11:20:50.565Z"
-    },
-    {
-      "id": "log-1794828050477-34b6p",
-      "action": "USER_REGISTERED",
-      "entityType": "user",
-      "entityId": "usr-1794828050477-sco2m",
-      "details": {
-        "email": "test.researcher.1794828050392@university.edu",
-        "role": "user"
-      },
-      "createdAt": "2026-11-16T11:20:50.477Z"
-    },
-    {
-      "id": "log-1794828010123-xpa04",
-      "action": "PASSWORD_RESET_COMPLETED",
-      "entityType": "user",
-      "entityId": "usr-1794828010043-jzb37",
-      "details": {
-        "email": "reset.test.1794828009958@university.edu"
-      },
-      "createdAt": "2026-11-16T11:20:10.123Z"
-    },
-    {
-      "id": "log-1794828010045-47kfs",
-      "action": "PASSWORD_RESET_REQUESTED",
-      "entityType": "user",
-      "entityId": "usr-1794828010043-jzb37",
-      "details": {
-        "email": "reset.test.1794828009958@university.edu"
-      },
-      "createdAt": "2026-11-16T11:20:10.045Z"
-    },
-    {
-      "id": "log-1794828010043-j8dvb",
-      "action": "USER_REGISTERED",
-      "entityType": "user",
-      "entityId": "usr-1794828010043-jzb37",
-      "details": {
-        "email": "reset.test.1794828009958@university.edu",
-        "role": "user"
-      },
-      "createdAt": "2026-11-16T11:20:10.043Z"
-    },
-    {
-      "id": "log-1794828009956-rjqdf",
-      "action": "EMAIL_VERIFIED",
-      "entityType": "user",
-      "entityId": "usr-1794828009943-odl73",
-      "details": {
-        "email": "verify.test.1794828009856@university.edu"
-      },
-      "createdAt": "2026-11-16T11:20:09.956Z"
-    },
-    {
-      "id": "log-1794828009943-n9usp",
-      "action": "USER_REGISTERED",
-      "entityType": "user",
-      "entityId": "usr-1794828009943-odl73",
-      "details": {
-        "email": "verify.test.1794828009856@university.edu",
-        "role": "user"
-      },
-      "createdAt": "2026-11-16T11:20:09.943Z"
-    },
-    {
-      "id": "log-1794828009853-ztrse",
-      "action": "USER_REGISTERED",
-      "entityType": "user",
-      "entityId": "usr-1794828009853-6cc2e",
-      "details": {
-        "email": "test.researcher.1794828009772@university.edu",
-        "role": "user"
-      },
-      "createdAt": "2026-11-16T11:20:09.853Z"
+      "createdAt": "2026-11-16T11:34:25.777Z"
     },
     {
       "id": "log-init",
@@ -1396,7 +1270,7 @@
       "details": {
         "message": "IB-SLR production database initialized."
       },
-      "createdAt": "2026-11-16T11:20:09.768Z"
+      "createdAt": "2026-11-16T11:34:25.688Z"
     }
   ],
   "users": [
@@ -1407,9 +1281,9 @@
       "role": "admin",
       "emailVerified": true,
       "mfaEnabled": true,
-      "passwordHash": "$2a$10$lCVQO4fomC7oPTzRWdzexewi8Dxmp4LCnLAqP9VVMxm//kHSn5cOy",
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "passwordHash": "$2a$10$GZVPKMT6Elky/TzZEvcS8eNzssdBXsIv5sTM7g75ad08aSc8sOvZC",
+      "createdAt": "2026-11-16T11:34:25.686Z",
+      "updatedAt": "2026-11-16T11:34:25.686Z"
     },
     {
       "id": "usr-researcher-1",
@@ -1418,108 +1292,42 @@
       "role": "user",
       "emailVerified": true,
       "mfaEnabled": false,
-      "passwordHash": "$2a$10$1isI3CuFhnCtdPxMLGWsROrZ/TZRIdGzZiNy3gWS154O65tzzLrOO",
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "passwordHash": "$2a$10$mOrdh8gbrCf83mUbjc17Le.nGg699aAToYdGGwbmlLiHZ5Sg/9Z.u",
+      "createdAt": "2026-11-16T11:34:25.686Z",
+      "updatedAt": "2026-11-16T11:34:25.686Z"
     },
     {
-      "id": "usr-1794828009853-6cc2e",
-      "email": "test.researcher.1794828009772@university.edu",
+      "id": "usr-1794828865777-ogu93",
+      "email": "test.researcher.1794828865693@university.edu",
       "fullName": "Test Academic",
-      "passwordHash": "$2a$10$52AsNSfqZo2EORV1NfL8Au9BrgzwiUfSbEtqrU5fs1u0t2Nsq1R62",
+      "passwordHash": "$2a$10$AzdenPy1583sIZR5DSr8ZOXri109VXdzQPqN5i8nBQBELn796bj92",
       "role": "user",
       "emailVerified": false,
       "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:20:09.853Z",
-      "updatedAt": "2026-11-16T11:20:09.853Z"
+      "createdAt": "2026-11-16T11:34:25.777Z",
+      "updatedAt": "2026-11-16T11:34:25.777Z"
     },
     {
-      "id": "usr-1794828009943-odl73",
-      "email": "verify.test.1794828009856@university.edu",
+      "id": "usr-1794828865868-ka8lo",
+      "email": "verify.test.1794828865779@university.edu",
       "fullName": "Verification Tester",
-      "passwordHash": "$2a$10$129g3snl6lrDkXku32G0Z.rWUzvOPANdMIUnCZUv3ZFRiA7nsBoSW",
+      "passwordHash": "$2a$10$jQRnjWB2B5m.R48d9jaH4O6zzmKDGWVRZvgj7XQFfgXzDhemuMs1q",
       "role": "user",
       "emailVerified": true,
       "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:20:09.943Z",
-      "updatedAt": "2026-11-16T11:20:09.956Z"
+      "createdAt": "2026-11-16T11:34:25.868Z",
+      "updatedAt": "2026-11-16T11:34:25.873Z"
     },
     {
-      "id": "usr-1794828010043-jzb37",
-      "email": "reset.test.1794828009958@university.edu",
+      "id": "usr-1794828865963-4ir0i",
+      "email": "reset.test.1794828865876@university.edu",
       "fullName": "Reset Tester",
-      "passwordHash": "$2a$10$/32QH0R5OJUkLldVKsHd/OsS6DjAmk2KHijP.RVazP564sNK0twWC",
+      "passwordHash": "$2a$10$wj8MQYemDN0YTruu/x4S5OrQG4n9QiMkbBL/nkHcCoFnz8dX6Rj6G",
       "role": "user",
       "emailVerified": true,
       "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:20:10.043Z",
-      "updatedAt": "2026-11-16T11:20:10.123Z"
-    },
-    {
-      "id": "usr-1794828050477-sco2m",
-      "email": "test.researcher.1794828050392@university.edu",
-      "fullName": "Test Academic",
-      "passwordHash": "$2a$10$PpgGEA9fm9EYZN4MvC9tJeHo404zvDKh3hDK84aChOOLREU.Zsnb.",
-      "role": "user",
-      "emailVerified": false,
-      "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:20:50.477Z",
-      "updatedAt": "2026-11-16T11:20:50.477Z"
-    },
-    {
-      "id": "usr-1794828050565-6kj9j",
-      "email": "verify.test.1794828050480@university.edu",
-      "fullName": "Verification Tester",
-      "passwordHash": "$2a$10$NvWDVLhLW9dwC.w2gy1rHuWf4hgRFimUOf/kxcXq6CpeXrczHa2Ga",
-      "role": "user",
-      "emailVerified": true,
-      "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:20:50.565Z",
-      "updatedAt": "2026-11-16T11:20:50.570Z"
-    },
-    {
-      "id": "usr-1794828050660-hlu6c",
-      "email": "reset.test.1794828050572@university.edu",
-      "fullName": "Reset Tester",
-      "passwordHash": "$2a$10$ooAbgPK4wje9brEg36wAeu3Xk79y20rmH3MjqS4ZQPwYXL3npYbQu",
-      "role": "user",
-      "emailVerified": true,
-      "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:20:50.660Z",
-      "updatedAt": "2026-11-16T11:20:50.750Z"
-    },
-    {
-      "id": "usr-1794828389491-htkwg",
-      "email": "test.researcher.1794828389404@university.edu",
-      "fullName": "Test Academic",
-      "passwordHash": "$2a$10$B1/xSxgREH1mvyJUePfuhu3gmW4CYkav7BkQVi6oNBSYUz6pY1JFq",
-      "role": "user",
-      "emailVerified": false,
-      "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:26:29.491Z",
-      "updatedAt": "2026-11-16T11:26:29.491Z"
-    },
-    {
-      "id": "usr-1794828389576-o92lw",
-      "email": "verify.test.1794828389494@university.edu",
-      "fullName": "Verification Tester",
-      "passwordHash": "$2a$10$XIDhTf1EAWf2u9lqq0C1vec0GnGtIVj5zwj848.Bq1hmcawJFF62i",
-      "role": "user",
-      "emailVerified": true,
-      "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:26:29.576Z",
-      "updatedAt": "2026-11-16T11:26:29.581Z"
-    },
-    {
-      "id": "usr-1794828389664-br3qx",
-      "email": "reset.test.1794828389583@university.edu",
-      "fullName": "Reset Tester",
-      "passwordHash": "$2a$10$Z3frOzRmY8Vci67Q7vuQ.eYjr4YghEoZ7EOBZPXgN2Q10pcym9nV2",
-      "role": "user",
-      "emailVerified": true,
-      "mfaEnabled": false,
-      "createdAt": "2026-11-16T11:26:29.664Z",
-      "updatedAt": "2026-11-16T11:26:29.749Z"
+      "createdAt": "2026-11-16T11:34:25.963Z",
+      "updatedAt": "2026-11-16T11:34:26.064Z"
     }
   ],
   "verificationTokens": [],
@@ -1530,8 +1338,8 @@
       "name": "Clinical Informatics & Evidence Lab",
       "slug": "clinical-informatics-lab",
       "ownerId": "usr-researcher-1",
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.686Z",
+      "updatedAt": "2026-11-16T11:34:25.686Z"
     }
   ],
   "projects": [
@@ -1543,8 +1351,8 @@
       "reviewType": "systematic_review",
       "status": "active",
       "createdBy": "usr-researcher-1",
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.686Z",
+      "updatedAt": "2026-11-16T11:34:25.686Z"
     }
   ],
   "protocols": [
@@ -1560,8 +1368,8 @@
       "picoComparator": "Usual care, waitlist control, or non-digital diabetes education.",
       "picoOutcome": "Primary: Glycated hemoglobin (HbA1c) reduction at >= 12 weeks. Secondary: Fasting plasma glucose, body mass index (BMI), hypoglycemia episodes, and quality of life.",
       "isLocked": false,
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.686Z",
+      "updatedAt": "2026-11-16T11:34:25.686Z"
     }
   ],
   "eligibilityCriteria": [
@@ -1617,10 +1425,10 @@
         "language": "English",
         "articleType": "Clinical Trial, RCT"
       },
-      "searchDate": "2026-11-13T11:20:09.767Z",
+      "searchDate": "2026-11-13T11:34:25.686Z",
       "resultsCount": 3,
       "importedBy": "usr-researcher-1",
-      "createdAt": "2026-11-13T11:20:09.767Z"
+      "createdAt": "2026-11-13T11:34:25.686Z"
     }
   ],
   "articles": [
@@ -1672,8 +1480,8 @@
           "content": "Discussion: Smartphone-delivered self-management education achieved clinically meaningful and statistically significant glycemic improvements in adults with type 2 diabetes over 24 weeks without increasing severe hypoglycemia.\n\nLimitations: Participant blinding was not feasible due to the behavioral nature of the digital intervention. Furthermore, long-term durability beyond 24 weeks warrants further investigation in pragmatic community cohorts."
         }
       ],
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
     },
     {
       "id": "art-2",
@@ -1723,8 +1531,8 @@
           "content": "Conclusions: Algorithmic insulin telemetry achieved robust glycemic control comparable to expert nurse titration while significantly reducing hypoglycemic episodes and clinical workload."
         }
       ],
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
     },
     {
       "id": "art-3",
@@ -1742,8 +1550,8 @@
       "abstract": "Identical duplicate record imported from Crossref bibliographic dump to demonstrate deduplication.",
       "screeningStatus": "pending",
       "sourceDatabase": "Crossref Import",
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
     }
   ],
   "duplicateCandidates": [],
@@ -1806,7 +1614,7 @@
       "eventType": "records_identified",
       "deltaCount": 3,
       "reason": "Initial PubMed search run import",
-      "createdAt": "2026-11-16T11:20:09.768Z"
+      "createdAt": "2026-11-16T11:34:25.688Z"
     }
   ],
   "extractionTemplates": [
@@ -1898,8 +1706,8 @@
           "sortOrder": 8
         }
       ],
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
     }
   ],
   "extractedDataRecords": [
@@ -1989,10 +1797,175 @@
       "status": "in_progress",
       "extractedBy": "ai_assisted",
       "verifiedBy": "Dr. Clara Oswald",
-      "verifiedAt": "2026-11-16T11:20:09.767Z",
-      "createdAt": "2026-11-16T11:20:09.767Z",
-      "updatedAt": "2026-11-16T11:20:09.767Z"
+      "verifiedAt": "2026-11-16T11:34:25.687Z",
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
     }
   ],
-  "aiScreeningSuggestions": []
+  "aiScreeningSuggestions": [],
+  "appraisalRecords": [
+    {
+      "id": "app-art-1",
+      "projectId": "prj-demo-1",
+      "articleId": "art-1",
+      "frameworkId": "rob-2-rct",
+      "reviewerId": "usr-researcher-1",
+      "reviewerName": "Dr. Clara Oswald",
+      "domainAnswers": {
+        "d1_randomization": {
+          "judgment": "low_risk",
+          "notes": "Computer-generated randomization with allocation concealment via centralized web system.",
+          "evidenceQuote": "randomized 1:1 using interactive web response system",
+          "pageNumber": 2
+        },
+        "d2_deviations": {
+          "judgment": "some_concerns",
+          "notes": "Open-label behavioral trial; participants could not be blinded to mobile app vs leaflets.",
+          "evidenceQuote": "Participant blinding was not feasible due to behavioral nature of digital intervention.",
+          "pageNumber": 5
+        },
+        "d3_missing_data": {
+          "judgment": "low_risk",
+          "notes": "High retention: 322 of 340 (94.7%) completed follow-up with intention-to-treat analysis.",
+          "evidenceQuote": "322 completed the 24-week follow-up. In intention-to-treat analysis...",
+          "pageNumber": 4
+        },
+        "d4_measurement": {
+          "judgment": "low_risk",
+          "notes": "Objective laboratory assay of HbA1c analyzed in blinded centralized laboratory.",
+          "evidenceQuote": "Centralized enzymatic laboratory assay blinded to arm allocation.",
+          "pageNumber": 3
+        },
+        "d5_selective_reporting": {
+          "judgment": "low_risk",
+          "notes": "Pre-registered protocol results matched trial registration (NCT04812391).",
+          "evidenceQuote": "Trial registered at ClinicalTrials.gov (NCT04812391).",
+          "pageNumber": 1
+        }
+      },
+      "overallJudgment": "some_concerns",
+      "overallJustification": "Studi memiliki metodologi sangat kuat namun keterbatasan blinding partisipan inheren pada intervensi digital.",
+      "status": "completed",
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "app-art-2",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "frameworkId": "rob-2-rct",
+      "reviewerId": "usr-researcher-1",
+      "reviewerName": "Dr. Clara Oswald",
+      "domainAnswers": {
+        "d1_randomization": {
+          "judgment": "low_risk",
+          "notes": "Centralized stratified randomization across 8 academic medical centers.",
+          "evidenceQuote": "randomized to AI-guided telemetry (n=140) or nurse telephone titration (n=140)",
+          "pageNumber": 2
+        },
+        "d2_deviations": {
+          "judgment": "low_risk",
+          "notes": "Strict protocol adherence with algorithmic telemetry and nurse supervision.",
+          "evidenceQuote": "Automated cellular glucometers transmitted readings to FDA-cleared clinical decision support engine",
+          "pageNumber": 3
+        },
+        "d3_missing_data": {
+          "judgment": "low_risk",
+          "notes": "Less than 5% loss to follow-up over 26 weeks.",
+          "evidenceQuote": "At 6 months (26 weeks), mean HbA1c decreased by 1.05%...",
+          "pageNumber": 4
+        },
+        "d4_measurement": {
+          "judgment": "low_risk",
+          "notes": "Standardized NGSP-certified glycated hemoglobin assay.",
+          "evidenceQuote": "standardized HbA1c measurements",
+          "pageNumber": 2
+        },
+        "d5_selective_reporting": {
+          "judgment": "low_risk",
+          "notes": "Pre-specified non-inferiority margin of 0.3% reported transparently.",
+          "evidenceQuote": "meeting predefined non-inferiority margin of 0.3%",
+          "pageNumber": 4
+        }
+      },
+      "overallJudgment": "low_risk",
+      "overallJustification": "Multicenter RCT dengan kontrol metodologis komprehensif dan pelaporan terdaftar.",
+      "status": "completed",
+      "createdAt": "2026-11-16T11:34:25.687Z",
+      "updatedAt": "2026-11-16T11:34:25.687Z"
+    }
+  ],
+  "thematicCodes": [
+    {
+      "id": "thm-1",
+      "projectId": "prj-demo-1",
+      "name": "Interaktivitas & Keterlibatan Digital (Engagement)",
+      "color": "#2F7D78",
+      "category": "Karakteristik Intervensi",
+      "description": "Fitur aplikasi cerdas, pelacakan harian, dan notifikasi pengingat pengobatan.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "thm-2",
+      "projectId": "prj-demo-1",
+      "name": "Penurunan HbA1c & Kontrol Glikemik",
+      "color": "#18794E",
+      "category": "Efektivitas Klinis",
+      "description": "Perubahan rerata HbA1c terukur secara signifikan dibandingkan kontrol standar.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "thm-3",
+      "projectId": "prj-demo-1",
+      "name": "Keamanan Hipoglikemia & Pengurangan Risiko",
+      "color": "#B7791F",
+      "category": "Keamanan Pasien",
+      "description": "Insidensi hipoglikemia berat level 2 dan pencegahan kejadian akut.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "thm-4",
+      "projectId": "prj-demo-1",
+      "name": "Efisiensi Beban Klinis & Telemetri Real-time",
+      "color": "#17324D",
+      "category": "Implementasi Layanan Kesehatan",
+      "description": "Integrasi sistem telemetri otomatis dan pengurangan kunjungan tatap muka.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    }
+  ],
+  "thematicExcerpts": [
+    {
+      "id": "exc-thm-1",
+      "projectId": "prj-demo-1",
+      "articleId": "art-1",
+      "codeId": "thm-1",
+      "verbatimQuote": "Participants received the 'DiaSmart' smartphone application providing interactive glucose tracking, algorithm-assisted dietary coaching, physical activity logging, and push-notification medication reminders.",
+      "pageNumber": 3,
+      "sectionTitle": "Interventions & Comparators",
+      "notes": "Contoh penerapan modul gamifikasi dan pengingat digital interaktif.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "exc-thm-2",
+      "projectId": "prj-demo-1",
+      "articleId": "art-1",
+      "codeId": "thm-2",
+      "verbatimQuote": "At 24 weeks, mean HbA1c decreased by 0.72% in the mobile app group versus 0.18% in the control group (between-group difference -0.54%, p < 0.001).",
+      "pageNumber": 4,
+      "sectionTitle": "Outcomes & Results",
+      "notes": "Efektivitas klinis signifikan pada penurunan HbA1c.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "exc-thm-3",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "codeId": "thm-3",
+      "verbatimQuote": "Notably, level 2 hypoglycemia (<54 mg/dL) was 42% lower in the AI group (0.18 vs 0.31 events per patient-month, p = 0.012).",
+      "pageNumber": 4,
+      "sectionTitle": "Results & Safety Outcomes",
+      "notes": "Penurunan kejadian hipoglikemia berkat algoritma penyesuaian dosis insulin otomatis.",
+      "createdAt": "2026-11-16T11:34:25.687Z"
+    }
+  ]
 }

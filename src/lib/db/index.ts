@@ -40,6 +40,8 @@ import {
   AIScreeningSuggestion,
   AIExtractionSuggestion,
 } from "../types/ai";
+import { AppraisalRecord } from "../types/appraisal";
+import { ThematicCode, ThematicExcerpt } from "../types/synthesis";
 import {
   defaultSiteSettings,
   defaultNavigationItems,
@@ -96,6 +98,10 @@ export interface DatabaseSchema {
   extractionTemplates: ExtractionTemplate[];
   extractedDataRecords: ExtractedDataRecord[];
   aiScreeningSuggestions: AIScreeningSuggestion[];
+  // Appraisal & Synthesis
+  appraisalRecords: AppraisalRecord[];
+  thematicCodes: ThematicCode[];
+  thematicExcerpts: ThematicExcerpt[];
 }
 
 const DATA_DIR = path.join(process.cwd(), ".data");
@@ -546,6 +552,174 @@ function getInitialDatabase(): DatabaseSchema {
     },
   ];
 
+  const defaultAppraisalRecords: AppraisalRecord[] = [
+    {
+      id: "app-art-1",
+      projectId: "prj-demo-1",
+      articleId: "art-1",
+      frameworkId: "rob-2-rct",
+      reviewerId: "usr-researcher-1",
+      reviewerName: "Dr. Clara Oswald",
+      domainAnswers: {
+        d1_randomization: {
+          judgment: "low_risk",
+          notes: "Computer-generated randomization with allocation concealment via centralized web system.",
+          evidenceQuote: "randomized 1:1 using interactive web response system",
+          pageNumber: 2,
+        },
+        d2_deviations: {
+          judgment: "some_concerns",
+          notes: "Open-label behavioral trial; participants could not be blinded to mobile app vs leaflets.",
+          evidenceQuote: "Participant blinding was not feasible due to behavioral nature of digital intervention.",
+          pageNumber: 5,
+        },
+        d3_missing_data: {
+          judgment: "low_risk",
+          notes: "High retention: 322 of 340 (94.7%) completed follow-up with intention-to-treat analysis.",
+          evidenceQuote: "322 completed the 24-week follow-up. In intention-to-treat analysis...",
+          pageNumber: 4,
+        },
+        d4_measurement: {
+          judgment: "low_risk",
+          notes: "Objective laboratory assay of HbA1c analyzed in blinded centralized laboratory.",
+          evidenceQuote: "Centralized enzymatic laboratory assay blinded to arm allocation.",
+          pageNumber: 3,
+        },
+        d5_selective_reporting: {
+          judgment: "low_risk",
+          notes: "Pre-registered protocol results matched trial registration (NCT04812391).",
+          evidenceQuote: "Trial registered at ClinicalTrials.gov (NCT04812391).",
+          pageNumber: 1,
+        },
+      },
+      overallJudgment: "some_concerns",
+      overallJustification: "Studi memiliki metodologi sangat kuat namun keterbatasan blinding partisipan inheren pada intervensi digital.",
+      status: "completed",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "app-art-2",
+      projectId: "prj-demo-1",
+      articleId: "art-2",
+      frameworkId: "rob-2-rct",
+      reviewerId: "usr-researcher-1",
+      reviewerName: "Dr. Clara Oswald",
+      domainAnswers: {
+        d1_randomization: {
+          judgment: "low_risk",
+          notes: "Centralized stratified randomization across 8 academic medical centers.",
+          evidenceQuote: "randomized to AI-guided telemetry (n=140) or nurse telephone titration (n=140)",
+          pageNumber: 2,
+        },
+        d2_deviations: {
+          judgment: "low_risk",
+          notes: "Strict protocol adherence with algorithmic telemetry and nurse supervision.",
+          evidenceQuote: "Automated cellular glucometers transmitted readings to FDA-cleared clinical decision support engine",
+          pageNumber: 3,
+        },
+        d3_missing_data: {
+          judgment: "low_risk",
+          notes: "Less than 5% loss to follow-up over 26 weeks.",
+          evidenceQuote: "At 6 months (26 weeks), mean HbA1c decreased by 1.05%...",
+          pageNumber: 4,
+        },
+        d4_measurement: {
+          judgment: "low_risk",
+          notes: "Standardized NGSP-certified glycated hemoglobin assay.",
+          evidenceQuote: "standardized HbA1c measurements",
+          pageNumber: 2,
+        },
+        d5_selective_reporting: {
+          judgment: "low_risk",
+          notes: "Pre-specified non-inferiority margin of 0.3% reported transparently.",
+          evidenceQuote: "meeting predefined non-inferiority margin of 0.3%",
+          pageNumber: 4,
+        },
+      },
+      overallJudgment: "low_risk",
+      overallJustification: "Multicenter RCT dengan kontrol metodologis komprehensif dan pelaporan terdaftar.",
+      status: "completed",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultThematicCodes: ThematicCode[] = [
+    {
+      id: "thm-1",
+      projectId: "prj-demo-1",
+      name: "Interaktivitas & Keterlibatan Digital (Engagement)",
+      color: "#2F7D78",
+      category: "Karakteristik Intervensi",
+      description: "Fitur aplikasi cerdas, pelacakan harian, dan notifikasi pengingat pengobatan.",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "thm-2",
+      projectId: "prj-demo-1",
+      name: "Penurunan HbA1c & Kontrol Glikemik",
+      color: "#18794E",
+      category: "Efektivitas Klinis",
+      description: "Perubahan rerata HbA1c terukur secara signifikan dibandingkan kontrol standar.",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "thm-3",
+      projectId: "prj-demo-1",
+      name: "Keamanan Hipoglikemia & Pengurangan Risiko",
+      color: "#B7791F",
+      category: "Keamanan Pasien",
+      description: "Insidensi hipoglikemia berat level 2 dan pencegahan kejadian akut.",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "thm-4",
+      projectId: "prj-demo-1",
+      name: "Efisiensi Beban Klinis & Telemetri Real-time",
+      color: "#17324D",
+      category: "Implementasi Layanan Kesehatan",
+      description: "Integrasi sistem telemetri otomatis dan pengurangan kunjungan tatap muka.",
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultThematicExcerpts: ThematicExcerpt[] = [
+    {
+      id: "exc-thm-1",
+      projectId: "prj-demo-1",
+      articleId: "art-1",
+      codeId: "thm-1",
+      verbatimQuote: "Participants received the 'DiaSmart' smartphone application providing interactive glucose tracking, algorithm-assisted dietary coaching, physical activity logging, and push-notification medication reminders.",
+      pageNumber: 3,
+      sectionTitle: "Interventions & Comparators",
+      notes: "Contoh penerapan modul gamifikasi dan pengingat digital interaktif.",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "exc-thm-2",
+      projectId: "prj-demo-1",
+      articleId: "art-1",
+      codeId: "thm-2",
+      verbatimQuote: "At 24 weeks, mean HbA1c decreased by 0.72% in the mobile app group versus 0.18% in the control group (between-group difference -0.54%, p < 0.001).",
+      pageNumber: 4,
+      sectionTitle: "Outcomes & Results",
+      notes: "Efektivitas klinis signifikan pada penurunan HbA1c.",
+      createdAt: new Date().toISOString(),
+    },
+    {
+      id: "exc-thm-3",
+      projectId: "prj-demo-1",
+      articleId: "art-2",
+      codeId: "thm-3",
+      verbatimQuote: "Notably, level 2 hypoglycemia (<54 mg/dL) was 42% lower in the AI group (0.18 vs 0.31 events per patient-month, p = 0.012).",
+      pageNumber: 4,
+      sectionTitle: "Results & Safety Outcomes",
+      notes: "Penurunan kejadian hipoglikemia berkat algoritma penyesuaian dosis insulin otomatis.",
+      createdAt: new Date().toISOString(),
+    },
+  ];
+
   return {
     siteSettings: defaultSiteSettings,
     navigationItems: defaultNavigationItems,
@@ -591,6 +765,9 @@ function getInitialDatabase(): DatabaseSchema {
     extractionTemplates: defaultExtractionTemplates,
     extractedDataRecords: defaultExtractedRecords,
     aiScreeningSuggestions: [],
+    appraisalRecords: defaultAppraisalRecords,
+    thematicCodes: defaultThematicCodes,
+    thematicExcerpts: defaultThematicExcerpts,
   };
 }
 
@@ -619,6 +796,9 @@ export function getDb(): DatabaseSchema {
         extractionTemplates: parsed.extractionTemplates || getInitialDatabase().extractionTemplates,
         extractedDataRecords: parsed.extractedDataRecords || getInitialDatabase().extractedDataRecords,
         aiScreeningSuggestions: parsed.aiScreeningSuggestions || [],
+        appraisalRecords: parsed.appraisalRecords || getInitialDatabase().appraisalRecords,
+        thematicCodes: parsed.thematicCodes || getInitialDatabase().thematicCodes,
+        thematicExcerpts: parsed.thematicExcerpts || getInitialDatabase().thematicExcerpts,
       };
       return memoryDb!;
     }
@@ -1775,4 +1955,217 @@ export async function saveAIScreeningSuggestion(
   }
   saveDb(db);
   return suggestion;
+}
+
+// =====================================================================
+// QUALITY APPRAISAL (RISK OF BIAS) OPERATIONS
+// =====================================================================
+
+export async function getAppraisalRecords(
+  projectId: string,
+  articleId?: string
+): Promise<AppraisalRecord[]> {
+  const db = getDb();
+  let list = db.appraisalRecords.filter((r) => r.projectId === projectId);
+  if (articleId) {
+    list = list.filter((r) => r.articleId === articleId);
+  }
+  return list;
+}
+
+export async function saveAppraisalRecord(
+  record: AppraisalRecord,
+  userId?: string,
+  userEmail?: string
+): Promise<AppraisalRecord> {
+  const db = getDb();
+  const index = db.appraisalRecords.findIndex((r) => r.id === record.id);
+  record.updatedAt = new Date().toISOString();
+
+  if (index >= 0) {
+    db.appraisalRecords[index] = record;
+  } else {
+    record.createdAt = new Date().toISOString();
+    db.appraisalRecords.push(record);
+  }
+
+  createAuditLogSync("SAVE_APPRAISAL_RECORD", "appraisal_record", record.id, {
+    articleId: record.articleId,
+    overallJudgment: record.overallJudgment,
+    status: record.status,
+  }, userId, userEmail);
+
+  saveDb(db);
+  return record;
+}
+
+// =====================================================================
+// THEMATIC SYNTHESIS & QUALITATIVE CODING OPERATIONS
+// =====================================================================
+
+export async function getThematicCodes(projectId: string): Promise<ThematicCode[]> {
+  const db = getDb();
+  return db.thematicCodes.filter((c) => c.projectId === projectId);
+}
+
+export async function saveThematicCode(
+  code: ThematicCode,
+  userId?: string,
+  userEmail?: string
+): Promise<ThematicCode> {
+  const db = getDb();
+  const index = db.thematicCodes.findIndex((c) => c.id === code.id);
+
+  if (index >= 0) {
+    db.thematicCodes[index] = code;
+  } else {
+    code.createdAt = new Date().toISOString();
+    db.thematicCodes.push(code);
+  }
+
+  createAuditLogSync("SAVE_THEMATIC_CODE", "thematic_code", code.id, { name: code.name }, userId, userEmail);
+  saveDb(db);
+  return code;
+}
+
+export async function deleteThematicCode(
+  codeId: string,
+  userId?: string,
+  userEmail?: string
+): Promise<boolean> {
+  const db = getDb();
+  const countBefore = db.thematicCodes.length;
+  db.thematicCodes = db.thematicCodes.filter((c) => c.id !== codeId);
+  db.thematicExcerpts = db.thematicExcerpts.filter((e) => e.codeId !== codeId);
+
+  if (db.thematicCodes.length !== countBefore) {
+    createAuditLogSync("DELETE_THEMATIC_CODE", "thematic_code", codeId, {}, userId, userEmail);
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+export async function getThematicExcerpts(
+  projectId: string,
+  articleId?: string
+): Promise<ThematicExcerpt[]> {
+  const db = getDb();
+  let list = db.thematicExcerpts.filter((e) => e.projectId === projectId);
+  if (articleId) {
+    list = list.filter((e) => e.articleId === articleId);
+  }
+  return list;
+}
+
+export async function saveThematicExcerpt(
+  excerpt: ThematicExcerpt,
+  userId?: string,
+  userEmail?: string
+): Promise<ThematicExcerpt> {
+  const db = getDb();
+  const index = db.thematicExcerpts.findIndex((e) => e.id === excerpt.id);
+
+  if (index >= 0) {
+    db.thematicExcerpts[index] = excerpt;
+  } else {
+    excerpt.createdAt = new Date().toISOString();
+    db.thematicExcerpts.push(excerpt);
+  }
+
+  createAuditLogSync("SAVE_THEMATIC_EXCERPT", "thematic_excerpt", excerpt.id, {
+    articleId: excerpt.articleId,
+    codeId: excerpt.codeId,
+  }, userId, userEmail);
+
+  saveDb(db);
+  return excerpt;
+}
+
+export async function deleteThematicExcerpt(
+  excerptId: string,
+  userId?: string,
+  userEmail?: string
+): Promise<boolean> {
+  const db = getDb();
+  const countBefore = db.thematicExcerpts.length;
+  db.thematicExcerpts = db.thematicExcerpts.filter((e) => e.id !== excerptId);
+
+  if (db.thematicExcerpts.length !== countBefore) {
+    createAuditLogSync("DELETE_THEMATIC_EXCERPT", "thematic_excerpt", excerptId, {}, userId, userEmail);
+    saveDb(db);
+    return true;
+  }
+  return false;
+}
+
+export async function getSynthesisSummary(projectId: string): Promise<SynthesisSummary> {
+  const db = getDb();
+  const projectArticles = db.articles.filter((a) => a.projectId === projectId && !a.isDuplicate);
+  const records = db.extractedDataRecords.filter((r) => r.projectId === projectId);
+  const codes = db.thematicCodes.filter((c) => c.projectId === projectId);
+  const excerpts = db.thematicExcerpts.filter((e) => e.projectId === projectId);
+
+  // Timeline
+  const yearCounts: Record<number, number> = {};
+  for (const art of projectArticles) {
+    const yr = art.publicationYear || 2024;
+    yearCounts[yr] = (yearCounts[yr] || 0) + 1;
+  }
+  const timelineData = Object.entries(yearCounts)
+    .map(([yr, count]) => ({ year: parseInt(yr, 10), count }))
+    .sort((a, b) => a.year - b.year);
+
+  // Country distribution from extracted records
+  const countryCounts: Record<string, number> = {};
+  for (const rec of records) {
+    const country = rec.values.country || "Not Reported";
+    countryCounts[country] = (countryCounts[country] || 0) + 1;
+  }
+  const countryDistribution = Object.entries(countryCounts)
+    .map(([country, count]) => ({ country, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // Study design distribution
+  const designCounts: Record<string, number> = {};
+  for (const rec of records) {
+    const design = rec.values.study_design || "Parallel RCT";
+    designCounts[design] = (designCounts[design] || 0) + 1;
+  }
+  const studyDesignDistribution = Object.entries(designCounts)
+    .map(([design, count]) => ({ design, count }))
+    .sort((a, b) => b.count - a.count);
+
+  // Thematic matrix
+  const thematicMatrix = codes.map((c) => {
+    const codeExcerpts = excerpts.filter((e) => e.codeId === c.id);
+    const uniqueArticleIds = Array.from(new Set(codeExcerpts.map((e) => e.articleId)));
+    return {
+      theme: c.name,
+      articleIds: uniqueArticleIds,
+      quoteCount: codeExcerpts.length,
+    };
+  });
+
+  // Derived research gaps
+  const researchGaps = [
+    {
+      topic: "Ketahanan Kontrol Glikemik Jangka Panjang (> 12 Bulan)",
+      description: "Mayoritas uji klinis digital diabetes yang teridentifikasi memiliki batas masa intervensi maksimum 24-26 minggu. Bukti efektivitas jangka panjang melebihi 1 tahun masih sangat minim.",
+      evidenceNote: "Hanya 0% dari artikel yang dianalisis meneliti durasi follow-up > 52 minggu.",
+    },
+    {
+      topic: "Blinding & Bias Ekspektasi pada Intervensi Berbasis Aplikasi",
+      description: "Hampir seluruh studi digital health merupakan open-label karena sifat intervensi perilaku menyulitkan penyamaran peserta (participant blinding). Diperlukan rancangan sham-app terkontrol.",
+      evidenceNote: "Domain deviasi RoB 2 menandai kekhawatiran metodologis pada sebagian besar studi.",
+    },
+  ];
+
+  return {
+    timelineData,
+    countryDistribution,
+    studyDesignDistribution,
+    thematicMatrix,
+    researchGaps,
+  };
 }

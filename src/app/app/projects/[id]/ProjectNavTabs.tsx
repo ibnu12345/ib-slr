@@ -15,6 +15,9 @@ import {
   AlertTriangle,
   GitBranch,
   Database,
+  ShieldAlert,
+  Layers,
+  Award,
 } from "lucide-react";
 
 interface Props {
@@ -35,7 +38,10 @@ export function ProjectNavTabs({ projectId }: Props) {
     { label: "Screening: Full-Text", href: `/app/projects/${projectId}/screening/full-text`, icon: FileSearch },
     { label: "Conflicts", href: `/app/projects/${projectId}/conflicts`, icon: AlertTriangle },
     { label: "Data Extraction", href: `/app/projects/${projectId}/extraction`, icon: Database },
+    { label: "Appraisal (RoB)", href: `/app/projects/${projectId}/appraisal`, icon: ShieldAlert },
+    { label: "Synthesis", href: `/app/projects/${projectId}/synthesis`, icon: Layers },
     { label: "PRISMA 2020", href: `/app/projects/${projectId}/prisma`, icon: GitBranch },
+    { label: "Publication Studio", href: `/app/projects/${projectId}/publication`, icon: Award },
   ];
 
   return (
