@@ -42,6 +42,7 @@ import {
 } from "../types/ai";
 import { AppraisalRecord } from "../types/appraisal";
 import { ThematicCode, ThematicExcerpt } from "../types/synthesis";
+import { ProjectManuscript, JournalTableDefinition } from "../types/publication";
 import {
   defaultSiteSettings,
   defaultNavigationItems,
@@ -102,6 +103,9 @@ export interface DatabaseSchema {
   appraisalRecords: AppraisalRecord[];
   thematicCodes: ThematicCode[];
   thematicExcerpts: ThematicExcerpt[];
+  // Publication & Manuscript
+  manuscripts: ProjectManuscript[];
+  tableDefinitions: JournalTableDefinition[];
 }
 
 const DATA_DIR = path.join(process.cwd(), ".data");
@@ -720,6 +724,65 @@ function getInitialDatabase(): DatabaseSchema {
     },
   ];
 
+  const defaultManuscripts: ProjectManuscript[] = [
+    {
+      id: "ms-demo-1",
+      projectId: "prj-demo-1",
+      title: "Digital Health and Smartphone-Delivered Interventions for Glycemic Control in Adults with Type 2 Diabetes: A Systematic Review and Evidence Synthesis",
+      targetJournal: "The Lancet Digital Health / JMIR",
+      sections: {
+        abstract: "Background: Mobile health technologies offer promising scalable alternatives for diabetes self-management. Methods: We conducted a systematic literature review following PRISMA 2020 guidelines across PubMed, Crossref, and clinical trial registries. Results: Out of 3 screened reports, randomized trials evaluating interactive mobile applications ('DiaSmart') and algorithmic telemetry demonstrated clinically meaningful HbA1c reductions (-0.54% to -0.72%) over 24-26 weeks. Conclusion: Smartphone self-management education significantly improves glycemic control among ambulatory adults with type 2 diabetes.",
+        introduction: "Type 2 diabetes mellitus is a chronic metabolic disorder affecting hundreds of millions worldwide. Despite effective pharmacotherapy, consistent patient self-management—including dietary adherence, physical activity, and glucose monitoring—remains the cornerstone of glycemic control. Digital health interventions, particularly smartphone applications with behavioral prompts and telemedicine feedback, have emerged as scalable strategies.",
+        methods: "This systematic review was conducted in strict accordance with the PRISMA 2020 statement. Literature searches were conducted in PubMed/MEDLINE and bibliographic databases for randomized controlled trials comparing digital self-management applications against usual ambulatory care in adults aged >= 18 with uncontrolled Type 2 Diabetes. Methodological risk of bias was assessed using the Cochrane RoB 2 instrument.",
+        results: "Literature search and deduplication yielded eligible reports. In the primary trial by Chen et al. (2024; N=340), mobile app education led to a statistically significant decrease in HbA1c (-0.72% vs -0.18%, p < 0.001). Patel et al. (2023; N=280) confirmed non-inferiority of algorithmic telemetry compared to nurse phone titration with 42% fewer hypoglycemic episodes.",
+        risk_of_bias: "Using the Cochrane RoB 2 framework, trials exhibited low risk of bias in randomization, missing outcome data, and selective outcome reporting. Due to the overt nature of behavioral digital health apps, blinding of participants was not feasible, leading to some concerns in Domain 2 (deviations from intended interventions).",
+        discussion: "Our synthesis demonstrates that smartphone-delivered interventions and algorithmic telemetry achieve robust glycemic improvements comparable or superior to traditional outpatient leaflets. Strengths include rigorous RCT designs and objective biomarker assays (HbA1c). Limitations include the scarcity of pragmatic follow-up beyond 6 months.",
+        conclusion: "Interactive mobile health applications represent effective, scalable, and safe adjuncts for ambulatory type 2 diabetes care. Future pragmatic multicenter trials should evaluate long-term durability and cost-effectiveness in diverse socioeconomic populations.",
+      },
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
+  const defaultTableDefinitions: JournalTableDefinition[] = [
+    {
+      id: "tbl-def-1",
+      projectId: "prj-demo-1",
+      tableType: "characteristics",
+      title: "Table 1. Baseline Characteristics and Methodological Design of Included Trials",
+      caption: "Summary of study design, sample size, participant demographics, and interventions evaluated in eligible randomized trials.",
+      columns: [
+        { key: "study_id", label: "Study Reference", visible: true },
+        { key: "country", label: "Country / Setting", visible: true },
+        { key: "sample_size", label: "Sample Size (N)", visible: true },
+        { key: "intervention_detail", label: "Intervention Protocol", visible: true },
+        { key: "comparator_detail", label: "Control Protocol", visible: true },
+        { key: "primary_outcome", label: "Primary Outcome", visible: true },
+        { key: "follow_up_duration", label: "Follow-up", visible: true },
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "tbl-def-2",
+      projectId: "prj-demo-1",
+      tableType: "risk_of_bias",
+      title: "Table 2. Cochrane Risk of Bias 2 (RoB 2) Methodological Quality Assessment",
+      caption: "Domain-by-domain evaluation of randomized controlled trials included in the systematic review.",
+      columns: [
+        { key: "study_id", label: "Study", visible: true },
+        { key: "d1", label: "D1: Randomization", visible: true },
+        { key: "d2", label: "D2: Deviations", visible: true },
+        { key: "d3", label: "D3: Missing Data", visible: true },
+        { key: "d4", label: "D4: Measurement", visible: true },
+        { key: "d5", label: "D5: Selective Reporting", visible: true },
+        { key: "overall", label: "Overall Risk", visible: true },
+      ],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+  ];
+
   return {
     siteSettings: defaultSiteSettings,
     navigationItems: defaultNavigationItems,
@@ -768,6 +831,8 @@ function getInitialDatabase(): DatabaseSchema {
     appraisalRecords: defaultAppraisalRecords,
     thematicCodes: defaultThematicCodes,
     thematicExcerpts: defaultThematicExcerpts,
+    manuscripts: defaultManuscripts,
+    tableDefinitions: defaultTableDefinitions,
   };
 }
 
@@ -799,6 +864,8 @@ export function getDb(): DatabaseSchema {
         appraisalRecords: parsed.appraisalRecords || getInitialDatabase().appraisalRecords,
         thematicCodes: parsed.thematicCodes || getInitialDatabase().thematicCodes,
         thematicExcerpts: parsed.thematicExcerpts || getInitialDatabase().thematicExcerpts,
+        manuscripts: parsed.manuscripts || getInitialDatabase().manuscripts,
+        tableDefinitions: parsed.tableDefinitions || getInitialDatabase().tableDefinitions,
       };
       return memoryDb!;
     }
@@ -2168,4 +2235,71 @@ export async function getSynthesisSummary(projectId: string): Promise<SynthesisS
     thematicMatrix,
     researchGaps,
   };
+}
+
+// =====================================================================
+// PUBLICATION, JOURNAL TABLES & MANUSCRIPT OPERATIONS
+// =====================================================================
+
+export async function getManuscriptByProjectId(
+  projectId: string
+): Promise<ProjectManuscript | undefined> {
+  const db = getDb();
+  return db.manuscripts.find((m) => m.projectId === projectId);
+}
+
+export async function saveManuscript(
+  manuscript: ProjectManuscript,
+  userId?: string,
+  userEmail?: string
+): Promise<ProjectManuscript> {
+  const db = getDb();
+  const index = db.manuscripts.findIndex((m) => m.id === manuscript.id || m.projectId === manuscript.projectId);
+  manuscript.updatedAt = new Date().toISOString();
+
+  if (index >= 0) {
+    db.manuscripts[index] = manuscript;
+  } else {
+    manuscript.createdAt = new Date().toISOString();
+    db.manuscripts.push(manuscript);
+  }
+
+  createAuditLogSync("SAVE_MANUSCRIPT", "project_manuscript", manuscript.id, {
+    title: manuscript.title,
+  }, userId, userEmail);
+
+  saveDb(db);
+  return manuscript;
+}
+
+export async function getTableDefinitions(
+  projectId: string
+): Promise<JournalTableDefinition[]> {
+  const db = getDb();
+  return db.tableDefinitions.filter((t) => t.projectId === projectId);
+}
+
+export async function saveTableDefinition(
+  tableDef: JournalTableDefinition,
+  userId?: string,
+  userEmail?: string
+): Promise<JournalTableDefinition> {
+  const db = getDb();
+  const index = db.tableDefinitions.findIndex((t) => t.id === tableDef.id);
+  tableDef.updatedAt = new Date().toISOString();
+
+  if (index >= 0) {
+    db.tableDefinitions[index] = tableDef;
+  } else {
+    tableDef.createdAt = new Date().toISOString();
+    db.tableDefinitions.push(tableDef);
+  }
+
+  createAuditLogSync("SAVE_TABLE_DEFINITION", "journal_table_definition", tableDef.id, {
+    title: tableDef.title,
+    tableType: tableDef.tableType,
+  }, userId, userEmail);
+
+  saveDb(db);
+  return tableDef;
 }
