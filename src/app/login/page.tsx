@@ -98,42 +98,6 @@ export default function LoginPage() {
           <div className="flex-grow border-t border-[#E4E7EC]"></div>
         </div>
 
-        {/* Demo & Owner Free Credentials Helper Pill */}
-        <div className="bg-[#EFF7F6] border border-[#2F7D78]/20 rounded-xl p-3.5 text-xs text-[#17324D] space-y-2">
-          <div className="font-semibold flex items-center justify-between text-[#2F7D78]">
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4" />
-              <span>{isId ? "Akun Khusus & Uji Coba Gratis:" : "Evaluation & Owner Accounts:"}</span>
-            </span>
-            <span className="text-[10px] bg-[#18794E] text-white px-2 py-0.5 rounded-full font-bold">
-              Bebas Biaya
-            </span>
-          </div>
-          <div className="flex flex-wrap gap-2 pt-0.5">
-            <button
-              type="button"
-              onClick={() => fillCredentials("admin@ib-slr.com", "AdminPass123!")}
-              className="px-2.5 py-1 bg-white hover:bg-[#D8EDE9] border border-[#2F7D78]/40 rounded-lg text-[11px] font-bold text-[#17324D] transition-colors shadow-xs"
-            >
-              👑 {isId ? "Akun Super Admin (Owner)" : "Super Admin (Owner)"}
-            </button>
-            <button
-              type="button"
-              onClick={() => fillCredentials("pro@ib-slr.com", "ProPass123!")}
-              className="px-2.5 py-1 bg-white hover:bg-[#D8EDE9] border border-[#2F7D78]/40 rounded-lg text-[11px] font-bold text-[#2F7D78] transition-colors shadow-xs"
-            >
-              ⭐ {isId ? "Akun Pro VIP (Gratis)" : "Pro VIP (Free)"}
-            </button>
-            <button
-              type="button"
-              onClick={() => fillCredentials("researcher@ib-slr.local", "ResearchPass123!")}
-              className="px-2 py-1 bg-white hover:bg-[#F7F8FA] border border-[#E4E7EC] rounded-lg text-[11px] font-medium text-[#667085] transition-colors"
-            >
-              🔬 {isId ? "Demo Peneliti" : "Demo Researcher"}
-            </button>
-          </div>
-        </div>
-
         {error && (
           <div className="bg-[#FEF3F2] border border-[#B42318]/30 rounded-lg p-3 text-xs text-[#B42318] flex items-start gap-2">
             <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />

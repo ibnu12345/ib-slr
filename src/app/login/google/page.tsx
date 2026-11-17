@@ -3,24 +3,41 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookOpen, ShieldCheck, ArrowRight, ArrowLeft, CheckCircle2, Sparkles, Key } from "lucide-react";
+import { BookOpen, ShieldCheck, ArrowRight, ArrowLeft, Mail, Lock, AlertCircle } from "lucide-react";
 
 export default function GoogleAuthSimulationPage() {
   const router = useRouter();
-  const [customEmail, setCustomEmail] = useState("ibnusetiawan1928@gmail.com");
-  const [customName, setCustomName] = useState("Ibnu (Owner)");
+  const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleInstantSignIn = async (email: string, name: string) => {
+  const isOwnerEmail =
+    email.toLowerCase().includes("ibnusetiawan1928") ||
+    email.toLowerCase() === "admin@ib-slr.com" ||
+    email.toLowerCase() === "pro@ib-slr.com";
+
+  const handleSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
     setLoading(true);
+
     try {
       const res = await fetch("/api/auth/google/simulate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, fullName: name }),
+        body: JSON.stringify({
+          email: email.trim(),
+          fullName: fullName.trim() || email.split("@")[0],
+          password,
+        }),
       });
+
       const data = await res.json();
-      if (data.success) {
+      if (!res.ok || !data.success) {
+        setError(data.error || "Gagal masuk dengan akun Google.");
+      } else {
         if (data.role === "admin" || data.role === "super_admin") {
           router.push("/admin");
         } else {
@@ -28,8 +45,8 @@ export default function GoogleAuthSimulationPage() {
         }
         router.refresh();
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setError("Terjadi kesalahan jaringan.");
     } finally {
       setLoading(false);
     }
@@ -62,86 +79,83 @@ export default function GoogleAuthSimulationPage() {
           </div>
           <h1 className="text-xl font-bold text-[#17324D]">Masuk dengan Akun Google</h1>
           <p className="text-xs text-[#667085] mt-1">
-            Pilih akun Google Anda untuk melanjutkan ke <strong>IB-SLR Research Platform</strong>
+            Gunakan akun Gmail Anda untuk melanjutkan ke <strong>IB-SLR Research Platform</strong>
           </p>
         </div>
 
-        {/* One-Tap Account Options */}
-        <div className="space-y-3">
-          {/* Owner Super Admin Option */}
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleInstantSignIn("ibnusetiawan1928@gmail.com", "Ibnu Setiawan (Owner)")}
-            className="w-full p-3.5 rounded-xl border-2 border-[#2F7D78]/30 hover:border-[#2F7D78] hover:bg-[#EFF7F6] text-left transition-all flex items-center justify-between group shadow-sm"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#17324D] text-[#3E9C96] font-bold flex items-center justify-center text-sm">
-                IS
-              </div>
-              <div>
-                <div className="text-xs font-bold text-[#17324D] flex items-center gap-1.5">
-                  <span>Ibnu Setiawan</span>
-                  <span className="px-1.5 py-0.2 rounded text-[10px] bg-[#18794E] text-white font-semibold">
-                    Owner Super Admin
-                  </span>
-                </div>
-                <div className="text-[11px] text-[#667085]">ibnusetiawan1928@gmail.com</div>
+        {error && (
+          <div className="bg-[#FEF3F2] border border-[#B42318]/30 rounded-lg p-3 text-xs text-[#B42318] flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSignIn} className="space-y-4">
+          <div>
+            <label className="block text-xs font-semibold text-[#17212B] mb-1">
+              Alamat Email Google / Gmail
+            </label>
+            <div className="relative">
+              <Mail className="w-4 h-4 text-[#667085] absolute left-3 top-3" />
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="nama@gmail.com"
+                className="w-full pl-9 pr-3.5 py-2 text-xs border border-[#E4E7EC] rounded-lg text-[#17212B]"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-semibold text-[#17212B] mb-1">
+              Nama Lengkap Anda
+            </label>
+            <input
+              type="text"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Contoh: Dr. Budi Santoso"
+              className="w-full px-3.5 py-2 text-xs border border-[#E4E7EC] rounded-lg text-[#17212B]"
+            />
+          </div>
+
+          {isOwnerEmail && (
+            <div className="p-3 bg-[#EFF7F6] border border-[#2F7D78]/30 rounded-xl space-y-2">
+              <span className="text-xs font-bold text-[#17324D] flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-[#2F7D78]" />
+                Verifikasi Hak Akses Khusus Owner
+              </span>
+              <p className="text-[11px] text-[#667085]">
+                Alamat ini terdaftar sebagai akun Super Admin / Pro VIP. Masukkan kata sandi Anda untuk konfirmasi keamanan:
+              </p>
+              <div className="relative">
+                <Lock className="w-4 h-4 text-[#667085] absolute left-3 top-2.5" />
+                <input
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Kata sandi akun..."
+                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-white border border-[#2F7D78]/30 rounded-lg"
+                />
               </div>
             </div>
-            <ArrowRight className="w-4 h-4 text-[#2F7D78] group-hover:translate-x-1 transition-transform" />
-          </button>
+          )}
 
-          {/* Pro VIP Researcher Option */}
           <button
-            type="button"
+            type="submit"
             disabled={loading}
-            onClick={() => handleInstantSignIn("pro@ib-slr.com", "Dr. Ibnu (Pro VIP)")}
-            className="w-full p-3.5 rounded-xl border border-[#E4E7EC] hover:border-[#2F7D78] hover:bg-[#F7F8FA] text-left transition-all flex items-center justify-between group"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#2F7D78] text-white font-bold flex items-center justify-center text-sm">
-                VIP
-              </div>
-              <div>
-                <div className="text-xs font-bold text-[#17324D] flex items-center gap-1.5">
-                  <span>Dr. Ibnu (Pro VIP)</span>
-                  <span className="px-1.5 py-0.2 rounded text-[10px] bg-[#2F7D78] text-white font-semibold">
-                    Free Pro Lifetime
-                  </span>
-                </div>
-                <div className="text-[11px] text-[#667085]">pro@ib-slr.com</div>
-              </div>
-            </div>
-            <ArrowRight className="w-4 h-4 text-[#667085] group-hover:translate-x-1 transition-transform" />
-          </button>
-        </div>
-
-        {/* Custom Google Email Form */}
-        <div className="pt-4 border-t border-[#E4E7EC] space-y-3">
-          <span className="text-[11px] font-semibold text-[#667085] block">
-            Atau gunakan alamat Google lain:
-          </span>
-          <input
-            type="email"
-            value={customEmail}
-            onChange={(e) => setCustomEmail(e.target.value)}
-            placeholder="nama@gmail.com"
-            className="w-full px-3.5 py-2 text-xs border border-[#E4E7EC] rounded-lg"
-          />
-          <button
-            type="button"
-            disabled={loading || !customEmail}
-            onClick={() => handleInstantSignIn(customEmail, customName || customEmail.split("@")[0])}
             className="w-full py-2.5 rounded-xl bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-semibold shadow-sm transition-colors flex items-center justify-center gap-2"
           >
-            <span>{loading ? "Menghubungkan..." : "Masuk dengan Email Ini"}</span>
+            <span>{loading ? "Menghubungkan..." : "Lanjutkan Masuk"}</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#3E9C96]" />
           </button>
-        </div>
+        </form>
 
         {/* Return to Login */}
-        <div className="text-center">
+        <div className="text-center pt-2 border-t border-[#E4E7EC]">
           <Link
             href="/login"
             className="inline-flex items-center gap-1 text-xs text-[#667085] hover:text-[#17324D]"

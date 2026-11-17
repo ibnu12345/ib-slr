@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
 import { findUserByEmail, createUser } from "../../../../../lib/db";
 import { createSessionCookie } from "../../../../../lib/auth/session";
 
@@ -7,6 +8,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const email = body.email?.toLowerCase().trim();
     const fullName = body.fullName || email.split("@")[0];
+    const password = body.password || "";
 
     if (!email) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 });
@@ -17,6 +19,26 @@ export async function POST(request: NextRequest) {
       email.includes("ibnusetiawan1928") ||
       email === "admin@ib-slr.com" ||
       email === "pro@ib-slr.com";
+
+    // Protect owner accounts from unauthorized takeover
+    if (isOwner) {
+      if (!password) {
+        return NextResponse.json(
+          { error: "Kata sandi verifikasi diperlukan untuk akun Owner / Super Admin." },
+          { status: 400 }
+        );
+      }
+      const existingUser = await findUserByEmail(email);
+      if (existingUser && existingUser.passwordHash) {
+        const match = bcrypt.compareSync(password, existingUser.passwordHash);
+        if (!match) {
+          return NextResponse.json(
+            { error: "Kata sandi akun Owner salah. Silakan periksa kembali." },
+            { status: 401 }
+          );
+        }
+      }
+    }
 
     let user = await findUserByEmail(email);
 
@@ -49,3 +71,4 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: err.message || "Simulation failed" }, { status: 500 });
   }
 }
+
