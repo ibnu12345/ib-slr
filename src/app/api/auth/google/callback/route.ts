@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SE;
   const redirectUri = `${origin}/api/auth/google/callback`;
 
   try {
