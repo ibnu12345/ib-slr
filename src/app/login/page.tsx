@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookOpen, Lock, Mail, AlertCircle, ArrowRight, ShieldCheck, User } from "lucide-react";
+import { BookOpen, Lock, Mail, AlertCircle, ArrowRight } from "lucide-react";
 import { loginAction } from "../../lib/auth/actions";
 import { useLanguage } from "../../components/i18n/LanguageContext";
 
@@ -41,12 +41,6 @@ export default function LoginPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const fillCredentials = (userEmail: string, userPass: string) => {
-    setEmail(userEmail);
-    setPassword(userPass);
-    setError(null);
   };
 
   return (
@@ -163,60 +157,6 @@ export default function LoginPage() {
           <Link href="/register" className="text-[#2F7D78] hover:underline font-semibold">
             {isId ? "Daftar sekarang gratis" : "Create an account"}
           </Link>
-        </div>
-
-        {/* DEMO / TEST ACCOUNTS BOX - PROMINENTLY POSITIONED AT THE BOTTOM */}
-        <div className="mt-6 pt-6 border-t-2 border-dashed border-[#E4E7EC] space-y-3">
-          <div className="flex items-center gap-1.5 text-xs font-bold text-[#17324D]">
-            <ShieldCheck className="w-4 h-4 text-[#2F7D78]" />
-            <span>Akun Uji Coba Siap Pakai (Klik untuk Isi Otomatis):</span>
-          </div>
-
-          <div className="space-y-2 text-xs">
-            {/* Admin Account Card */}
-            <div className="p-3 rounded-lg bg-[#EFF7F6] border border-[#2F7D78]/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="font-bold text-[#17324D] block text-[11px] uppercase tracking-wider">
-                  1. Administrator (Akses Penuh /admin CMS)
-                </span>
-                <div className="text-[11px] text-[#667085] font-mono mt-0.5">
-                  Email: <span className="font-semibold text-[#17212B]">admin@ib-slr.local</span>
-                </div>
-                <div className="text-[11px] text-[#667085] font-mono">
-                  Password: <span className="font-semibold text-[#17212B]">AdminPass123!</span>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => fillCredentials("admin@ib-slr.local", "AdminPass123!")}
-                className="px-2.5 py-1.5 bg-[#2F7D78] hover:bg-[#266662] text-white rounded text-[11px] font-semibold transition-colors shrink-0"
-              >
-                Gunakan Akun Ini
-              </button>
-            </div>
-
-            {/* Researcher Account Card */}
-            <div className="p-3 rounded-lg bg-[#F7F8FA] border border-[#E4E7EC] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <span className="font-bold text-[#17324D] block text-[11px] uppercase tracking-wider">
-                  2. Peneliti Terverifikasi (Akses /app Workspace)
-                </span>
-                <div className="text-[11px] text-[#667085] font-mono mt-0.5">
-                  Email: <span className="font-semibold text-[#17212B]">researcher@ib-slr.local</span>
-                </div>
-                <div className="text-[11px] text-[#667085] font-mono">
-                  Password: <span className="font-semibold text-[#17212B]">ResearchPass123!</span>
-                </div>
-              </div>
-              <button
-                type="button"
-                onClick={() => fillCredentials("researcher@ib-slr.local", "ResearchPass123!")}
-                className="px-2.5 py-1.5 bg-[#17324D] hover:bg-[#12273D] text-white rounded text-[11px] font-semibold transition-colors shrink-0"
-              >
-                Gunakan Akun Ini
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
