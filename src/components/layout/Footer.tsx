@@ -26,12 +26,22 @@ export function Footer({ settings, col1Items, col2Items, col3Items, legalItems }
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-[#E4E7EC]">
           {/* Brand & Purpose Column */}
           <div className="md:col-span-2 space-y-4">
-            <Link href="/" className="inline-block">
-              <img
-                src="/logo-full.png"
-                alt={settings.brandName || "IB-SLR"}
-                className="h-9 sm:h-10 w-auto object-contain"
-              />
+            <Link href="/" className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-white border border-[#E4E7EC] p-1 flex items-center justify-center shadow-sm shrink-0">
+                <img
+                  src="/logo-icon.png"
+                  alt="IB-SLR Logo"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold tracking-tight text-[#17324D]">
+                  {settings.brandName || "IB-SLR"}
+                </span>
+                <span className="text-[10px] uppercase font-medium tracking-wider text-[#667085] -mt-1">
+                  From Literature to Evidence
+                </span>
+              </div>
             </Link>
             <p className="text-xs text-[#667085] leading-relaxed max-w-sm">
               {isId
