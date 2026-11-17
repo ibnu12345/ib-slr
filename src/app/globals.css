@@ -38,3 +38,85 @@ input:focus, textarea:focus, select:focus {
 ::-webkit-scrollbar-thumb:hover {
   background: #98A2B3;
 }
+
+/* =====================================================================
+   PRINT & PUBLICATION EXPORT STYLES (PRISMA 2020 Flow Diagram)
+   ===================================================================== */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 12mm 12mm;
+  }
+
+  /* Completely suppress webpage UI chrome */
+  header,
+  footer,
+  aside,
+  nav,
+  .no-print,
+  [aria-label="Announcement"],
+  [data-print-hide="true"],
+  button,
+  .project-nav-tabs,
+  .breadcrumb-nav {
+    display: none !important;
+  }
+
+  /* Force pure white academic publication canvas */
+  html, body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    box-shadow: none !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .print-clean-canvas {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    background: #ffffff !important;
+  }
+
+  .print-box-solid {
+    border: 1.5pt solid #17212B !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    border-radius: 4pt !important;
+    color: #000000 !important;
+  }
+
+  .print-break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Show dedicated print headers and footers */
+  .print-only-header {
+    display: block !important;
+    visibility: visible !important;
+  }
+
+  .print-only-citation {
+    display: block !important;
+    margin-top: 16pt !important;
+    padding-top: 8pt !important;
+    border-top: 1pt solid #94A3B8 !important;
+    font-size: 7.5pt !important;
+    color: #475569 !important;
+  }
+}

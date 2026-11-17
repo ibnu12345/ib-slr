@@ -27,6 +27,11 @@ export interface SiteSettings {
     linkUrl?: string;
     linkText?: string;
   };
+  // Google AdSense Monetization
+  adsenseEnabled?: boolean;
+  adsenseClientId?: string;
+  adsenseSlotBanner?: string;
+  adsenseSlotSidebar?: string;
 }
 
 export interface NavigationItem {

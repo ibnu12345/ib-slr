@@ -214,8 +214,8 @@ export const faqTranslations = {
       },
       {
         id: "faq-5",
-        question: "Bagaimana cara menggunakan opsi Pay-Per-Project Pass (Rp 10.000)?",
-        answer: "Setiap pengguna baru langsung mendapatkan 1 proyek aktif gratis permanen. Jika Anda ingin menambah proyek kedua tanpa beralih ke paket langganan bulanan, Anda cukup membeli 1X Active Review Pass seharga Rp 10.000 per proyek.",
+        question: "Bagaimana cara menggunakan opsi Pay-Per-Project Pass (Rp 20.000)?",
+        answer: "Setiap pengguna baru langsung mendapatkan 1 proyek aktif gratis permanen. Jika Anda ingin menambah proyek kedua tanpa beralih ke paket langganan bulanan, Anda cukup membeli 1X Active Review Pass seharga Rp 20.000 per proyek.",
       },
     ],
   },
@@ -246,8 +246,8 @@ export const faqTranslations = {
       },
       {
         id: "faq-5",
-        question: "How does the Pay-Per-Project Pass (Rp 10,000) work?",
-        answer: "Every user receives 1 active review project free forever. If you wish to conduct an additional review without committing to a monthly subscription, you can unlock an extra active project pass for just Rp 10,000 (~$0.65) per project.",
+        question: "How does the Pay-Per-Project Pass (Rp 20,000) work?",
+        answer: "Every user receives 1 active review project free forever. If you wish to conduct an additional review without committing to a monthly subscription, you can unlock an extra active project pass for just Rp 20,000 (~$1.30) per project.",
       },
     ],
   },

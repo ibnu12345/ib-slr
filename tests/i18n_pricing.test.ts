@@ -21,20 +21,20 @@ describe("Bilingual i18n & Pricing Model", () => {
     }
   });
 
-  it("includes Pay-Per-Project Pass (Rp 10.000) for additional 1X active project", async () => {
+  it("includes Pay-Per-Project Pass (Rp 20.000) for additional 1X active project", async () => {
     const plans = await getPricingPlans();
 
     // Check Academic Free
     const academicFree = plans.find((p) => p.tierKey === "academic_free" || p.id === "plan-academic");
     expect(academicFree).toBeDefined();
     expect(academicFree?.priceMonthly).toBe(0);
-    expect(academicFree?.features.some((f) => f.includes("1 Active Systematic Review") || f.includes("Rp 10.000"))).toBe(true);
+    expect(academicFree?.features.some((f) => f.includes("1 Active Systematic Review") || f.includes("Rp 20.000"))).toBe(true);
 
     // Check Pay-Per-Project Pass
     const payPerProject = plans.find((p) => p.tierKey === "pay_per_project" || p.id === "plan-pay-per-project");
     expect(payPerProject).toBeDefined();
     expect(payPerProject?.name).toContain("Pay-Per-Project");
-    expect(payPerProject?.priceIdr).toBe("Rp 10.000");
-    expect(payPerProject?.features.some((f) => f.includes("Rp 10.000") || f.includes("+1 Slot"))).toBe(true);
+    expect(payPerProject?.priceIdr).toBe("Rp 20.000");
+    expect(payPerProject?.features.some((f) => f.includes("Rp 20.000") || f.includes("+1 Slot"))).toBe(true);
   });
 });

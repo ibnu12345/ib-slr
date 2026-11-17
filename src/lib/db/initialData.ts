@@ -15,6 +15,10 @@ export const defaultSiteSettings: SiteSettings = {
     linkUrl: "/how-it-works",
     linkText: "Learn more",
   },
+  adsenseEnabled: true,
+  adsenseClientId: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-ib-slr-academic",
+  adsenseSlotBanner: "1234567890",
+  adsenseSlotSidebar: "0987654321",
 };
 
 export const defaultNavigationItems: NavigationItem[] = [
@@ -63,7 +67,7 @@ export const defaultPricingPlans: PricingPlan[] = [
     billingPeriodLabel: "selamanya",
     features: [
       "1 Active Systematic Review Project (Gratis Selamanya)",
-      "Top-Up Fleksibel: Tambah 1X Proyek Aktif hanya Rp 10.000",
+      "Top-Up Fleksibel: Tambah 1X Proyek Aktif hanya Rp 20.000",
       "Up to 1,000 References Imported",
       "Title & Abstract Screening with Exclusion Reasons",
       "Manual Data Extraction Matrix",
@@ -79,13 +83,13 @@ export const defaultPricingPlans: PricingPlan[] = [
     name: "Pay-Per-Project Pass",
     tierKey: "pay_per_project",
     tagline: "Beli kuota tambahan 1x proyek aktif tanpa perlu langganan bulanan.",
-    priceMonthly: 0.65,
-    priceAnnual: 0.65,
-    priceIdr: "Rp 10.000",
+    priceMonthly: 1.30,
+    priceAnnual: 1.30,
+    priceIdr: "Rp 20.000",
     billingPeriodLabel: "/ 1x proyek aktif",
     features: [
       "+1 Slot Active Systematic Review Project Tambahan",
-      "Bayar sekali Rp 10.000 (tanpa komitmen bulanan)",
+      "Bayar sekali Rp 20.000 (tanpa komitmen bulanan)",
       "Bebas dipakai setelah kuota 1 proyek gratis terpakai",
       "Ekstraksi Data & PRISMA 2020 Lengkap",
       "PDF Viewer & Ekstraksi Teks Otomatis",

@@ -43,6 +43,7 @@ import {
 import { AppraisalRecord } from "../types/appraisal";
 import { ThematicCode, ThematicExcerpt, SynthesisSummary } from "../types/synthesis";
 import { ProjectManuscript, JournalTableDefinition } from "../types/publication";
+import { PaymentOrder } from "../types/payment";
 import {
   defaultSiteSettings,
   defaultNavigationItems,
@@ -106,6 +107,8 @@ export interface DatabaseSchema {
   // Publication & Manuscript
   manuscripts: ProjectManuscript[];
   tableDefinitions: JournalTableDefinition[];
+  // Payment & Top-Up
+  paymentOrders: PaymentOrder[];
 }
 
 const DATA_DIR = path.join(process.cwd(), ".data");
@@ -834,6 +837,7 @@ function getInitialDatabase(): DatabaseSchema {
     thematicExcerpts: defaultThematicExcerpts,
     manuscripts: defaultManuscripts,
     tableDefinitions: defaultTableDefinitions,
+    paymentOrders: [],
   };
 }
 
@@ -869,6 +873,7 @@ export function getDb(): DatabaseSchema {
         thematicExcerpts: parsed.thematicExcerpts || getInitialDatabase().thematicExcerpts,
         manuscripts: parsed.manuscripts || getInitialDatabase().manuscripts,
         tableDefinitions: parsed.tableDefinitions || getInitialDatabase().tableDefinitions,
+        paymentOrders: parsed.paymentOrders || [],
       };
       lastDbMtime = stat.mtimeMs;
       return memoryDb!;
@@ -2365,3 +2370,62 @@ export async function saveTableDefinition(
   saveDb(db);
   return tableDef;
 }
+
+// =====================================================================
+// PAYMENT & TOP-UP OPERATIONS (QRIS & MIDTRANS)
+// =====================================================================
+
+export async function createPaymentOrderDb(order: PaymentOrder): Promise<PaymentOrder> {
+  const db = getDb();
+  if (!db.paymentOrders) db.paymentOrders = [];
+  db.paymentOrders.push(order);
+  createAuditLogSync("CREATE_PAYMENT_ORDER", "payment", order.id, {
+    orderId: order.orderId,
+    amount: order.amount,
+    paymentType: order.paymentType,
+  }, order.userId, order.userEmail);
+  saveDb(db);
+  return order;
+}
+
+export async function getPaymentOrderById(id: string): Promise<PaymentOrder | null> {
+  const db = getDb();
+  if (!db.paymentOrders) return null;
+  const found = db.paymentOrders.find((o) => o.id === id || o.orderId === id);
+  return found || null;
+}
+
+export async function updatePaymentOrderStatus(
+  id: string,
+  status: PaymentOrder["status"],
+  metadata?: Record<string, any>
+): Promise<PaymentOrder | null> {
+  const db = getDb();
+  if (!db.paymentOrders) return null;
+  const order = db.paymentOrders.find((o) => o.id === id || o.orderId === id);
+  if (!order) return null;
+
+  order.status = status;
+  if (status === "paid") {
+    order.paidAt = new Date().toISOString();
+  }
+  if (metadata) {
+    order.metadata = { ...(order.metadata || {}), ...metadata };
+  }
+
+  createAuditLogSync("UPDATE_PAYMENT_STATUS", "payment", order.id, {
+    status,
+    orderId: order.orderId,
+  }, order.userId, order.userEmail);
+  saveDb(db);
+  return order;
+}
+
+export async function getUserPaymentOrders(userId: string): Promise<PaymentOrder[]> {
+  const db = getDb();
+  if (!db.paymentOrders) return [];
+  return db.paymentOrders
+    .filter((o) => o.userId === userId)
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+}
+

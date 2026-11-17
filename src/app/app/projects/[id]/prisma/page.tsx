@@ -20,8 +20,8 @@ export default async function ProjectPrismaPage({ params }: Props) {
   ]);
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
-      <div className="pb-4 border-b border-[#E4E7EC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    <div className="max-w-5xl mx-auto space-y-6 print:p-0 print:m-0 print:max-w-full">
+      <div className="no-print pb-4 border-b border-[#E4E7EC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h2 className="text-xl font-bold tracking-tight text-[#17324D]">
             Diagram Alur PRISMA 2020 (Event-Driven Flow Diagram)
@@ -34,6 +34,7 @@ export default async function ProjectPrismaPage({ params }: Props) {
 
       <PrismaDiagramView
         projectId={id}
+        project={project}
         counts={prismaCounts}
         events={events}
       />

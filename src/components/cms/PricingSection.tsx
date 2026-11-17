@@ -29,8 +29,8 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
           </h2>
           <p className="text-sm sm:text-base text-[#667085] leading-relaxed max-w-2xl mx-auto">
             {isId
-              ? "Gratis 1 proyek aktif permanen untuk riset mandiri. Butuh proyek tambahan? Cukup Rp 10.000 per 1x proyek aktif tanpa harus langganan bulanan."
-              : section.subtitle || "Start with 1 free active review project. Need more? Add 1x active review project for just Rp 10,000 without monthly commitments."}
+              ? "Gratis 1 proyek aktif permanen untuk riset mandiri. Butuh proyek tambahan? Cukup Rp 20.000 per 1x proyek aktif tanpa harus langganan bulanan."
+              : section.subtitle || "Start with 1 free active review project. Need more? Add 1x active review project for just Rp 20,000 without monthly commitments."}
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
                 displayPrice = "Gratis";
                 displayPeriod = "selamanya";
               } else if (isPayPerProject) {
-                displayPrice = "Rp 10.000";
+                displayPrice = "Rp 20.000";
                 displayPeriod = "/ 1x proyek aktif";
               } else if (plan.priceIdr) {
                 displayPrice = plan.priceIdr;
@@ -58,8 +58,8 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
                 displayPrice = "Free";
                 displayPeriod = "forever";
               } else if (isPayPerProject) {
-                displayPrice = "Rp 10k";
-                displayPeriod = "($0.65) / project";
+                displayPrice = "Rp 20k";
+                displayPeriod = "($1.30) / project";
               }
             }
 
@@ -125,7 +125,7 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
                       {isFree
                         ? isId ? "Mulai Gratis" : "Get Started Free"
                         : isPayPerProject
-                        ? isId ? "Beli 1X Proyek (Rp 10k)" : "Get +1 Project Pass"
+                        ? isId ? "Beli 1X Proyek (Rp 20k)" : "Get +1 Project Pass"
                         : isId ? "Pilih Paket" : "Subscribe to Plan"}
                     </span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -136,7 +136,7 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
           })}
         </div>
 
-        {/* Highlight Callout: Pay-Per-Project Pass (Rp 10.000 / 1X Proyek Tambahan) */}
+        {/* Highlight Callout: Pay-Per-Project Pass (Rp 20.000 / 1X Proyek Tambahan) */}
         <div className="mt-12 max-w-4xl mx-auto p-6 rounded-2xl bg-gradient-to-r from-[#EFF7F6] via-[#FFFFFF] to-[#EFF7F6] border border-[#2F7D78]/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-5">
           <div className="flex items-start gap-3.5">
             <div className="p-3 rounded-xl bg-[#2F7D78] text-white shrink-0 shadow-sm">
@@ -150,13 +150,13 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
                     : "Need an Extra 1X Project Without Monthly Commitments?"}
                 </h4>
                 <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#18794E] text-white">
-                  Rp 10.000
+                  Rp 20.000
                 </span>
               </div>
               <p className="text-xs text-[#667085] mt-1 max-w-2xl leading-relaxed">
                 {isId
-                  ? "Setiap pengguna baru langsung mendapatkan 1 Active Systematic Review Project secara gratis. Setelah kuota gratis digunakan, Anda bisa menambah 1x proyek aktif kapan saja hanya seharga Rp 10.000 per proyek tanpa perlu berlangganan paket bulanan."
-                  : "Every new user gets 1 Active Systematic Review Project free forever. Once your free project slot is in use, you can unlock an additional active review project at any time for just Rp 10,000 (~$0.65) per project."}
+                  ? "Setiap pengguna baru langsung mendapatkan 1 Active Systematic Review Project secara gratis. Setelah kuota gratis digunakan, Anda bisa menambah 1x proyek aktif kapan saja hanya seharga Rp 20.000 per proyek tanpa perlu berlangganan paket bulanan."
+                  : "Every new user gets 1 Active Systematic Review Project free forever. Once your free project slot is in use, you can unlock an additional active review project at any time for just Rp 20,000 (~$1.30) per project."}
               </p>
             </div>
           </div>

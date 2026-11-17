@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { getSiteSettings, getNavigation } from "../lib/db";
 import { getCurrentSession } from "../lib/auth/session";
+import Script from "next/script";
 import { Navbar } from "../components/layout/Navbar";
 import { Footer } from "../components/layout/Footer";
 import { AnnouncementBanner } from "../components/layout/AnnouncementBanner";
 import { LanguageProvider } from "../components/i18n/LanguageContext";
+import { AdSenseBanner } from "../components/ads/AdSenseBanner";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
@@ -40,16 +42,36 @@ export default async function RootLayout({
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-[#F7F8FA] text-[#17212B] antialiased">
         <LanguageProvider>
-          <AnnouncementBanner announcement={settings.announcement} />
-          <Navbar settings={settings} navItems={headerNav} session={session} />
+          <div className="no-print">
+            <AnnouncementBanner announcement={settings.announcement} />
+            <Navbar settings={settings} navItems={headerNav} session={session} />
+          </div>
           <main className="flex-1">{children}</main>
-          <Footer
-            settings={settings}
-            col1Items={col1}
-            col2Items={col2}
-            col3Items={col3}
-            legalItems={legal}
-          />
+          <div className="no-print">
+            {settings.adsenseEnabled !== false && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <AdSenseBanner
+                  clientId={settings.adsenseClientId}
+                  slotId={settings.adsenseSlotBanner}
+                />
+              </div>
+            )}
+            <Footer
+              settings={settings}
+              col1Items={col1}
+              col2Items={col2}
+              col3Items={col3}
+              legalItems={legal}
+            />
+          </div>
+          {settings.adsenseClientId && !settings.adsenseClientId.includes("academic") && (
+            <Script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.adsenseClientId}`}
+              crossOrigin="anonymous"
+              strategy="afterInteractive"
+            />
+          )}
         </LanguageProvider>
       </body>
     </html>

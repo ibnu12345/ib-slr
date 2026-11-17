@@ -157,12 +157,12 @@ export default function NewProjectPage() {
               </span>
               <p className="text-[#667085] mt-0.5 leading-relaxed">
                 {isId
-                  ? "Paket gratis mencakup 1x proyek aktif. Setelah itu, opsi top-up 1X Proyek Aktif tambahan tersedia seharga Rp 10.000 per proyek tanpa perlu berlangganan bulanan."
-                  : "Academic Free tier includes 1 active review project. Need an extra active project slot? Unlock +1 Active Project for just Rp 10,000 (~$0.65) with zero recurring commitments."}
+                  ? "Paket gratis mencakup 1x proyek aktif. Setelah itu, opsi top-up 1X Proyek Aktif tambahan tersedia seharga Rp 20.000 per proyek tanpa perlu berlangganan bulanan."
+                  : "Academic Free tier includes 1 active review project. Need an extra active project slot? Unlock +1 Active Project for just Rp 20,000 (~$1.30) with zero recurring commitments."}
               </p>
             </div>
             <span className="shrink-0 px-2.5 py-1 rounded bg-[#18794E] text-white text-[10px] font-bold">
-              Rp 10.000 / 1X Pass
+              Rp 20.000 / 1X Pass
             </span>
           </div>
 

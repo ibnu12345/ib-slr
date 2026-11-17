@@ -23,7 +23,7 @@ export function AnnouncementBanner({ announcement }: AnnouncementBannerProps) {
   }
 
   const message = isId
-    ? "Beta Publik: IB-SLR 2.0 aktif dengan rekonsiliasi PRISMA 2020 dan opsi Pay-Per-Project Pass Rp 10.000."
+    ? "Beta Publik: IB-SLR 2.0 aktif dengan rekonsiliasi PRISMA 2020 dan opsi Pay-Per-Project Pass Rp 20.000."
     : announcement.message;
 
   const linkText = isId ? "Pelajari lebih lanjut" : announcement.linkText || "Learn more";
