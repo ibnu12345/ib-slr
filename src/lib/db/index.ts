@@ -1409,9 +1409,7 @@ export async function getProjects(userId?: string): Promise<Project[]> {
   await syncFromSupabase();
   const db = getDb();
   if (!userId) return db.projects;
-  return db.projects.filter(
-    (p) => p.createdBy === userId || p.workspaceId.includes("demo") || p.id === "prj-demo-1"
-  );
+  return db.projects.filter((p) => p.createdBy === userId);
 }
 
 export async function getProjectsByUserId(userId: string): Promise<Project[]> {

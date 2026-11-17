@@ -16,6 +16,7 @@ export async function getUserQuotaInfo(userId: string, role?: string): Promise<U
     userId === "usr-ibnu-owner" ||
     role === "pro" ||
     userEmail.includes("ibnusetiawan1928") ||
+    userEmail.includes("ibnusp28") ||
     userEmail === "pro@ib-slr.com" ||
     userEmail === "admin@ib-slr.com";
 
@@ -27,7 +28,9 @@ export async function getUserQuotaInfo(userId: string, role?: string): Promise<U
   const totalQuota = isOwnerOrPro ? 9999 : baseFreeQuota + purchasedQuota;
 
   const userProjects = await getProjects(userId);
-  const activeProjects = userProjects.filter((p) => p.status === "active");
+  const activeProjects = userProjects.filter(
+    (p) => p.status === "active" && !p.id.includes("demo")
+  );
   const usedQuota = activeProjects.length;
 
   const remainingQuota = isOwnerOrPro ? 9999 : Math.max(0, totalQuota - usedQuota);
