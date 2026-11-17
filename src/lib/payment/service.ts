@@ -7,7 +7,8 @@ import {
   getUserPaymentOrders,
 } from "../db";
 
-const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY || "";
+const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY || process.env.MIDTRANS_API_KEY || "";
+const MIDTRANS_API_KEY = process.env.MIDTRANS_API_KEY || process.env.MIDTRANS_SERVER_KEY || "";
 const MIDTRANS_CLIENT_KEY = process.env.MIDTRANS_CLIENT_KEY || "";
 const IS_PRODUCTION = process.env.MIDTRANS_IS_PRODUCTION === "true";
 
@@ -145,6 +146,57 @@ export async function createProjectPassOrder(
  */
 export async function checkPaymentStatus(orderId: string): Promise<PaymentOrder | null> {
   const order = await getPaymentOrderById(orderId);
+  if (!order) return null;
+
+  // Proactively sync status directly from Midtrans if still pending
+  if (order.status === "pending" && MIDTRANS_SERVER_KEY) {
+    try {
+      const keysToTry = [MIDTRANS_SERVER_KEY, MIDTRANS_API_KEY].filter(Boolean);
+      for (const key of keysToTry) {
+        const authHeader = Buffer.from(`${key}:`).toString("base64");
+        const statusUrl = IS_PRODUCTION
+          ? `https://api.midtrans.com/v2/${orderId}/status`
+          : `https://api.sandbox.midtrans.com/v2/${orderId}/status`;
+
+        const res = await fetch(statusUrl, {
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Basic ${authHeader}`,
+          },
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const { transaction_status, fraud_status } = data;
+          if (
+            transaction_status === "settlement" ||
+            (transaction_status === "capture" && fraud_status !== "challenge")
+          ) {
+            const updated = await updatePaymentOrderStatus(orderId, "paid", {
+              midtransStatus: data,
+              verifiedVia: "MIDTRANS_ACTIVE_STATUS_POLL",
+              paidAt: data.settlement_time || new Date().toISOString(),
+            });
+            return updated || order;
+          } else if (
+            transaction_status === "cancel" ||
+            transaction_status === "deny" ||
+            transaction_status === "expire"
+          ) {
+            const updated = await updatePaymentOrderStatus(orderId, "failed", {
+              midtransStatus: data,
+            });
+            return updated || order;
+          }
+          break;
+        }
+      }
+    } catch {
+      // Non-blocking catch
+    }
+  }
+
   return order;
 }
 
@@ -173,12 +225,19 @@ export async function handleMidtransNotification(payload: any): Promise<{ succes
     fraud_status,
   } = payload;
 
-  if (MIDTRANS_SERVER_KEY && signature_key) {
-    // Expected SHA512 signature: SHA512(order_id + status_code + gross_amount + ServerKey)
-    const rawString = `${order_id}${status_code}${gross_amount}${MIDTRANS_SERVER_KEY}`;
-    const expectedSignature = crypto.createHash("sha512").update(rawString).digest("hex");
+  if (signature_key) {
+    const keysToTry = [MIDTRANS_SERVER_KEY, MIDTRANS_API_KEY].filter(Boolean);
+    let signatureValid = false;
+    for (const key of keysToTry) {
+      const rawString = `${order_id}${status_code}${gross_amount}${key}`;
+      const expectedSignature = crypto.createHash("sha512").update(rawString).digest("hex");
+      if (signature_key === expectedSignature) {
+        signatureValid = true;
+        break;
+      }
+    }
 
-    if (signature_key !== expectedSignature) {
+    if (!signatureValid && keysToTry.length > 0) {
       return { success: false, message: "Invalid Midtrans signature key." };
     }
   }

@@ -12,6 +12,7 @@ import {
   RefreshCw,
   Zap,
   Download,
+  ExternalLink,
 } from "lucide-react";
 import { QrisGenerateResponse, PaymentOrder } from "../../lib/types/payment";
 
@@ -262,6 +263,29 @@ export function QrisCheckoutModal({ isOpen, onClose, onSuccess }: Props) {
                   Dapat di-scan dengan: <strong>BCA Mobile, Livin' Mandiri, BRImo, BNI, GoPay, OVO, Dana, ShopeePay, LinkAja</strong>
                 </p>
               </div>
+
+              {/* Direct Midtrans Hosted Checkout Option */}
+              {orderData?.order?.snapRedirectUrl && (
+                <div className="p-3 bg-[#17324D]/5 border border-[#17324D]/15 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+                  <div className="text-left">
+                    <span className="font-bold text-[#17324D] block text-xs">
+                      Bayar via Midtrans Official
+                    </span>
+                    <span className="text-[11px] text-[#667085]">
+                      Mendukung GoPay, ShopeePay, Virtual Account & Transfer Bank
+                    </span>
+                  </div>
+                  <a
+                    href={orderData.order.snapRedirectUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-semibold shadow-sm transition-all"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-[#3E9C96]" />
+                    <span>Buka Midtrans</span>
+                  </a>
+                </div>
+              )}
 
               {/* Sandbox Simulation / Instant Test Button */}
               <div className="p-3 bg-[#EFF7F6] border border-[#2F7D78]/25 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
