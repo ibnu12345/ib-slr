@@ -18,6 +18,7 @@ import {
 } from "../db";
 import { parseRis, parseBibTeX, parseCsv } from "../importers/parsers";
 import { ProtocolFramework, ReviewType } from "../types/research";
+import { getUserQuotaInfo } from "../payment/quota";
 
 export async function createProjectAction(formData: FormData) {
   const session = await requireEmailVerified();
@@ -29,6 +30,17 @@ export async function createProjectAction(formData: FormData) {
 
   if (!title) {
     return { success: false, error: "Project title is required." };
+  }
+
+  // Enforce Active Project Quota (Base Free 1 + Paid QRIS Passes)
+  const quota = await getUserQuotaInfo(session.userId, session.role);
+  if (!quota.canCreateNewProject) {
+    return {
+      success: false,
+      error: `Batas kuota proyek aktif telah tercapai (${quota.usedQuota}/${quota.totalQuota} digunakan). Silakan top-up 1X Project Pass (Rp 20.000 via QRIS) untuk menambah slot proyek baru.`,
+      quotaExceeded: true,
+      quota,
+    };
   }
 
   const project = await createProject(

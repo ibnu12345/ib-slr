@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, BookOpen, Shield, LayoutDashboard, UserCheck, LogOut } from "lucide-react";
+import { Menu, X, BookOpen, Shield, LayoutDashboard, UserCheck, LogOut, CreditCard } from "lucide-react";
 import { SiteSettings, NavigationItem } from "../../lib/types/cms";
 import { UserSession } from "../../lib/types/auth";
 import { logoutAction } from "../../lib/auth/actions";
@@ -94,6 +94,15 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   {t("nav_workspace", "Workspace")}
                 </Link>
 
+                <Link
+                  href="/app/billing"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold text-[#17324D] bg-[#F7F8FA] hover:bg-[#EFF7F6] hover:text-[#2F7D78] border border-[#E4E7EC] transition-colors"
+                  title={isId ? "Status Akun & Kuota" : "Plan & Quota Billing"}
+                >
+                  <CreditCard className="w-3.5 h-3.5 text-[#2F7D78]" />
+                  <span>{isId ? "Billing & Kuota" : "Billing & Quota"}</span>
+                </Link>
+
                 <div className="flex items-center gap-2 pl-2 border-l border-[#E4E7EC]">
                   <span className="text-xs text-[#667085] max-w-[120px] truncate font-medium">
                     {session.fullName.split(" ")[0]}
@@ -175,6 +184,13 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
                   className="block w-full text-center px-4 py-2 rounded-md text-sm font-semibold text-white bg-[#17324D]"
                 >
                   {t("nav_workspace", "Go to Workspace")}
+                </Link>
+                <Link
+                  href="/app/billing"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full text-center px-4 py-2 rounded-md text-sm font-semibold text-[#17324D] bg-[#F7F8FA] border border-[#E4E7EC]"
+                >
+                  {isId ? "Status Akun & Kuota Langganan" : "Account Plan & Quota"}
                 </Link>
                 <button
                   onClick={() => {

@@ -3,9 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, BookOpen, Sparkles, ArrowRight, AlertCircle } from "lucide-react";
+import { ArrowLeft, BookOpen, Sparkles, ArrowRight, AlertCircle, QrCode } from "lucide-react";
 import { createProjectAction } from "../../../../lib/research/actions";
 import { useLanguage } from "../../../../components/i18n/LanguageContext";
+import { QrisCheckoutModal } from "../../../../components/payment/QrisCheckoutModal";
 
 export default function NewProjectPage() {
   const router = useRouter();
@@ -15,11 +16,14 @@ export default function NewProjectPage() {
   const [reviewType, setReviewType] = useState("systematic_review");
   const [framework, setFramework] = useState("PICO");
   const [error, setError] = useState<string | null>(null);
+  const [quotaExceeded, setQuotaExceeded] = useState(false);
+  const [qrisOpen, setQrisOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setQuotaExceeded(false);
     setLoading(true);
 
     const formData = new FormData();
@@ -32,6 +36,9 @@ export default function NewProjectPage() {
       const res = await createProjectAction(formData);
       if (!res.success || !res.project) {
         setError(res.error || (isId ? "Gagal membuat proyek penelitian." : "Failed to create research project."));
+        if ((res as any).quotaExceeded) {
+          setQuotaExceeded(true);
+        }
       } else {
         router.push(`/app/projects/${res.project.id}/protocol`);
       }
@@ -72,9 +79,21 @@ export default function NewProjectPage() {
         </div>
 
         {error && (
-          <div className="mb-6 p-4 rounded-lg bg-[#FEF3F2] border border-[#B42318]/30 text-xs text-[#B42318] flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 shrink-0" />
-            <span>{error}</span>
+          <div className="mb-6 p-4 rounded-xl bg-[#FEF3F2] border border-[#B42318]/30 text-xs text-[#B42318] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
+            <div className="flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 shrink-0 text-[#B42318]" />
+              <span>{error}</span>
+            </div>
+            {quotaExceeded && (
+              <button
+                type="button"
+                onClick={() => setQrisOpen(true)}
+                className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-semibold shadow-sm transition-colors"
+              >
+                <QrCode className="w-3.5 h-3.5 text-[#3E9C96]" />
+                <span>{isId ? "Beli Slot QRIS (Rp 20.000)" : "Unlock Slot (Rp 20k)"}</span>
+              </button>
+            )}
           </div>
         )}
 
@@ -188,6 +207,15 @@ export default function NewProjectPage() {
           </div>
         </form>
       </div>
+
+      <QrisCheckoutModal
+        isOpen={qrisOpen}
+        onClose={() => setQrisOpen(false)}
+        onSuccess={() => {
+          setQuotaExceeded(false);
+          setError(null);
+        }}
+      />
     </div>
   );
 }

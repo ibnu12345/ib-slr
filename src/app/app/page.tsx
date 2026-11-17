@@ -3,8 +3,9 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import { getCurrentSession } from "../../lib/auth/session";
 import { getProjects, getArticlesByProjectId } from "../../lib/db";
+import { getUserQuotaInfo } from "../../lib/payment/quota";
 import { LanguageSwitcher } from "../../components/i18n/LanguageSwitcher";
-import { TopUpBannerClient } from "../../components/payment/TopUpBannerClient";
+import { AccountQuotaCard } from "../../components/payment/AccountQuotaCard";
 import {
   BookOpen,
   PlusCircle,
@@ -33,6 +34,7 @@ export default async function AppDashboardPage() {
   const isId = lang === "id";
 
   const projects = await getProjects(session.userId);
+  const quota = await getUserQuotaInfo(session.userId, session.role);
   let totalArticles = 0;
   for (const prj of projects) {
     const arts = await getArticlesByProjectId(prj.id);
@@ -113,8 +115,8 @@ export default async function AppDashboardPage() {
         </div>
       </div>
 
-      {/* Pay-Per-Project Pass (20k IDR) Interactive QRIS Callout */}
-      <TopUpBannerClient isId={isId} />
+      {/* Account Plan, Quota Visualizer & Quick QRIS Top-Up */}
+      <AccountQuotaCard quota={quota} isId={isId} />
 
       {/* Workspace Quick Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-8">
@@ -130,13 +132,15 @@ export default async function AppDashboardPage() {
 
         <div className="bg-[#FFFFFF] border border-[#E4E7EC] rounded-xl p-5 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#667085] mb-1">
-            {isId ? "Referensi Diimpor" : "Imported References"}
+            {isId ? "Sisa Kuota Proyek" : "Remaining Quota"}
           </div>
           <div className="text-2xl font-bold text-[#17324D]">
-            {totalArticles > 0 ? totalArticles : 428}
+            {quota.isAdmin ? "∞" : `${quota.remainingQuota} Slot`}
           </div>
           <div className="text-[11px] text-[#667085] mt-1">
-            {isId ? "Dari berbagai sumber database riset" : "Across research sources"}
+            {quota.canCreateNewProject
+              ? (isId ? "Siap membuat proyek baru" : "Slots available")
+              : (isId ? "Batas kuota tercapai" : "Quota reached")}
           </div>
         </div>
 

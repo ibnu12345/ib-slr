@@ -31,3 +31,17 @@ export interface QrisGenerateResponse {
   expiresAt: string;
   instructions: string[];
 }
+
+export interface UserQuotaInfo {
+  userId: string;
+  planName: string;
+  planBadge: string;
+  baseFreeQuota: number;
+  purchasedQuota: number;
+  totalQuota: number;
+  usedQuota: number;
+  remainingQuota: number;
+  canCreateNewProject: boolean;
+  isAdmin: boolean;
+  paidOrdersCount: number;
+}
