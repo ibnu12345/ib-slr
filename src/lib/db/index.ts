@@ -55,6 +55,7 @@ import {
 import { normalizeDoi, normalizeTitle } from "../importers/parsers";
 import { detectDuplicates } from "../importers/deduplication";
 import { defaultExclusionReasons, calculatePrismaCounts } from "../screening/prismaLedger";
+import { isSupabaseConfigured, saveStateToSupabase, loadStateFromSupabase } from "./supabaseSync";
 
 export interface StoredUser extends UserProfile {
   passwordHash: string;
@@ -152,6 +153,39 @@ function getInitialDatabase(): DatabaseSchema {
       role: "admin",
       emailVerified: true,
       mfaEnabled: true,
+      passwordHash: adminHash,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "usr-admin-owner",
+      email: "admin@ib-slr.com",
+      fullName: "Super Administrator (Owner)",
+      role: "super_admin",
+      emailVerified: true,
+      mfaEnabled: true,
+      passwordHash: adminHash,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "usr-pro-vip",
+      email: "pro@ib-slr.com",
+      fullName: "Dr. Ibnu (Pro VIP Researcher)",
+      role: "user",
+      emailVerified: true,
+      mfaEnabled: false,
+      passwordHash: bcrypt.hashSync("ProPass123!", adminSalt),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    },
+    {
+      id: "usr-ibnu-owner",
+      email: "ibnusetiawan1928@gmail.com",
+      fullName: "Ibnu Setiawan (Platform Owner)",
+      role: "super_admin",
+      emailVerified: true,
+      mfaEnabled: false,
       passwordHash: adminHash,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -929,6 +963,24 @@ export function saveDb(data: DatabaseSchema): void {
   } catch (err) {
     console.error("Failed to persist database to disk:", err);
   }
+
+  // Auto-sync to Supabase Cloud if configured
+  if (isSupabaseConfigured()) {
+    saveStateToSupabase(data).catch((err) => {
+      console.warn("Supabase background sync warning:", err);
+    });
+  }
+}
+
+let supabaseChecked = false;
+export async function syncFromSupabase(): Promise<void> {
+  if (!supabaseChecked && isSupabaseConfigured()) {
+    supabaseChecked = true;
+    const remote = await loadStateFromSupabase();
+    if (remote) {
+      memoryDb = remote;
+    }
+  }
 }
 
 // =====================================================================
@@ -1207,15 +1259,21 @@ export async function getAuditLogs(limit: number = 100): Promise<AuditLog[]> {
 // =====================================================================
 
 export async function findUserByEmail(email: string): Promise<StoredUser | null> {
+  await syncFromSupabase();
   const db = getDb();
   const user = db.users.find((u) => u.email.toLowerCase() === email.toLowerCase());
   return user || null;
 }
 
 export async function findUserById(id: string): Promise<StoredUser | null> {
+  await syncFromSupabase();
   const db = getDb();
   const user = db.users.find((u) => u.id === id);
   return user || null;
+}
+
+export async function getUserById(id: string): Promise<StoredUser | null> {
+  return findUserById(id);
 }
 
 export async function createUser(
@@ -1348,6 +1406,7 @@ export function resolveProjectId(id: string): string {
 }
 
 export async function getProjects(userId?: string): Promise<Project[]> {
+  await syncFromSupabase();
   const db = getDb();
   if (!userId) return db.projects;
   return db.projects.filter(
@@ -2437,6 +2496,7 @@ export async function updatePaymentOrderStatus(
 }
 
 export async function getUserPaymentOrders(userId: string): Promise<PaymentOrder[]> {
+  await syncFromSupabase();
   const db = getDb();
   if (!db.paymentOrders) return [];
   return db.paymentOrders
