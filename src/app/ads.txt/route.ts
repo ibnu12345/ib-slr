@@ -1,14 +1,5 @@
-import { getSiteSettings } from "../../../src/lib/db";
-
 export async function GET() {
-  const settings = await getSiteSettings();
-  const rawClientId = settings.adsenseClientId || "pub-ib-slr-academic";
-  // Convert ca-pub-12345 to pub-12345 if necessary
-  const pubId = rawClientId.replace(/^ca-/, "");
-
-  const content = `# Google AdSense ads.txt for IB-SLR
-# http://www.google.com/adsense
-google.com, ${pubId}, DIRECT, f08c47fec0942fa0
+  const content = `google.com, pub-4685484644548395, DIRECT, f08c47fec0942fa0
 `;
 
   return new Response(content, {

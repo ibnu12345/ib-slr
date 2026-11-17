@@ -38,8 +38,13 @@ export default async function RootLayout({
   ]);
   const session = await getCurrentSession();
 
+  const adsensePublisherId = "ca-pub-4685484644548395";
+
   return (
     <html lang="en">
+      <head>
+        <meta name="google-adsense-account" content={adsensePublisherId} />
+      </head>
       <body className="min-h-screen flex flex-col bg-[#F7F8FA] text-[#17212B] antialiased">
         <LanguageProvider>
           <div className="no-print">
@@ -51,7 +56,7 @@ export default async function RootLayout({
             {settings.adsenseEnabled !== false && (
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <AdSenseBanner
-                  clientId={settings.adsenseClientId}
+                  clientId={adsensePublisherId}
                   slotId={settings.adsenseSlotBanner}
                 />
               </div>
@@ -64,14 +69,12 @@ export default async function RootLayout({
               legalItems={legal}
             />
           </div>
-          {settings.adsenseClientId && !settings.adsenseClientId.includes("academic") && (
-            <Script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${settings.adsenseClientId}`}
-              crossOrigin="anonymous"
-              strategy="afterInteractive"
-            />
-          )}
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsensePublisherId}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
+          />
         </LanguageProvider>
       </body>
     </html>

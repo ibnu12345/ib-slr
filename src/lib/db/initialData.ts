@@ -16,7 +16,7 @@ export const defaultSiteSettings: SiteSettings = {
     linkText: "Learn more",
   },
   adsenseEnabled: true,
-  adsenseClientId: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-ib-slr-academic",
+  adsenseClientId: process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID || "ca-pub-4685484644548395",
   adsenseSlotBanner: "1234567890",
   adsenseSlotSidebar: "0987654321",
 };
