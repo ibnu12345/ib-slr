@@ -53,15 +53,11 @@ export function InvoicePrintView({ order, isId = true }: Props) {
           {/* Header */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-8 border-b border-[#E4E7EC] gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-[#17324D] flex items-center justify-center text-white shadow-sm">
-                <BookOpen className="w-6 h-6 text-[#3E9C96]" />
-              </div>
-              <div>
-                <h1 className="text-xl font-black text-[#17324D] tracking-tight">IB-SLR</h1>
-                <p className="text-[11px] text-[#667085] font-medium uppercase tracking-wider">
-                  From Literature to Evidence • SaaS Platform
-                </p>
-              </div>
+              <img
+                src="/logo-full.png"
+                alt="IB-SLR Logo"
+                className="h-10 sm:h-12 w-auto object-contain"
+              />
             </div>
 
             <div className="sm:text-right">

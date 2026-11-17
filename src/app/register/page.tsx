@@ -55,9 +55,13 @@ export default function RegisterPage() {
     <div className="min-h-[calc(100vh-16rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 bg-[#FFFFFF] p-8 rounded-xl border border-[#E4E7EC] shadow-sm">
         <div className="text-center">
-          <div className="w-12 h-12 rounded-xl bg-[#17324D] flex items-center justify-center text-white mx-auto mb-4">
-            <BookOpen className="w-6 h-6 text-[#3E9C96]" />
-          </div>
+          <Link href="/" className="inline-block mb-3">
+            <img
+              src="/logo-icon.png"
+              alt="IB-SLR Logo"
+              className="w-16 h-16 object-contain mx-auto"
+            />
+          </Link>
           <h1 className="text-2xl font-bold tracking-tight text-[#17324D]">
             {isId ? "Daftar Akun IB-SLR Baru" : "Create your IB-SLR Account"}
           </h1>

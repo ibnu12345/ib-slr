@@ -33,18 +33,12 @@ export function Navbar({ settings, navItems, session }: NavbarProps) {
         <div className="flex items-center justify-between h-16">
           {/* Brand Logo & Name */}
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-9 h-9 rounded-lg bg-[#17324D] flex items-center justify-center text-white shadow-sm group-hover:bg-[#12273D] transition-colors">
-                <BookOpen className="w-5 h-5 text-[#3E9C96]" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-[#17324D]">
-                  {settings.brandName || "IB-SLR"}
-                </span>
-                <span className="text-[10px] uppercase font-medium tracking-wider text-[#667085] -mt-1 hidden sm:block">
-                  {isId ? "Dari Literatur Menjadi Bukti" : settings.tagline || "From Literature to Evidence"}
-                </span>
-              </div>
+            <Link href="/" className="flex items-center gap-2 group py-1">
+              <img
+                src="/logo-full.png"
+                alt={settings.brandName || "IB-SLR"}
+                className="h-9 sm:h-10 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              />
             </Link>
           </div>
 

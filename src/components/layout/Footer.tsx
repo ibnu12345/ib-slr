@@ -26,13 +26,12 @@ export function Footer({ settings, col1Items, col2Items, col3Items, legalItems }
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 lg:gap-12 pb-12 border-b border-[#E4E7EC]">
           {/* Brand & Purpose Column */}
           <div className="md:col-span-2 space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#17324D] flex items-center justify-center text-white">
-                <BookOpen className="w-4 h-4 text-[#3E9C96]" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-[#17324D]">
-                {settings.brandName || "IB-SLR"}
-              </span>
+            <Link href="/" className="inline-block">
+              <img
+                src="/logo-full.png"
+                alt={settings.brandName || "IB-SLR"}
+                className="h-9 sm:h-10 w-auto object-contain"
+              />
             </Link>
             <p className="text-xs text-[#667085] leading-relaxed max-w-sm">
               {isId

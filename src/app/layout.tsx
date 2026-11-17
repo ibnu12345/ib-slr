@@ -18,7 +18,13 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     description: settings.footerDisclaimer || "AI-assisted Systematic Literature Review workspace.",
     icons: {
-      icon: "/favicon.ico",
+      icon: [
+        { url: "/favicon.ico" },
+        { url: "/icon.png", type: "image/png" },
+        { url: "/logo-icon.png", type: "image/png" },
+      ],
+      apple: "/apple-icon.png",
+      shortcut: "/favicon.ico",
     },
   };
 }
@@ -43,6 +49,9 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/icon.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/apple-icon.png" />
         <meta name="google-adsense-account" content={adsensePublisherId} />
       </head>
       <body className="min-h-screen flex flex-col bg-[#F7F8FA] text-[#17212B] antialiased">

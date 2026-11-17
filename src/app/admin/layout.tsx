@@ -39,11 +39,15 @@ export default async function AdminLayout({
           {/* Admin Header */}
           <div className="p-5 border-b border-[#244A70] flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-[#2F7D78] text-white flex items-center justify-center font-bold">
-                <Shield className="w-4 h-4" />
+              <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shadow-sm shrink-0 border border-white/20">
+                <img
+                  src="/logo-icon.png"
+                  alt="IB-SLR"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
-                <span className="text-sm font-bold tracking-tight block">
+                <span className="text-sm font-bold tracking-tight block text-white">
                   IB-SLR Admin CMS
                 </span>
                 <span className="text-[10px] text-gray-300 block">
