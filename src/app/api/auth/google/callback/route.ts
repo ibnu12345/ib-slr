@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { findUserByEmail, createUser } from "../../../../../lib/db";
-import { createSessionCookie } from "../../../../../lib/auth/session";
+import { findUserByEmail, createUser, getDb } from "../../../../../lib/db";
+import { attachSessionCookie } from "../../../../../lib/auth/session";
+import { isSupabaseConfigured, saveStateToSupabase } from "../../../../../lib/db/supabaseSync";
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
@@ -66,10 +67,22 @@ export async function GET(request: NextRequest) {
         mfaEnabled: false,
         passwordHash: "OAuthGoogleSecret123!",
       });
+
+      // Synchronize immediately to Supabase
+      if (isSupabaseConfigured()) {
+        try {
+          await saveStateToSupabase(getDb());
+        } catch (syncErr) {
+          console.warn("Supabase instant sync warning:", syncErr);
+        }
+      }
     }
 
-    // 4. Set Session Cookie
-    await createSessionCookie({
+    // 4. Construct redirect response and attach session cookie directly
+    const targetPath = (user.role === "admin" || user.role === "super_admin" || isOwner) ? "/admin" : "/app";
+    const redirectResponse = NextResponse.redirect(new URL(targetPath, origin));
+
+    attachSessionCookie(redirectResponse, {
       userId: user.id,
       email: user.email,
       fullName: user.fullName,
@@ -77,11 +90,7 @@ export async function GET(request: NextRequest) {
       emailVerified: true,
     });
 
-    if (user.role === "admin" || isOwner) {
-      return NextResponse.redirect(new URL("/admin", origin));
-    }
-
-    return NextResponse.redirect(new URL("/app", origin));
+    return redirectResponse;
   } catch (err) {
     console.error("Google OAuth callback exception:", err);
     return NextResponse.redirect(new URL("/login?error=GoogleAuthException", origin));

@@ -15,6 +15,26 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const err = params.get("error");
+      if (err) {
+        if (err === "GoogleAuthFailed") {
+          setError(isId ? "Autentikasi Google dibatalkan atau gagal." : "Google authentication was cancelled or failed.");
+        } else if (err === "GoogleTokenExchangeFailed") {
+          setError(isId ? "Gagal memverifikasi token Google. Silakan coba lagi." : "Failed to exchange Google token. Please try again.");
+        } else if (err === "GoogleProfileFetchFailed") {
+          setError(isId ? "Gagal mengambil profil akun Google Anda." : "Failed to retrieve your Google profile.");
+        } else if (err === "GoogleAuthException") {
+          setError(isId ? "Terjadi kesalahan sistem saat memproses login Google." : "System error occurred during Google sign in.");
+        } else {
+          setError(err);
+        }
+      }
+    }
+  }, [isId]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);

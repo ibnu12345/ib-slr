@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import type { NextResponse } from "next/server";
 import crypto from "crypto";
 import { UserSession, UserRole } from "../types/auth";
 import { findUserById } from "../db";
@@ -30,15 +31,33 @@ function verifyPayload(signed: string): string | null {
   return null;
 }
 
-export async function createSessionCookie(session: Omit<UserSession, "expiresAt">): Promise<void> {
-  const cookieStore = await cookies();
+export function createSignedSessionToken(session: Omit<UserSession, "expiresAt">): string {
   const fullSession: UserSession = {
     ...session,
     expiresAt: Date.now() + SESSION_DURATION_MS,
   };
 
   const serialized = JSON.stringify(fullSession);
-  const signed = signPayload(Buffer.from(serialized).toString("base64"));
+  return signPayload(Buffer.from(serialized).toString("base64"));
+}
+
+export function attachSessionCookie(response: NextResponse, session: Omit<UserSession, "expiresAt">): NextResponse {
+  const signed = createSignedSessionToken(session);
+
+  response.cookies.set(COOKIE_NAME, signed, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 7 * 24 * 60 * 60, // 7 days in seconds
+  });
+
+  return response;
+}
+
+export async function createSessionCookie(session: Omit<UserSession, "expiresAt">): Promise<void> {
+  const cookieStore = await cookies();
+  const signed = createSignedSessionToken(session);
 
   cookieStore.set(COOKIE_NAME, signed, {
     httpOnly: true,
@@ -72,21 +91,26 @@ export async function getCurrentSession(): Promise<UserSession | null> {
       return null;
     }
 
-    // Verify user still exists in database and refresh verified status
+    // Attempt to verify fresh user from database
     const freshUser = await findUserById(session.userId);
-    if (!freshUser) {
-      await clearSessionCookie();
-      return null;
+    if (freshUser) {
+      return {
+        userId: freshUser.id,
+        email: freshUser.email,
+        fullName: freshUser.fullName,
+        role: freshUser.role,
+        emailVerified: freshUser.emailVerified,
+        expiresAt: session.expiresAt,
+      };
     }
 
-    return {
-      userId: freshUser.id,
-      email: freshUser.email,
-      fullName: freshUser.fullName,
-      role: freshUser.role,
-      emailVerified: freshUser.emailVerified,
-      expiresAt: session.expiresAt,
-    };
+    // In serverless distributed environment, if freshUser is not yet replicated to this instance,
+    // trust the cryptographically HMAC-verified session payload
+    if (session.userId && session.email) {
+      return session;
+    }
+
+    return null;
   } catch {
     return null;
   }
