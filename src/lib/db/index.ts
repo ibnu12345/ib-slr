@@ -111,7 +111,12 @@ export interface DatabaseSchema {
   paymentOrders: PaymentOrder[];
 }
 
-const DATA_DIR = path.join(process.cwd(), ".data");
+const ROOT_DATA_DIR = path.join(process.cwd(), ".data");
+const ROOT_DB_FILE = path.join(ROOT_DATA_DIR, "db.json");
+
+// On Vercel serverless environment, use /tmp for write operations
+const IS_VERCEL = Boolean(process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME);
+const DATA_DIR = IS_VERCEL ? path.join("/tmp", ".data") : ROOT_DATA_DIR;
 const DB_FILE = path.join(DATA_DIR, "db.json");
 
 let memoryDb: DatabaseSchema | null = null;
@@ -120,6 +125,15 @@ let lastDbMtime = 0;
 function ensureDirectoryExists() {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
+
+  // On Vercel, copy the bundled seed db.json from project root to /tmp on initial start
+  if (IS_VERCEL && !fs.existsSync(DB_FILE) && fs.existsSync(ROOT_DB_FILE)) {
+    try {
+      fs.copyFileSync(ROOT_DB_FILE, DB_FILE);
+    } catch (err) {
+      console.warn("Could not copy bundled db.json to /tmp:", err);
+    }
   }
 }
 
@@ -844,12 +858,13 @@ function getInitialDatabase(): DatabaseSchema {
 export function getDb(): DatabaseSchema {
   try {
     ensureDirectoryExists();
-    if (fs.existsSync(DB_FILE)) {
-      const stat = fs.statSync(DB_FILE);
+    const targetFile = fs.existsSync(DB_FILE) ? DB_FILE : fs.existsSync(ROOT_DB_FILE) ? ROOT_DB_FILE : null;
+    if (targetFile && fs.existsSync(targetFile)) {
+      const stat = fs.statSync(targetFile);
       if (memoryDb && stat.mtimeMs === lastDbMtime) {
         return memoryDb;
       }
-      const raw = fs.readFileSync(DB_FILE, "utf-8");
+      const raw = fs.readFileSync(targetFile, "utf-8");
       const parsed = JSON.parse(raw);
       memoryDb = {
         ...getInitialDatabase(),

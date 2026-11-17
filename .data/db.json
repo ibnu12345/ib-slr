@@ -1225,6 +1225,60 @@
   ],
   "auditLogs": [
     {
+      "id": "log-1794881030615-s02h1",
+      "userId": "usr-1794879377400-nw38s",
+      "userEmail": "ibnusetiawan1928@gmail.com",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1794881028841-z05i9",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-028841-Z05I9"
+      },
+      "createdAt": "2026-11-17T02:03:50.615Z"
+    },
+    {
+      "id": "log-1794881028842-mshke",
+      "userId": "usr-1794879377400-nw38s",
+      "userEmail": "ibnusetiawan1928@gmail.com",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1794881028841-z05i9",
+      "details": {
+        "orderId": "INV-SLR-2026-028841-Z05I9",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-17T02:03:48.842Z"
+    },
+    {
+      "id": "log-1794880994049-0je6z",
+      "userId": "usr-1794879377400-nw38s",
+      "userEmail": "ibnusetiawan1928@gmail.com",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1794880987977-mm8z7",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-987977-MM8Z7"
+      },
+      "createdAt": "2026-11-17T02:03:14.049Z"
+    },
+    {
+      "id": "log-1794880987978-lpkg0",
+      "userId": "usr-1794879377400-nw38s",
+      "userEmail": "ibnusetiawan1928@gmail.com",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1794880987977-mm8z7",
+      "details": {
+        "orderId": "INV-SLR-2026-987977-MM8Z7",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-17T02:03:07.978Z"
+    },
+    {
       "id": "log-1794880623908-rswaj",
       "action": "MERGE_DUPLICATES",
       "entityType": "article",
@@ -11051,6 +11105,54 @@
         "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
       },
       "paidAt": "2026-11-17T01:57:00.886Z"
+    },
+    {
+      "id": "ord-1794880987977-mm8z7",
+      "orderId": "INV-SLR-2026-987977-MM8Z7",
+      "userId": "usr-1794879377400-nw38s",
+      "userEmail": "ibnusetiawan1928@gmail.com",
+      "userName": "ibnu",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "Top-Up +1 Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-987977-MM8Z70303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-987977-MM8Z70303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-987977-MM8Z76304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-987977-MM8Z7",
+      "createdAt": "2026-11-17T02:03:07.977Z",
+      "metadata": {
+        "expiresAt": "2026-11-17T02:18:07.977Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-17T02:03:14.048Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-17T02:03:14.049Z"
+    },
+    {
+      "id": "ord-1794881028841-z05i9",
+      "orderId": "INV-SLR-2026-028841-Z05I9",
+      "userId": "usr-1794879377400-nw38s",
+      "userEmail": "ibnusetiawan1928@gmail.com",
+      "userName": "ibnu",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "Top-Up +1 Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-028841-Z05I90303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-028841-Z05I90303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-028841-Z05I96304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-028841-Z05I9",
+      "createdAt": "2026-11-17T02:03:48.841Z",
+      "metadata": {
+        "expiresAt": "2026-11-17T02:18:48.841Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-17T02:03:50.615Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-17T02:03:50.615Z"
     }
   ]
 }
