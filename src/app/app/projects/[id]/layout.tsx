@@ -16,6 +16,10 @@ interface Props {
 
 export default async function ProjectLayout({ params, children }: Props) {
   const { id } = await params;
+  if (id === "new") {
+    return <>{children}</>;
+  }
+
   const session = await getCurrentSession();
 
   if (!session) {

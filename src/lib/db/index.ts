@@ -112,6 +112,7 @@ const DATA_DIR = path.join(process.cwd(), ".data");
 const DB_FILE = path.join(DATA_DIR, "db.json");
 
 let memoryDb: DatabaseSchema | null = null;
+let lastDbMtime = 0;
 
 function ensureDirectoryExists() {
   if (!fs.existsSync(DATA_DIR)) {
@@ -837,11 +838,13 @@ function getInitialDatabase(): DatabaseSchema {
 }
 
 export function getDb(): DatabaseSchema {
-  if (memoryDb) return memoryDb;
-
   try {
     ensureDirectoryExists();
     if (fs.existsSync(DB_FILE)) {
+      const stat = fs.statSync(DB_FILE);
+      if (memoryDb && stat.mtimeMs === lastDbMtime) {
+        return memoryDb;
+      }
       const raw = fs.readFileSync(DB_FILE, "utf-8");
       const parsed = JSON.parse(raw);
       memoryDb = {
@@ -867,12 +870,17 @@ export function getDb(): DatabaseSchema {
         manuscripts: parsed.manuscripts || getInitialDatabase().manuscripts,
         tableDefinitions: parsed.tableDefinitions || getInitialDatabase().tableDefinitions,
       };
+      lastDbMtime = stat.mtimeMs;
       return memoryDb!;
     }
   } catch (err) {
+    if (memoryDb) {
+      return memoryDb;
+    }
     console.error("Failed to read DB_FILE, falling back to initial data:", err);
   }
 
+  if (memoryDb) return memoryDb;
   memoryDb = getInitialDatabase();
   saveDb(memoryDb);
   return memoryDb;
@@ -882,7 +890,22 @@ export function saveDb(data: DatabaseSchema): void {
   memoryDb = data;
   try {
     ensureDirectoryExists();
-    fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+    const tmp = `${DB_FILE}.tmp.${process.pid}.${Date.now()}`;
+    fs.writeFileSync(tmp, JSON.stringify(data, null, 2), "utf-8");
+    try {
+      if (fs.existsSync(DB_FILE)) {
+        fs.unlinkSync(DB_FILE);
+      }
+      fs.renameSync(tmp, DB_FILE);
+    } catch {
+      fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2), "utf-8");
+      try {
+        if (fs.existsSync(tmp)) fs.unlinkSync(tmp);
+      } catch {}
+    }
+    if (fs.existsSync(DB_FILE)) {
+      lastDbMtime = fs.statSync(DB_FILE).mtimeMs;
+    }
   } catch (err) {
     console.error("Failed to persist database to disk:", err);
   }
@@ -1292,8 +1315,16 @@ export async function getUserWorkspaces(userId: string): Promise<Workspace[]> {
 }
 
 export function resolveProjectId(id: string): string {
-  if (id === "demo-1" || id === "demo") return "prj-demo-1";
-  return id;
+  if (!id) return "";
+  try {
+    const clean = decodeURIComponent(id).trim();
+    if (clean === "demo-1" || clean === "demo") return "prj-demo-1";
+    return clean;
+  } catch {
+    const clean = id.trim();
+    if (clean === "demo-1" || clean === "demo") return "prj-demo-1";
+    return clean;
+  }
 }
 
 export async function getProjects(userId?: string): Promise<Project[]> {

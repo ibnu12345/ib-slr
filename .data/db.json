@@ -2,7 +2,7 @@
   "siteSettings": {
     "brandName": "IB-SLR",
     "tagline": "From Literature to Evidence.",
-    "contactEmail": "contact@ib-slr.local",
+    "contactEmail": "lead-researcher@ib-slr.local",
     "supportEmail": "support@ib-slr.local",
     "twitterUrl": "https://twitter.com",
     "githubUrl": "https://github.com",
@@ -227,7 +227,7 @@
       },
       "status": "published",
       "createdAt": "2026-11-16T11:34:25.461Z",
-      "updatedAt": "2026-11-16T11:34:25.464Z",
+      "updatedAt": "2026-11-16T23:26:48.065Z",
       "sections": [
         {
           "id": "sec-hero",
@@ -1225,6 +1225,516 @@
   ],
   "auditLogs": [
     {
+      "id": "log-1794871612818-fqyft",
+      "action": "MERGE_DUPLICATES",
+      "entityType": "article",
+      "entityId": "art-1",
+      "details": {
+        "survivorId": "art-1",
+        "duplicateId": "art-3",
+        "candidateId": "cand-dummy"
+      },
+      "createdAt": "2026-11-16T23:26:52.818Z"
+    },
+    {
+      "id": "log-1794871612076-m4m7n",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_EXTRACTED_DATA",
+      "entityType": "extracted_data_record",
+      "entityId": "rec-test-workflow",
+      "details": {
+        "articleId": "art-test-workflow",
+        "status": "in_progress"
+      },
+      "createdAt": "2026-11-16T23:26:52.076Z"
+    },
+    {
+      "id": "log-1794871612067-ari0a",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_EXTRACTION_TEMPLATE",
+      "entityType": "extraction_template",
+      "entityId": "tmpl-custom-qualitative",
+      "details": {
+        "name": "Qualitative SLR Extraction Template"
+      },
+      "createdAt": "2026-11-16T23:26:52.067Z"
+    },
+    {
+      "id": "log-1794871611390-fermq",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_TABLE_DEFINITION",
+      "entityType": "journal_table_definition",
+      "entityId": "tbl-custom-outcomes",
+      "details": {
+        "title": "Table 3. Detailed Outcome Metrics Matrix",
+        "tableType": "synthesis_matrix"
+      },
+      "createdAt": "2026-11-16T23:26:51.390Z"
+    },
+    {
+      "id": "log-1794871611379-5eyb9",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_MANUSCRIPT",
+      "entityType": "project_manuscript",
+      "entityId": "ms-demo-1",
+      "details": {
+        "title": "Digital Health and Smartphone-Delivered Interventions for Glycemic Control in Adults with Type 2 Diabetes: A Systematic Review and Evidence Synthesis"
+      },
+      "createdAt": "2026-11-16T23:26:51.379Z"
+    },
+    {
+      "id": "log-1794871610668-ymifw",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_EXCERPT",
+      "entityType": "thematic_excerpt",
+      "entityId": "exc-test-1",
+      "details": {
+        "articleId": "art-1",
+        "codeId": "thm-test-telehealth"
+      },
+      "createdAt": "2026-11-16T23:26:50.668Z"
+    },
+    {
+      "id": "log-1794871610660-191w6",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_CODE",
+      "entityType": "thematic_code",
+      "entityId": "thm-test-telehealth",
+      "details": {
+        "name": "Telehealth Scalability & Cost"
+      },
+      "createdAt": "2026-11-16T23:26:50.660Z"
+    },
+    {
+      "id": "log-1794871610650-9t8ap",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_APPRAISAL_RECORD",
+      "entityType": "appraisal_record",
+      "entityId": "app-test-new",
+      "details": {
+        "articleId": "art-3",
+        "overallJudgment": "high_risk",
+        "status": "completed"
+      },
+      "createdAt": "2026-11-16T23:26:50.650Z"
+    },
+    {
+      "id": "log-1794871609897-tuzsy",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794871609804-s4zxk",
+      "details": {
+        "email": "reset.test.1794871609721@university.edu"
+      },
+      "createdAt": "2026-11-16T23:26:49.897Z"
+    },
+    {
+      "id": "log-1794871609811-a6g15",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794871609804-s4zxk",
+      "details": {
+        "email": "reset.test.1794871609721@university.edu"
+      },
+      "createdAt": "2026-11-16T23:26:49.811Z"
+    },
+    {
+      "id": "log-1794871609804-a7kwx",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794871609804-s4zxk",
+      "details": {
+        "email": "reset.test.1794871609721@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T23:26:49.804Z"
+    },
+    {
+      "id": "log-1794871609712-0h0s4",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794871609699-v7mrs",
+      "details": {
+        "email": "verify.test.1794871609620@university.edu"
+      },
+      "createdAt": "2026-11-16T23:26:49.712Z"
+    },
+    {
+      "id": "log-1794871609699-q56jn",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794871609699-v7mrs",
+      "details": {
+        "email": "verify.test.1794871609620@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T23:26:49.699Z"
+    },
+    {
+      "id": "log-1794871609613-3rfeo",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794871609613-04atj",
+      "details": {
+        "email": "test.researcher.1794871609533@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T23:26:49.613Z"
+    },
+    {
+      "id": "log-1794871608817-465jy",
+      "userId": "usr-admin-1",
+      "userEmail": "Lead Reviewer",
+      "action": "ADJUDICATE_CONFLICT",
+      "entityType": "screening_conflict",
+      "entityId": "conf-1794871608802-clfet",
+      "details": {
+        "resolvedDecision": "include",
+        "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol."
+      },
+      "createdAt": "2026-11-16T23:26:48.817Z"
+    },
+    {
+      "id": "log-1794871608808-iipn4",
+      "userId": "rev-2",
+      "userEmail": "Reviewer Two",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560942-wmg4r",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "exclude",
+        "exclusionReason": "Desain Studi Tidak Memenuhi Syarat"
+      },
+      "createdAt": "2026-11-16T23:26:48.808Z"
+    },
+    {
+      "id": "log-1794871608802-nr3b3",
+      "userId": "rev-1",
+      "userEmail": "Reviewer One",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560772-uk51l",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-16T23:26:48.802Z"
+    },
+    {
+      "id": "log-1794871608793-zl21y",
+      "userId": "usr-researcher-1",
+      "userEmail": "Dr. Clara Oswald",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871608793-pgan0",
+      "details": {
+        "articleId": "art-1",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-16T23:26:48.793Z"
+    },
+    {
+      "id": "log-1794871608065-5r1ar",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-hero",
+          "sec-features",
+          "sec-workflow",
+          "sec-metrics",
+          "sec-testimonials",
+          "sec-pricing",
+          "sec-faq",
+          "sec-cta"
+        ]
+      },
+      "createdAt": "2026-11-16T23:26:48.065Z"
+    },
+    {
+      "id": "log-1794871608057-ot513",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-cta",
+          "sec-faq",
+          "sec-pricing",
+          "sec-testimonials",
+          "sec-metrics",
+          "sec-workflow",
+          "sec-features",
+          "sec-hero"
+        ]
+      },
+      "createdAt": "2026-11-16T23:26:48.057Z"
+    },
+    {
+      "id": "log-1794871608045-6rbus",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "UPDATE_SITE_SETTINGS",
+      "entityType": "site_settings",
+      "entityId": "global",
+      "details": {
+        "contactEmail": "lead-researcher@ib-slr.local"
+      },
+      "createdAt": "2026-11-16T23:26:48.045Z"
+    },
+    {
+      "id": "log-1794871593532-4mhq3",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-hero",
+          "sec-features",
+          "sec-workflow",
+          "sec-metrics",
+          "sec-testimonials",
+          "sec-pricing",
+          "sec-faq",
+          "sec-cta"
+        ]
+      },
+      "createdAt": "2026-11-16T23:26:33.532Z"
+    },
+    {
+      "id": "log-1794871593101-yfebp",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794871593101-dpata",
+      "details": {
+        "email": "test.researcher.1794871592855@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T23:26:33.101Z"
+    },
+    {
+      "id": "log-1794871592861-mqv5k",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_EXCERPT",
+      "entityType": "thematic_excerpt",
+      "entityId": "exc-test-1",
+      "details": {
+        "articleId": "art-1",
+        "codeId": "thm-test-telehealth"
+      },
+      "createdAt": "2026-11-16T23:26:32.861Z"
+    },
+    {
+      "id": "log-1794871592231-vxzjc",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_EXTRACTED_DATA",
+      "entityType": "extracted_data_record",
+      "entityId": "rec-test-workflow",
+      "details": {
+        "articleId": "art-test-workflow",
+        "status": "in_progress"
+      },
+      "createdAt": "2026-11-16T23:26:32.231Z"
+    },
+    {
+      "id": "log-1794871592213-lllv0",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_EXTRACTION_TEMPLATE",
+      "entityType": "extraction_template",
+      "entityId": "tmpl-custom-qualitative",
+      "details": {
+        "name": "Qualitative SLR Extraction Template"
+      },
+      "createdAt": "2026-11-16T23:26:32.213Z"
+    },
+    {
+      "id": "log-1794871561315-uc073",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1794871561228-6yrcp",
+      "details": {
+        "email": "reset.test.1794871561149@university.edu"
+      },
+      "createdAt": "2026-11-16T23:26:01.315Z"
+    },
+    {
+      "id": "log-1794871561233-1ums2",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1794871561228-6yrcp",
+      "details": {
+        "email": "reset.test.1794871561149@university.edu"
+      },
+      "createdAt": "2026-11-16T23:26:01.233Z"
+    },
+    {
+      "id": "log-1794871561228-sob7q",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794871561228-6yrcp",
+      "details": {
+        "email": "reset.test.1794871561149@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T23:26:01.228Z"
+    },
+    {
+      "id": "log-1794871561144-m4gk9",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1794871561135-t1b7f",
+      "details": {
+        "email": "verify.test.1794871560899@university.edu"
+      },
+      "createdAt": "2026-11-16T23:26:01.144Z"
+    },
+    {
+      "id": "log-1794871561136-956yr",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1794871561135-t1b7f",
+      "details": {
+        "email": "verify.test.1794871560899@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-16T23:26:01.136Z"
+    },
+    {
+      "id": "log-1794871560948-3m44n",
+      "userId": "usr-admin-1",
+      "userEmail": "Lead Reviewer",
+      "action": "ADJUDICATE_CONFLICT",
+      "entityType": "screening_conflict",
+      "entityId": "conf-1794871560942-2y20t",
+      "details": {
+        "resolvedDecision": "include",
+        "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol."
+      },
+      "createdAt": "2026-11-16T23:26:00.948Z"
+    },
+    {
+      "id": "log-1794871560942-crx0q",
+      "userId": "rev-2",
+      "userEmail": "Reviewer Two",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560942-wmg4r",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "exclude",
+        "exclusionReason": "Desain Studi Tidak Memenuhi Syarat"
+      },
+      "createdAt": "2026-11-16T23:26:00.942Z"
+    },
+    {
+      "id": "log-1794871560388-l100m",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_EXTRACTED_DATA",
+      "entityType": "extracted_data_record",
+      "entityId": "rec-test-workflow",
+      "details": {
+        "articleId": "art-test-workflow",
+        "status": "in_progress"
+      },
+      "createdAt": "2026-11-16T23:26:00.388Z"
+    },
+    {
+      "id": "log-1794871559965-91i4d",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_TABLE_DEFINITION",
+      "entityType": "journal_table_definition",
+      "entityId": "tbl-custom-outcomes",
+      "details": {
+        "title": "Table 3. Detailed Outcome Metrics Matrix",
+        "tableType": "synthesis_matrix"
+      },
+      "createdAt": "2026-11-16T23:25:59.965Z"
+    },
+    {
+      "id": "log-1794871559954-u1lll",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_MANUSCRIPT",
+      "entityType": "project_manuscript",
+      "entityId": "ms-demo-1",
+      "details": {
+        "title": "Digital Health and Smartphone-Delivered Interventions for Glycemic Control in Adults with Type 2 Diabetes: A Systematic Review and Evidence Synthesis"
+      },
+      "createdAt": "2026-11-16T23:25:59.955Z"
+    },
+    {
+      "id": "log-1794868217903-eyoo8",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "UPDATE_PROTOCOL",
+      "entityType": "protocol",
+      "entityId": "proto-prj-1794868217899-2qc2c",
+      "details": {
+        "version": 1
+      },
+      "createdAt": "2026-11-16T22:30:17.903Z"
+    },
+    {
+      "id": "log-1794868217899-btb6t",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PROJECT",
+      "entityType": "project",
+      "entityId": "prj-1794868217899-2qc2c",
+      "details": {
+        "title": "Artificial Intelligence Integration in Arabic Language Learning: A Systematic Literature Review (2020–2026)"
+      },
+      "createdAt": "2026-11-16T22:30:17.899Z"
+    },
+    {
+      "id": "log-1794868175386-xo0b9",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "UPDATE_PROTOCOL",
+      "entityType": "protocol",
+      "entityId": "proto-prj-1794868175382-8lg0w",
+      "details": {
+        "version": 1
+      },
+      "createdAt": "2026-11-16T22:29:35.386Z"
+    },
+    {
+      "id": "log-1794868175383-x2qe6",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PROJECT",
+      "entityType": "project",
+      "entityId": "prj-1794868175382-8lg0w",
+      "details": {
+        "title": "Artificial Intelligence in Arabic Language Learning: A Systematic Literature Review"
+      },
+      "createdAt": "2026-11-16T22:29:35.383Z"
+    },
+    {
       "id": "log-1794837336187-vj4p5",
       "action": "PASSWORD_RESET_COMPLETED",
       "entityType": "user",
@@ -2219,6 +2729,72 @@
       "mfaEnabled": false,
       "createdAt": "2026-11-16T13:55:36.085Z",
       "updatedAt": "2026-11-16T13:55:36.187Z"
+    },
+    {
+      "id": "usr-1794871561135-t1b7f",
+      "email": "verify.test.1794871560899@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$n9bQYQ7Vf4gyPitJdCLJme6jkH3.m7ZES7YzbveolxICwQbAOyIha",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T23:26:01.135Z",
+      "updatedAt": "2026-11-16T23:26:01.144Z"
+    },
+    {
+      "id": "usr-1794871561228-6yrcp",
+      "email": "reset.test.1794871561149@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$0HlFS2MtLA.LUMlhVV2fnOhMPfOI6ZaPbJX2C7ow0TRg7QNX1IJy.",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T23:26:01.228Z",
+      "updatedAt": "2026-11-16T23:26:01.315Z"
+    },
+    {
+      "id": "usr-1794871593101-dpata",
+      "email": "test.researcher.1794871592855@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$7LLBddjPs2enokjLF//Tf.usp1tiShtbWfkAf.3sp7ft1cw2CNP92",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T23:26:33.101Z",
+      "updatedAt": "2026-11-16T23:26:33.101Z"
+    },
+    {
+      "id": "usr-1794871609613-04atj",
+      "email": "test.researcher.1794871609533@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$0VPyNUnhA2ySpS/P9jjda.Utf3h/B9GPCf7NV0/OevTwXPHzMwVf6",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T23:26:49.613Z",
+      "updatedAt": "2026-11-16T23:26:49.613Z"
+    },
+    {
+      "id": "usr-1794871609699-v7mrs",
+      "email": "verify.test.1794871609620@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$cV1Hk4YfT0Cd9C2RnkMFxOZdYBWZwFZ/1uEfZrH6Cyxf65PYZM.w6",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T23:26:49.699Z",
+      "updatedAt": "2026-11-16T23:26:49.712Z"
+    },
+    {
+      "id": "usr-1794871609804-s4zxk",
+      "email": "reset.test.1794871609721@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$BzXeN5wBetm8Xuao4fygWO8OR8.XGFk.pfoJFX5CP7/NXGfR7pK7K",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-16T23:26:49.804Z",
+      "updatedAt": "2026-11-16T23:26:49.897Z"
     }
   ],
   "verificationTokens": [],
@@ -2244,6 +2820,28 @@
       "createdBy": "usr-researcher-1",
       "createdAt": "2026-11-16T11:34:25.686Z",
       "updatedAt": "2026-11-16T11:34:25.686Z"
+    },
+    {
+      "id": "prj-1794868175382-8lg0w",
+      "workspaceId": "ws-demo-1",
+      "title": "Artificial Intelligence in Arabic Language Learning: A Systematic Literature Review",
+      "description": "Tinjauan literatur sistematis ini mengevaluasi penerapan teknologi kecerdasan buatan (AI), termasuk Large Language Models (LLM), chatbot cerdas, dan sistem pembelajaran adaptif dalam pengajaran bahasa Arab (TAFL) pada tingkat sekolah menengah hingga perguruan tinggi. Kajian ini mengikuti pedoman pelaporan PRISMA 2020 untuk memetakan jenis teknologi, efektivitas pedagogis, serta tantangan implementasinya.",
+      "reviewType": "systematic_review",
+      "status": "active",
+      "createdBy": "usr-researcher-1",
+      "createdAt": "2026-11-16T22:29:35.383Z",
+      "updatedAt": "2026-11-16T22:29:35.383Z"
+    },
+    {
+      "id": "prj-1794868217899-2qc2c",
+      "workspaceId": "ws-demo-1",
+      "title": "Artificial Intelligence Integration in Arabic Language Learning: A Systematic Literature Review (2020–2026)",
+      "description": "Tinjauan literatur sistematis ini mengevaluasi penerapan teknologi kecerdasan buatan (AI), termasuk Large Language Models (LLM), chatbot cerdas, dan sistem pembelajaran adaptif dalam pengajaran bahasa Arab (TAFL) pada tingkat sekolah menengah hingga perguruan tinggi. Kajian ini mengikuti pedoman pelaporan PRISMA 2020 untuk memetakan jenis teknologi, efektivitas pedagogis, serta tantangan implementasinya.",
+      "reviewType": "systematic_review",
+      "status": "active",
+      "createdBy": "usr-researcher-1",
+      "createdAt": "2026-11-16T22:30:17.899Z",
+      "updatedAt": "2026-11-16T22:30:17.899Z"
     }
   ],
   "protocols": [
@@ -2261,6 +2859,28 @@
       "isLocked": false,
       "createdAt": "2026-11-16T11:34:25.686Z",
       "updatedAt": "2026-11-16T11:34:25.686Z"
+    },
+    {
+      "id": "proto-prj-1794868175382-8lg0w",
+      "projectId": "prj-1794868175382-8lg0w",
+      "version": 1,
+      "framework": "PICO",
+      "background": "",
+      "objectives": "",
+      "isLocked": false,
+      "createdAt": "2026-11-16T22:29:35.383Z",
+      "updatedAt": "2026-11-16T22:29:35.386Z"
+    },
+    {
+      "id": "proto-prj-1794868217899-2qc2c",
+      "projectId": "prj-1794868217899-2qc2c",
+      "version": 1,
+      "framework": "PICO",
+      "background": "",
+      "objectives": "",
+      "isLocked": false,
+      "createdAt": "2026-11-16T22:30:17.899Z",
+      "updatedAt": "2026-11-16T22:30:17.903Z"
     }
   ],
   "eligibilityCriteria": [
@@ -2337,7 +2957,7 @@
       "pages": "e245-e255",
       "doi": "10.1016/s2589-7500(24)00012-3",
       "abstract": "Background: Mobile health technologies offer promising scalable alternatives for diabetes education. Methods: In this parallel-group RCT across 14 clinics, 340 adults with uncontrolled T2D were allocated 1:1 to a smart education app or standard clinic leaflets. Primary outcome was HbA1c at 24 weeks. Results: Mean HbA1c decreased by 0.72% in the app group vs 0.18% in control (p < 0.001).",
-      "screeningStatus": "pending",
+      "screeningStatus": "included",
       "sourceDatabase": "PubMed",
       "pdfUrl": "/sample-papers/chen-2024-lancet-digital.pdf",
       "pdfFileName": "Chen_2024_LancetDigitalHealth_T2D_RCT.pdf",
@@ -2372,7 +2992,7 @@
         }
       ],
       "createdAt": "2026-11-16T11:34:25.687Z",
-      "updatedAt": "2026-11-16T11:34:25.687Z"
+      "updatedAt": "2026-11-16T23:26:48.793Z"
     },
     {
       "id": "art-2",
@@ -2388,7 +3008,7 @@
       "pages": "1512-1520",
       "doi": "10.2337/dc23-0451",
       "abstract": "Objective: To assess efficacy of an algorithmic telemetry platform providing real-time insulin dose recommendations. Research Design: 280 participants were randomized to automated telemetry or weekly nurse telephone consults for 6 months. Conclusion: AI-assisted telemetry achieved non-inferior HbA1c reduction with significantly fewer hypoglycemic events.",
-      "screeningStatus": "pending",
+      "screeningStatus": "included",
       "sourceDatabase": "PubMed",
       "pdfUrl": "/sample-papers/patel-2023-diabetes-care.pdf",
       "pdfFileName": "Patel_2023_DiabetesCare_AI_Telemetry.pdf",
@@ -2423,7 +3043,7 @@
         }
       ],
       "createdAt": "2026-11-16T11:34:25.687Z",
-      "updatedAt": "2026-11-16T11:34:25.687Z"
+      "updatedAt": "2026-11-16T23:26:48.817Z"
     },
     {
       "id": "art-3",
@@ -2442,7 +3062,9 @@
       "screeningStatus": "pending",
       "sourceDatabase": "Crossref Import",
       "createdAt": "2026-11-16T11:34:25.687Z",
-      "updatedAt": "2026-11-16T11:34:25.687Z"
+      "updatedAt": "2026-11-16T23:26:52.818Z",
+      "isDuplicate": true,
+      "mergedIntoId": "art-1"
     }
   ],
   "duplicateCandidates": [
@@ -2456,8 +3078,117 @@
       "status": "pending"
     }
   ],
-  "screeningDecisions": [],
-  "screeningConflicts": [],
+  "screeningDecisions": [
+    {
+      "id": "dec-1794871560772-uk51l",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "reviewerId": "rev-1",
+      "reviewerName": "Reviewer One",
+      "stage": "title_abstract",
+      "decision": "include",
+      "createdAt": "2026-11-16T23:26:00.772Z",
+      "updatedAt": "2026-11-16T23:26:48.802Z"
+    },
+    {
+      "id": "dec-1794871560942-wmg4r",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "reviewerId": "rev-2",
+      "reviewerName": "Reviewer Two",
+      "stage": "title_abstract",
+      "decision": "exclude",
+      "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
+      "createdAt": "2026-11-16T23:26:00.942Z",
+      "updatedAt": "2026-11-16T23:26:48.808Z"
+    },
+    {
+      "id": "dec-1794871608793-pgan0",
+      "projectId": "prj-demo-1",
+      "articleId": "art-1",
+      "reviewerId": "usr-researcher-1",
+      "reviewerName": "Dr. Clara Oswald",
+      "stage": "title_abstract",
+      "decision": "include",
+      "notes": "Meets PICO criteria",
+      "createdAt": "2026-11-16T23:26:48.793Z",
+      "updatedAt": "2026-11-16T23:26:48.793Z"
+    }
+  ],
+  "screeningConflicts": [
+    {
+      "id": "conf-1794871560942-2y20t",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "stage": "title_abstract",
+      "decisions": [
+        {
+          "id": "dec-1794871560772-uk51l",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-1",
+          "reviewerName": "Reviewer One",
+          "stage": "title_abstract",
+          "decision": "include",
+          "createdAt": "2026-11-16T23:26:00.772Z",
+          "updatedAt": "2026-11-16T23:26:00.772Z"
+        },
+        {
+          "id": "dec-1794871560942-wmg4r",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-2",
+          "reviewerName": "Reviewer Two",
+          "stage": "title_abstract",
+          "decision": "exclude",
+          "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
+          "createdAt": "2026-11-16T23:26:00.942Z",
+          "updatedAt": "2026-11-16T23:26:00.942Z"
+        }
+      ],
+      "status": "resolved",
+      "resolvedDecision": "include",
+      "adjudicatedBy": "Lead Reviewer",
+      "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol.",
+      "resolvedAt": "2026-11-16T23:26:00.948Z"
+    },
+    {
+      "id": "conf-1794871608802-clfet",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "stage": "title_abstract",
+      "decisions": [
+        {
+          "id": "dec-1794871560772-uk51l",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-1",
+          "reviewerName": "Reviewer One",
+          "stage": "title_abstract",
+          "decision": "include",
+          "createdAt": "2026-11-16T23:26:00.772Z",
+          "updatedAt": "2026-11-16T23:26:48.802Z"
+        },
+        {
+          "id": "dec-1794871560942-wmg4r",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-2",
+          "reviewerName": "Reviewer Two",
+          "stage": "title_abstract",
+          "decision": "exclude",
+          "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
+          "createdAt": "2026-11-16T23:26:00.942Z",
+          "updatedAt": "2026-11-16T23:26:00.942Z"
+        }
+      ],
+      "status": "resolved",
+      "resolvedDecision": "include",
+      "adjudicatedBy": "Lead Reviewer",
+      "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol.",
+      "resolvedAt": "2026-11-16T23:26:48.817Z"
+    }
+  ],
   "exclusionReasons": [
     {
       "id": "ex-1",
@@ -2516,6 +3247,40 @@
       "deltaCount": 3,
       "reason": "Initial PubMed search run import",
       "createdAt": "2026-11-16T11:34:25.688Z"
+    },
+    {
+      "id": "ev-1794871560942-gaebg",
+      "projectId": "prj-demo-1",
+      "eventType": "records_excluded_title_abstract",
+      "deltaCount": 1,
+      "reason": "Desain Studi Tidak Memenuhi Syarat",
+      "metadata": {
+        "articleId": "art-2",
+        "reviewerId": "rev-2"
+      },
+      "triggeredBy": "Reviewer Two",
+      "createdAt": "2026-11-16T23:26:00.942Z"
+    },
+    {
+      "id": "ev-1794871608808-rrq3y",
+      "projectId": "prj-demo-1",
+      "eventType": "records_excluded_title_abstract",
+      "deltaCount": 1,
+      "reason": "Desain Studi Tidak Memenuhi Syarat",
+      "metadata": {
+        "articleId": "art-2",
+        "reviewerId": "rev-2"
+      },
+      "triggeredBy": "Reviewer Two",
+      "createdAt": "2026-11-16T23:26:48.808Z"
+    },
+    {
+      "id": "ev-1794871612818-dumq7",
+      "projectId": "prj-demo-1",
+      "eventType": "duplicates_removed",
+      "deltaCount": 1,
+      "reason": "Merged into survivor article ID art-1",
+      "createdAt": "2026-11-16T23:26:52.818Z"
     }
   ],
   "extractionTemplates": [
@@ -2609,6 +3374,42 @@
       ],
       "createdAt": "2026-11-16T11:34:25.687Z",
       "updatedAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "tmpl-custom-qualitative",
+      "projectId": "prj-demo-1",
+      "name": "Qualitative SLR Extraction Template",
+      "description": "Custom template for interview and thematic synthesis studies.",
+      "version": 1,
+      "isDefault": false,
+      "fields": [
+        {
+          "id": "f-q1",
+          "key": "qualitative_method",
+          "label": "Qualitative Methodology",
+          "type": "select",
+          "category": "methodology",
+          "options": [
+            "Grounded Theory",
+            "Phenomenology",
+            "Ethnography",
+            "Thematic Analysis"
+          ],
+          "required": true,
+          "sortOrder": 1
+        },
+        {
+          "id": "f-q2",
+          "key": "data_collection_method",
+          "label": "Data Collection Mode",
+          "type": "text",
+          "category": "methodology",
+          "required": true,
+          "sortOrder": 2
+        }
+      ],
+      "createdAt": "2026-11-16T23:26:52.066Z",
+      "updatedAt": "2026-11-16T23:26:52.067Z"
     }
   ],
   "extractedDataRecords": [
@@ -2701,6 +3502,40 @@
       "verifiedAt": "2026-11-16T11:34:25.687Z",
       "createdAt": "2026-11-16T11:34:25.687Z",
       "updatedAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "rec-test-workflow",
+      "projectId": "prj-demo-1",
+      "articleId": "art-test-workflow",
+      "templateId": "tmpl-pico-default",
+      "values": {
+        "field_a": "Initial Draft Value",
+        "field_b": 120
+      },
+      "evidence": {
+        "field_a": {
+          "quote": "Draft quotation from page 1",
+          "pageNumber": 1,
+          "confidenceRating": "high",
+          "isFound": true
+        },
+        "field_b": {
+          "quote": "Quotation for 100 participants",
+          "pageNumber": 2,
+          "confidenceRating": "high",
+          "isFound": true
+        }
+      },
+      "verificationStatus": {
+        "field_a": "verified",
+        "field_b": "corrected"
+      },
+      "status": "verified",
+      "extractedBy": "ai_assisted",
+      "createdAt": "2026-11-16T23:26:52.075Z",
+      "updatedAt": "2026-11-16T23:26:52.090Z",
+      "verifiedBy": "Dr. Clara",
+      "verifiedAt": "2026-11-16T23:26:52.090Z"
     }
   ],
   "aiScreeningSuggestions": [
@@ -3007,6 +3842,24 @@
       "status": "completed",
       "createdAt": "2026-11-16T11:34:25.687Z",
       "updatedAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "app-test-new",
+      "projectId": "prj-demo-1",
+      "articleId": "art-3",
+      "frameworkId": "rob-2-rct",
+      "reviewerId": "usr-test",
+      "reviewerName": "Test Reviewer",
+      "domainAnswers": {
+        "d1_randomization": {
+          "judgment": "high_risk",
+          "notes": "No allocation concealment"
+        }
+      },
+      "overallJudgment": "high_risk",
+      "status": "completed",
+      "createdAt": "2026-11-16T23:26:50.650Z",
+      "updatedAt": "2026-11-16T23:26:50.650Z"
     }
   ],
   "thematicCodes": [
@@ -3045,6 +3898,14 @@
       "category": "Implementasi Layanan Kesehatan",
       "description": "Integrasi sistem telemetri otomatis dan pengurangan kunjungan tatap muka.",
       "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "thm-test-telehealth",
+      "projectId": "prj-demo-1",
+      "name": "Telehealth Scalability & Cost",
+      "category": "Health Economics",
+      "color": "#2F7D78",
+      "createdAt": "2026-11-16T23:26:50.658Z"
     }
   ],
   "thematicExcerpts": [
@@ -3080,6 +3941,15 @@
       "sectionTitle": "Results & Safety Outcomes",
       "notes": "Penurunan kejadian hipoglikemia berkat algoritma penyesuaian dosis insulin otomatis.",
       "createdAt": "2026-11-16T11:34:25.687Z"
+    },
+    {
+      "id": "exc-test-1",
+      "projectId": "prj-demo-1",
+      "articleId": "art-1",
+      "codeId": "thm-test-telehealth",
+      "verbatimQuote": "The intervention achieved cost-effective outpatient outreach.",
+      "pageNumber": 5,
+      "createdAt": "2026-11-16T23:26:50.667Z"
     }
   ],
   "manuscripts": [
@@ -3094,11 +3964,11 @@
         "methods": "This systematic review was conducted in strict accordance with the PRISMA 2020 statement. Literature searches were conducted in PubMed/MEDLINE and bibliographic databases for randomized controlled trials comparing digital self-management applications against usual ambulatory care in adults aged >= 18 with uncontrolled Type 2 Diabetes. Methodological risk of bias was assessed using the Cochrane RoB 2 instrument.",
         "results": "Literature search and deduplication yielded eligible reports. In the primary trial by Chen et al. (2024; N=340), mobile app education led to a statistically significant decrease in HbA1c (-0.72% vs -0.18%, p < 0.001). Patel et al. (2023; N=280) confirmed non-inferiority of algorithmic telemetry compared to nurse phone titration with 42% fewer hypoglycemic episodes.",
         "risk_of_bias": "Using the Cochrane RoB 2 framework, trials exhibited low risk of bias in randomization, missing outcome data, and selective outcome reporting. Due to the overt nature of behavioral digital health apps, blinding of participants was not feasible, leading to some concerns in Domain 2 (deviations from intended interventions).",
-        "discussion": "Our synthesis demonstrates that smartphone-delivered interventions and algorithmic telemetry achieve robust glycemic improvements comparable or superior to traditional outpatient leaflets. Strengths include rigorous RCT designs and objective biomarker assays (HbA1c). Limitations include the scarcity of pragmatic follow-up beyond 6 months.",
+        "discussion": "Updated discussion evaluating mobile applications across clinical trials.",
         "conclusion": "Interactive mobile health applications represent effective, scalable, and safe adjuncts for ambulatory type 2 diabetes care. Future pragmatic multicenter trials should evaluate long-term durability and cost-effectiveness in diverse socioeconomic populations."
       },
       "createdAt": "2026-11-16T11:38:28.143Z",
-      "updatedAt": "2026-11-16T11:38:28.143Z"
+      "updatedAt": "2026-11-16T23:26:51.378Z"
     }
   ],
   "tableDefinitions": [
@@ -3193,6 +4063,26 @@
       ],
       "createdAt": "2026-11-16T11:38:28.309Z",
       "updatedAt": "2026-11-16T11:38:28.309Z"
+    },
+    {
+      "id": "tbl-custom-outcomes",
+      "projectId": "prj-demo-1",
+      "tableType": "synthesis_matrix",
+      "title": "Table 3. Detailed Outcome Metrics Matrix",
+      "columns": [
+        {
+          "key": "study_id",
+          "label": "Study Reference",
+          "visible": true
+        },
+        {
+          "key": "hba1c_change",
+          "label": "HbA1c Change (%)",
+          "visible": true
+        }
+      ],
+      "createdAt": "2026-11-16T23:26:51.389Z",
+      "updatedAt": "2026-11-16T23:26:51.390Z"
     }
   ]
 }

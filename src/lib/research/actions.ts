@@ -52,6 +52,10 @@ export async function createProjectAction(formData: FormData) {
   }
 
   revalidatePath("/app");
+  revalidatePath("/app/projects");
+  revalidatePath(`/app/projects/${project.id}`);
+  revalidatePath(`/app/projects/${project.id}/overview`);
+  revalidatePath(`/app/projects/${project.id}/protocol`);
   return { success: true, project };
 }
 

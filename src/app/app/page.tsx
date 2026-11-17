@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { getCurrentSession } from "../../lib/auth/session";
 import { getProjects, getArticlesByProjectId } from "../../lib/db";
 import { LanguageSwitcher } from "../../components/i18n/LanguageSwitcher";
@@ -26,6 +27,10 @@ export default async function AppDashboardPage() {
     redirect("/login");
   }
 
+  const cookieStore = await cookies();
+  const lang = cookieStore.get("ib_slr_lang")?.value || "en";
+  const isId = lang === "id";
+
   const projects = await getProjects(session.userId);
   let totalArticles = 0;
   for (const prj of projects) {
@@ -42,10 +47,12 @@ export default async function AppDashboardPage() {
             <AlertTriangle className="w-5 h-5 text-[#B7791F] shrink-0 mt-0.5" />
             <div>
               <h3 className="text-sm font-bold text-[#B7791F]">
-                Email Verification Required
+                {isId ? "Verifikasi Email Diperlukan" : "Email Verification Required"}
               </h3>
               <p className="text-xs text-[#17212B] mt-0.5">
-                Your email ({session.email}) has not been verified yet. Systematic review creation, PDF uploads, and AI screening are locked until verification is confirmed.
+                {isId
+                  ? `Email Anda (${session.email}) belum diverifikasi. Pembuatan tinjauan sistematis, unggah PDF, dan penyaringan AI terkunci hingga verifikasi dikonfirmasi.`
+                  : `Your email (${session.email}) has not been verified yet. Systematic review creation, PDF uploads, and AI screening are locked until verification is confirmed.`}
               </p>
             </div>
           </div>
@@ -53,7 +60,7 @@ export default async function AppDashboardPage() {
             href="/verify-email"
             className="shrink-0 px-3 py-1.5 rounded-lg bg-[#B7791F] text-white text-xs font-semibold hover:bg-[#975A16] transition-colors"
           >
-            Verify Email
+            {isId ? "Verifikasi Email" : "Verify Email"}
           </Link>
         </div>
       )}
@@ -63,25 +70,29 @@ export default async function AppDashboardPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2 py-0.5 rounded bg-[#EFF7F6] text-[#2F7D78] text-[11px] font-semibold uppercase tracking-wider">
-              {session.role === "admin" ? "Administrator Workspace" : "Research Workspace"}
+              {isId
+                ? session.role === "admin" ? "Ruang Kerja Administrator" : "Ruang Kerja Riset"
+                : session.role === "admin" ? "Administrator Workspace" : "Research Workspace"}
             </span>
             {session.emailVerified ? (
               <span className="inline-flex items-center gap-1 text-[11px] text-[#18794E] font-medium">
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                Verified
+                {isId ? "Terverifikasi" : "Verified"}
               </span>
             ) : (
               <span className="inline-flex items-center gap-1 text-[11px] text-[#B7791F] font-medium">
                 <ShieldAlert className="w-3.5 h-3.5" />
-                Unverified
+                {isId ? "Belum Verifikasi" : "Unverified"}
               </span>
             )}
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#17324D]">
-            Welcome, {session.fullName}
+            {isId ? `Selamat Datang, ${session.fullName}` : `Welcome, ${session.fullName}`}
           </h1>
           <p className="text-xs sm:text-sm text-[#667085] mt-1">
-            Systematic reviews, protocols, screening queues, and PRISMA 2020 matrices.
+            {isId
+              ? "Tinjauan sistematis, protokol, antrean penyaringan, dan matriks PRISMA 2020."
+              : "Systematic reviews, protocols, screening queues, and PRISMA 2020 matrices."}
           </p>
         </div>
 
@@ -96,7 +107,7 @@ export default async function AppDashboardPage() {
             }`}
           >
             <PlusCircle className="w-4 h-4 text-[#3E9C96]" />
-            <span>New Systematic Review</span>
+            <span>{isId ? "Tinjauan Sistematis Baru" : "New Systematic Review"}</span>
           </Link>
         </div>
       </div>
@@ -113,11 +124,13 @@ export default async function AppDashboardPage() {
                 Top-Up Pay-Per-Project Pass
               </h4>
               <span className="px-2 py-0.5 rounded text-[10px] bg-[#18794E] text-white font-semibold">
-                Rp 10.000 / 1X Proyek Aktif
+                {isId ? "Rp 10.000 / 1X Proyek Aktif" : "Rp 10,000 / 1X Active Project"}
               </span>
             </div>
             <p className="text-xs text-[#667085] mt-0.5">
-              Paket Academic Free mencakup 1x proyek aktif gratis. Perlu proyek kedua? Cukup tambah <strong>Rp 10.000</strong> per 1x proyek aktif tanpa perlu langganan bulanan.
+              {isId
+                ? "Paket Academic Free mencakup 1x proyek aktif gratis. Perlu proyek kedua? Cukup tambah Rp 10.000 per 1x proyek aktif tanpa perlu langganan bulanan."
+                : "Academic Free tier includes 1 free active project. Need an extra active project slot? Top up +1 Active Project for just Rp 10,000 (~$0.65) without monthly recurring fees."}
             </p>
           </div>
         </div>
@@ -125,7 +138,7 @@ export default async function AppDashboardPage() {
           href="/app/projects/new"
           className="shrink-0 px-3 py-1.5 rounded-lg bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-semibold transition-colors flex items-center gap-1.5 shadow-sm"
         >
-          <span>Mulai Proyek Baru</span>
+          <span>{isId ? "Mulai Proyek Baru" : "Start New Project"}</span>
           <ArrowRight className="w-3.5 h-3.5 text-[#3E9C96]" />
         </Link>
       </div>
@@ -134,40 +147,46 @@ export default async function AppDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 my-8">
         <div className="bg-[#FFFFFF] border border-[#E4E7EC] rounded-xl p-5 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#667085] mb-1">
-            Active Reviews
+            {isId ? "Proyek Aktif" : "Active Reviews"}
           </div>
           <div className="text-2xl font-bold text-[#17324D]">{projects.length}</div>
           <div className="text-[11px] text-[#2F7D78] mt-1 font-medium">
-            Protocol locked & verified
+            {isId ? "Protokol terkunci & terverifikasi" : "Protocol locked & verified"}
           </div>
         </div>
 
         <div className="bg-[#FFFFFF] border border-[#E4E7EC] rounded-xl p-5 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#667085] mb-1">
-            Imported References
+            {isId ? "Referensi Diimpor" : "Imported References"}
           </div>
           <div className="text-2xl font-bold text-[#17324D]">
             {totalArticles > 0 ? totalArticles : 428}
           </div>
-          <div className="text-[11px] text-[#667085] mt-1">Across research sources</div>
+          <div className="text-[11px] text-[#667085] mt-1">
+            {isId ? "Dari berbagai sumber database riset" : "Across research sources"}
+          </div>
         </div>
 
         <div className="bg-[#FFFFFF] border border-[#E4E7EC] rounded-xl p-5 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#667085] mb-1">
-            Screening Progress
+            {isId ? "Progres Penyaringan" : "Screening Progress"}
           </div>
           <div className="text-2xl font-bold text-[#17324D]">74%</div>
           <div className="text-[11px] text-[#18794E] mt-1 font-medium">
-            Title & abstract stage
+            {isId ? "Tahap judul & abstrak" : "Title & abstract stage"}
           </div>
         </div>
 
         <div className="bg-[#FFFFFF] border border-[#E4E7EC] rounded-xl p-5 shadow-sm">
           <div className="text-xs font-semibold uppercase tracking-wider text-[#667085] mb-1">
-            PRISMA Reconciliation
+            {isId ? "Rekonsiliasi PRISMA" : "PRISMA Reconciliation"}
           </div>
-          <div className="text-2xl font-bold text-[#18794E]">In Sync</div>
-          <div className="text-[11px] text-[#667085] mt-1">Deterministic event ledger</div>
+          <div className="text-2xl font-bold text-[#18794E]">
+            {isId ? "Tersinkronisasi" : "In Sync"}
+          </div>
+          <div className="text-[11px] text-[#667085] mt-1">
+            {isId ? "Buku besar kejadian deterministik" : "Deterministic event ledger"}
+          </div>
         </div>
       </div>
 
@@ -176,10 +195,12 @@ export default async function AppDashboardPage() {
         <div className="px-6 py-4 border-b border-[#E4E7EC] flex items-center justify-between">
           <div>
             <h2 className="text-base font-bold text-[#17324D]">
-              Your Systematic Review Projects
+              {isId ? "Daftar Proyek Systematic Review Anda" : "Your Systematic Review Projects"}
             </h2>
             <p className="text-xs text-[#667085]">
-              Isolated research workspaces governed by Row-Level Security
+              {isId
+                ? "Ruang kerja riset terisolasi dengan Row-Level Security"
+                : "Isolated research workspaces governed by Row-Level Security"}
             </p>
           </div>
         </div>
@@ -188,16 +209,20 @@ export default async function AppDashboardPage() {
           {projects.length === 0 ? (
             <div className="p-12 text-center">
               <BookOpen className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-              <h3 className="text-sm font-bold text-[#17324D]">Belum ada Systematic Review</h3>
+              <h3 className="text-sm font-bold text-[#17324D]">
+                {isId ? "Belum Ada Proyek Riset" : "No Systematic Reviews Yet"}
+              </h3>
               <p className="text-xs text-[#667085] mt-1 max-w-sm mx-auto">
-                Mulai tinjauan pustaka sistematis baru Anda dengan menentukan protokol PICO/PICo.
+                {isId
+                  ? "Mulai proyek SLR baru Anda dengan menyusun protokol PICO atau PICo."
+                  : "Initiate your systematic literature review by structuring your PICO/PICo protocol."}
               </p>
               <Link
                 href="/app/projects/new"
                 className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[#17324D] text-white text-xs font-semibold hover:bg-[#12273D] transition-colors"
               >
                 <PlusCircle className="w-4 h-4 text-[#3E9C96]" />
-                <span>Buat Proyek Baru</span>
+                <span>{isId ? "Buat Proyek Baru" : "Create New Project"}</span>
               </Link>
             </div>
           ) : (
@@ -226,7 +251,7 @@ export default async function AppDashboardPage() {
                     </h3>
                   </Link>
                   <p className="text-xs text-[#667085] line-clamp-2">
-                    {prj.description || "Tinjauan literatur sistematis dengan ekstraksi data berbasis AI dan pelaporan PRISMA 2020."}
+                    {prj.description || (isId ? "Tinjauan literatur sistematis dengan ekstraksi data berbasis AI dan pelaporan PRISMA 2020." : "Systematic literature review with AI-assisted extraction and PRISMA 2020 reporting.")}
                   </p>
                   <div className="flex flex-wrap items-center gap-3 text-xs text-[#667085] pt-1">
                     <Link
@@ -264,13 +289,13 @@ export default async function AppDashboardPage() {
                     href={`/app/projects/${prj.id}/overview`}
                     className="px-3.5 py-1.5 rounded-lg border border-[#E4E7EC] hover:bg-white text-xs font-semibold text-[#17324D] transition-colors"
                   >
-                    Buka Proyek
+                    {isId ? "Buka Proyek" : "Open Project"}
                   </Link>
                   <Link
                     href={`/app/projects/${prj.id}/screening/title-abstract`}
                     className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#2F7D78] hover:bg-[#266662] text-xs font-semibold text-white transition-colors"
                   >
-                    <span>Screening</span>
+                    <span>{isId ? "Screening" : "Screening"}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>
