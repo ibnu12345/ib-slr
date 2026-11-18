@@ -1063,7 +1063,16 @@ export async function getPageBySlug(
 ): Promise<CMSPage | null> {
   const db = getDb();
   const normalizedSlug = slug.startsWith("/") ? slug : `/${slug}`;
-  const page = db.pages.find((p) => p.slug === normalizedSlug);
+  let page = db.pages?.find((p) => p.slug === normalizedSlug);
+  if (!page) {
+    page = defaultPages.find((p) => p.slug === normalizedSlug);
+  } else if (normalizedSlug === "/terms" || normalizedSlug === "/privacy" || normalizedSlug === "/pricing") {
+    // Keep legal and pricing content continuously synchronized with updated standards
+    const defaultPage = defaultPages.find((p) => p.slug === normalizedSlug);
+    if (defaultPage) {
+      page = { ...defaultPage, ...page, sections: defaultPage.sections };
+    }
+  }
   if (!page) return null;
 
   if (!includeDrafts && page.status !== "published") {

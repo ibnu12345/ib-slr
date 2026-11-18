@@ -31,6 +31,15 @@ export default async function ProjectLayout({ params, children }: Props) {
     notFound();
   }
 
+  // Strict tenant isolation: Only the project creator or super admin can access this review
+  const isOwner = project.createdBy === session.userId;
+  const isAdmin = session.role === "admin" || session.role === "super_admin";
+  const isDemo = project.id.includes("demo");
+
+  if (!isOwner && !isAdmin && !isDemo) {
+    redirect("/app");
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 print:p-0 print:m-0 print:max-w-full">
       {/* Top Breadcrumb & Status - Hidden in Print */}

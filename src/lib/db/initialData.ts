@@ -931,23 +931,31 @@ Research is cognitively demanding. Our user interface is deliberately quiet, mod
         id: "sec-priv-rich",
         pageId: "page-privacy",
         sectionType: "rich_text",
-        title: "Data Processing Terms",
-        subtitle: "Last updated: November 2026",
+        title: "Kebijakan Privasi & Perlindungan Data Peneliti (Privacy Policy)",
+        subtitle: "Terakhir diperbarui: 18 November 2026 — Sesuai UU Pelindungan Data Pribadi (UU PDP No. 27/2022) & GDPR",
         content: {
-          body: `### 1. Information We Collect
-We collect personal information necessary to deliver and secure our systematic review platform:
-- Profile details (Name, institutional email address, hashed passwords).
-- Review metadata (Project names, research questions, protocols, and criteria).
-- Uploaded research references and PDF documents.
+          body: `### 1. Komitmen Kedaulatan & Kerahasiaan Data Riset
+IB-SLR (*From Literature to Evidence.*) berkomitmen menjaga kerahasiaan penuh seluruh data penelitian Anda. Kami memahami bahwa manuskrip, protokol sintesis, dan hasil telaah pustaka merupakan aset intelektual bernilai tinggi.
 
-### 2. Zero AI Training on Private Manuscripts
-Your research papers, extracted data, and unpublished protocols are **never used to train public or foundation AI models**. All document processing occurs strictly within isolated execution boundaries.
+### 2. Informasi yang Kami Kumpulkan
+Untuk menyediakan layanan Systematic Literature Review berstandar internasional, kami mengumpulkan:
+- **Data Akun Pengguna:** Nama lengkap, alamat email institusi/pribadi, dan kredensial terenkripsi (*salted bcrypt hash*).
+- **Metadata Proyek Riset:** Judul riset, pertanyaan telaah (PICO framework), kriteria inklusi/eksklusi, string pencarian basis data, dan matriks ekstraksi.
+- **Berkas Referensi:** File kutipan ilmiah (RIS, BibTeX, CSV) serta file dokumen PDF artikel ilmiah yang diunggah secara mandiri oleh peneliti ke ruang kerja (*workspace*).
+- **Data Transaksi:** Nomor faktur resmi, status pembayaran, dan nominal transaksi yang diproses melalui gateway berizin Bank Indonesia (Midtrans). Kami **tidak pernah** menyimpan nomor kartu kredit atau PIN perbankan Anda.
 
-### 3. Row-Level Security & Tenant Partitioning
-Every research record in IB-SLR is governed by PostgreSQL Row-Level Security. No user, team, or institution can access another tenant's project without explicit workspace invitation.
+### 3. Jaminan Nol Pelatihan AI (Zero AI Model Training Guarantee)
+Naskah artikel ilmiah, draf manuskrip, file PDF, dan data ekstraksi yang Anda unggah ke IB-SLR **TIDAK PERNAH digunakan untuk melatih model AI publik, komersial, atau model dasar pihak ketiga**. Semua inferensi komputasi berjalan dalam batas lingkungan (*runtime sandbox*) terisolasi yang langsung dibersihkan setelah proses selesai.
 
-### 4. Right to Deletion & Data Portability
-You retain full ownership of your research. You may export all project data (citations, decisions, extraction tables, PRISMA logs) at any time in XLSX, CSV, or DOCX formats, or request complete account erasure.`
+### 4. Isolasi Data Multi-Tenant & Keamanan Basis Data
+Setiap proyek riset dilindungi oleh kebijakan keamanan tingkat baris (*Row-Level Security* / RLS) dan partisi tenant yang ketat:
+- Proyek riset Anda hanya dapat dilihat dan diedit oleh akun pembuatnya (*creator*).
+- Pengguna lain, tim lain, maupun publik **tidak memiliki akses** untuk mencari, membaca, atau mengunduh data proyek Anda.
+- Komunikasi data diamankan dengan enkripsi Transport Layer Security (TLS 1.3 / SSL 256-bit) serta enkripsi istirahat (*encryption-at-rest* AES-256).
+
+### 5. Hak Portabilitas & Penghapusan Data (Right to Erasure)
+- **Ekspor Mandiri:** Peneliti memiliki kebebasan penuh untuk mengunduh seluruh data proyek riset kapan saja dalam format standar terbuka (Microsoft Word DOCX, Microsoft Excel XLSX, CSV, serta Diagram Alir PRISMA 2020 SVG/PNG beresolusi tinggi).
+- **Hak Penghapusan Permanen:** Peneliti berhak mengajukan penghapusan akun dan seluruh berkas riset terkait secara permanen dari server produksi dan cadangan kami kapan saja melalui menu pengaturan akun atau menghubungi tim dukungan resmi.`
         },
         sortOrder: 2,
         isVisible: true,
@@ -991,17 +999,43 @@ You retain full ownership of your research. You may export all project data (cit
         id: "sec-trm-rich",
         pageId: "page-terms",
         sectionType: "rich_text",
-        title: "User Agreement",
-        subtitle: "Effective as of November 2026",
+        title: "Syarat dan Ketentuan Layanan (Terms of Service)",
+        subtitle: "Berlaku Efektif per 18 November 2026 — Kerangka Hukum Penggunaan Platform IB-SLR",
         content: {
-          body: `### 1. Acceptance of Terms
-By creating an account on IB-SLR, you agree to comply with these Terms of Service, all applicable laws, and international research ethics standards.
+          body: `### 1. Penerimaan Syarat & Ketentuan
+Dengan mendaftar, mengakses, atau menggunakan platform IB-SLR (*"From Literature to Evidence."*), Anda menyatakan telah membaca, memahami, dan menyetujui seluruh Syarat dan Ketentuan ini, Kebijakan Privasi kami, serta kode etik publikasi ilmiah internasional (seperti pedoman COPE dan PRISMA 2020).
 
-### 2. User Responsibilities & Copyright Compliance
-Users are solely responsible for ensuring they possess appropriate licenses or copyright permissions for any third-party scientific articles or proprietary PDFs uploaded to their workspace.
+### 2. Hak Kekayaan Intelektual & Kepemilikan Data Riset (100% Milik Peneliti)
+- **Kepemilikan Penuh Peneliti:** Peneliti memiliki 100% hak cipta dan kepemilikan atas protokol riset, data ekstraksi, sintesis bukti, visualisasi PRISMA 2020, dan manuskrip akhir yang dikerjakan di IB-SLR.
+- **Tanpa Klaim Hak Cipta:** IB-SLR tidak mengklaim kepemilikan, lisensi eksklusif, maupun royalti atas naskah dan publikasi ilmiah yang Anda hasilkan.
+- **Kerahasiaan Manuskrip:** Draf yang belum dipublikasikan diperlakukan sebagai informasi yang sangat rahasia (*confidential scientific work-in-progress*).
 
-### 3. Scientific Disclaimers
-IB-SLR provides software tools and AI-assisted extraction drafts. The software does not provide medical, legal, or statistical certification. Researchers maintain ultimate scientific responsibility for all findings published using the platform.`
+### 3. Ketentuan Kuota Proyek, Pembayaran, dan Transaksi
+- **Model Pay-Per-Project Pass:** Setiap pengguna baru berhak atas 1 (satu) slot proyek aktif gratis selamanya. Pengguna dapat menambah slot proyek aktif baru kapan saja seharga Rp 20.000 ($1.30 USD) per proyek pass permanen tanpa kewajiban berlangganan bulanan.
+- **Model Langganan:** Paket Professional Researcher ($29 / Rp 450.000 per bulan) dan Paket Institusi ($99 / Rp 1.500.000 per bulan) menyediakan slot proyek tanpa batas (*unlimited projects*).
+- **Pemrosesan Pembayaran Resmi:** Seluruh pembayaran diproses secara aman melalui Payment Gateway resmi berizin Bank Indonesia (Midtrans) menggunakan standar enkripsi bank PCI-DSS Level 1.
+- **Transparansi Mata Uang:** Tarif dinyatakan dalam Dolar Amerika Serikat (USD) dengan nominal konversi Rupiah (IDR) transparan yang dihitung berdasarkan kurs acuan Bank Indonesia.
+
+### 4. Kebijakan Pengembalian Dana (Refund Policy)
+- **Garansi 7 Hari:** Kami memberikan jaminan pengembalian dana penuh (*100% Money-Back Guarantee*) dalam waktu 7 (tujuh) hari kalender sejak tanggal transaksi apabila slot *Project Pass* yang dibeli belum pernah digunakan untuk melakukan proses screening atau ekstraksi artikel.
+- **Prosedur Pengembalian:** Peneliti dapat mengajukan klaim pengembalian dana dengan menyertakan Nomor Faktur (*Invoice ID*) ke tim dukungan resmi kami.
+
+### 5. Tanggung Jawab Pengguna & Kepatuhan Hak Cipta Artikel Jurnal
+- Peneliti bertanggung jawab penuh untuk memastikan bahwa setiap artikel jurnal ilmiah, laporan, atau file PDF pihak ketiga yang diunggah ke workspace telah memiliki lisensi yang sah (*institutional subscription, open-access Creative Commons, atau fair academic use*).
+- Pengguna dilarang menyalahgunakan platform untuk mendistribusikan karya berhak cipta secara ilegal kepada pihak luar.
+
+### 6. Integritas Akademik, Standar PRISMA 2020, dan Etika AI
+- **Asistensi, Bukan Pengganti Peneliti:** Fitur kecerdasan buatan (AI) di IB-SLR dirancang sebagai asisten riset untuk mempercepat penyaringan judul/abstrak dan pengisian draf ekstraksi awal berdasarkan kutipan berlabuh (*citation-anchored extraction*).
+- **Tanggung Jawab Ilmiah:** Peneliti memegang tanggung jawab metodologis dan ilmiah penuh atas validitas telaah kritis, verifikasi bias, dan sintesis temuan yang dilaporkan ke jurnal peer-reviewed.
+- **Transparansi Metodologi:** IB-SLR menyediakan jejak audit auditabel (*PRISMA 2020 event ledger*) untuk mendukung pelaporan metodologi yang transparan dan dapat direproduksi (*reproducible science*).
+
+### 7. Batasan Tanggung Jawab Ilmiah
+Platform IB-SLR disediakan sebagai perangkat lunak produktivitas dan komputasi metodologi telaah pustaka. IB-SLR tidak memberikan jaminan penerimaan publikasi jurnal tertentu, kelayakan hibah, atau sertifikasi medis/hukum atas hasil sintesis yang dibuat oleh pengguna.
+
+### 8. Hukum yang Berlaku & Hubungi Kami
+Syarat dan Ketentuan ini diatur dan ditafsirkan sesuai dengan hukum Negara Kesatuan Republik Indonesia. Untuk pertanyaan, verifikasi faktur, atau bantuan administratif:
+- **Email Dukungan:** ibnusetiawan1928@gmail.com / admin@ib-slr.com
+- **Merchant Resmi:** Ibnu Store / IB-SLR Systematic Review SaaS`
         },
         sortOrder: 2,
         isVisible: true,

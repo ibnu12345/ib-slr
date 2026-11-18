@@ -22,10 +22,13 @@ export async function getUserQuotaInfo(userId: string, role?: string): Promise<U
 
   const orders = await getUserPaymentOrders(userId);
   const paidPasses = orders.filter((o) => o.status === "paid" && o.itemType === "project_pass");
+  const paidSubscriptions = orders.filter((o) => o.status === "paid" && o.itemType === "plan_subscription");
+  const hasActiveSubscription = paidSubscriptions.length > 0;
+
   const purchasedQuota = paidPasses.length;
   const baseFreeQuota = 1;
 
-  const totalQuota = isOwnerOrPro ? 9999 : baseFreeQuota + purchasedQuota;
+  const totalQuota = isOwnerOrPro || hasActiveSubscription ? 9999 : baseFreeQuota + purchasedQuota;
 
   const userProjects = await getProjects(userId);
   const activeProjects = userProjects.filter(
@@ -33,8 +36,8 @@ export async function getUserQuotaInfo(userId: string, role?: string): Promise<U
   );
   const usedQuota = activeProjects.length;
 
-  const remainingQuota = isOwnerOrPro ? 9999 : Math.max(0, totalQuota - usedQuota);
-  const canCreateNewProject = isOwnerOrPro || totalQuota > usedQuota;
+  const remainingQuota = isOwnerOrPro || hasActiveSubscription ? 9999 : Math.max(0, totalQuota - usedQuota);
+  const canCreateNewProject = isOwnerOrPro || hasActiveSubscription || totalQuota > usedQuota;
 
   let planName = "Academic Free";
   let planBadge = "Free Tier (1 Proyek)";
@@ -45,6 +48,9 @@ export async function getUserQuotaInfo(userId: string, role?: string): Promise<U
   } else if (isOwnerOrPro) {
     planName = "Pro Lifetime VIP (Owner Pass)";
     planBadge = "Akses Riset Penuh (Gratis)";
+  } else if (hasActiveSubscription) {
+    planName = "Professional Researcher";
+    planBadge = "Langganan Aktif (Unlimited Proyek)";
   } else if (purchasedQuota > 0) {
     planName = "Pay-Per-Project Pass";
     planBadge = `+${purchasedQuota} Slot Aktif Ekstra`;

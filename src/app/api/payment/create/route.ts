@@ -9,10 +9,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Silakan login terlebih dahulu." }, { status: 401 });
     }
 
+    const body = await req.json().catch(() => ({}));
+    const planKey = body?.planKey || "pay_per_project";
+
     const qrisData = await createProjectPassOrder(
       session.userId,
       session.email,
-      session.fullName
+      session.fullName,
+      planKey
     );
 
     return NextResponse.json(qrisData);

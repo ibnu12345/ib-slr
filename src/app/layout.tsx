@@ -84,6 +84,11 @@ export default async function RootLayout({
             crossOrigin="anonymous"
             strategy="afterInteractive"
           />
+          <Script
+            src="https://app.midtrans.com/snap/snap.js"
+            data-client-key="Mid-client-iarLicaVSk-gGm8E"
+            strategy="lazyOnload"
+          />
         </LanguageProvider>
       </body>
     </html>

@@ -7,10 +7,13 @@ import {
   getUserPaymentOrders,
 } from "../db";
 
-const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY || process.env.MIDTRANS_API_KEY || "";
-const MIDTRANS_API_KEY = process.env.MIDTRANS_API_KEY || process.env.MIDTRANS_SERVER_KEY || "";
+// Server Key from environment variables (No hardcoded secrets)
+const MIDTRANS_WORKING_SERVER_KEY = process.env.MIDTRANS_API_KEY || process.env.MIDTRANS_SERVER_KEY || "";
+const MIDTRANS_SIGNATURE_KEY = process.env.MIDTRANS_SERVER_KEY || process.env.MIDTRANS_API_KEY || "";
+const MIDTRANS_SERVER_KEY = MIDTRANS_WORKING_SERVER_KEY;
+const MIDTRANS_API_KEY = MIDTRANS_SIGNATURE_KEY;
 const MIDTRANS_CLIENT_KEY = process.env.MIDTRANS_CLIENT_KEY || "";
-const IS_PRODUCTION = process.env.MIDTRANS_IS_PRODUCTION === "true";
+const IS_PRODUCTION = process.env.MIDTRANS_IS_PRODUCTION !== "false";
 
 const MIDTRANS_SNAP_URL = IS_PRODUCTION
   ? "https://app.midtrans.com/snap/v1/transactions"
@@ -20,7 +23,6 @@ const MIDTRANS_SNAP_URL = IS_PRODUCTION
  * Generate standard Indonesian National QRIS payload (EMVCo QR Code standard)
  */
 export function generateQrisPayload(orderId: string, amount: number): string {
-  // Standard EMVCo QRIS structure for Indonesia
   const merchantName = "IB-SLR Research SaaS";
   const merchantCity = "JAKARTA";
   const postalCode = "10110";
@@ -31,27 +33,49 @@ export function generateQrisPayload(orderId: string, amount: number): string {
 }
 
 /**
- * Create a new Pay-Per-Project Pass order (Rp 20.000)
+ * Create a new Pay-Per-Project Pass or Plan Subscription Order
  */
 export async function createProjectPassOrder(
   userId: string,
   userEmail: string,
-  userName: string
+  userName: string,
+  planKey: string = "pay_per_project"
 ): Promise<QrisGenerateResponse> {
   const timestamp = Date.now();
   const randomSuffix = Math.random().toString(36).substring(2, 7).toUpperCase();
   const orderId = `INV-SLR-${new Date().getFullYear()}-${timestamp.toString().slice(-6)}-${randomSuffix}`;
-  const amount = 20000; // Rp 20.000
+
+  let amount = 20000; // Rp 20.000 (~$1.30)
+  let itemName = "1X Active Systematic Review Project Pass";
+  let itemType: "project_pass" | "plan_subscription" = "project_pass";
+  let usdEquivalent = "$1.30";
+
+  if (planKey === "pro_researcher" || planKey === "plan-researcher") {
+    amount = 450000;
+    itemName = "Professional Researcher Plan (1 Bulan - Unlimited Review Projects)";
+    itemType = "plan_subscription";
+    usdEquivalent = "$29.00";
+  } else if (planKey === "institutional" || planKey === "plan-institution") {
+    amount = 1500000;
+    itemName = "Institutional & Lab Plan (1 Bulan - Unlimited Workspaces & Seats)";
+    itemType = "plan_subscription";
+    usdEquivalent = "$99.00";
+  }
 
   const qrisRaw = generateQrisPayload(orderId, amount);
 
   let snapToken: string | undefined = undefined;
   let snapRedirectUrl: string | undefined = undefined;
 
-  // Try real Midtrans API if server key is configured
-  if (MIDTRANS_SERVER_KEY) {
+  // Try real Midtrans API using validated server keys
+  const candidateKeys = [
+    MIDTRANS_WORKING_SERVER_KEY,
+    MIDTRANS_SIGNATURE_KEY,
+  ].filter(Boolean);
+
+  for (const key of candidateKeys) {
     try {
-      const authHeader = Buffer.from(`${MIDTRANS_SERVER_KEY}:`).toString("base64");
+      const authHeader = Buffer.from(`${key}:`).toString("base64");
       const midtransPayload = {
         transaction_details: {
           order_id: orderId,
@@ -59,19 +83,29 @@ export async function createProjectPassOrder(
         },
         item_details: [
           {
-            id: "SLR-PASS-1X",
+            id: planKey,
             price: amount,
             quantity: 1,
-            name: "1X Active Systematic Review Project Pass",
+            name: itemName.substring(0, 50),
             brand: "IB-SLR",
             category: "Research Software",
           },
         ],
         customer_details: {
-          first_name: userName,
-          email: userEmail,
+          first_name: userName || "Researcher",
+          email: userEmail || "researcher@ib-slr.com",
         },
-        enabled_payments: ["qris", "gopay", "shopeepay", "bca_va", "bni_va", "bri_va", "echannel"],
+        enabled_payments: [
+          "qris",
+          "gopay",
+          "shopeepay",
+          "bca_va",
+          "bni_va",
+          "bri_va",
+          "echannel",
+          "permata_va",
+          "credit_card",
+        ],
       };
 
       const res = await fetch(MIDTRANS_SNAP_URL, {
@@ -88,14 +122,16 @@ export async function createProjectPassOrder(
         const data = await res.json();
         snapToken = data.token;
         snapRedirectUrl = data.redirect_url;
+        break;
       }
     } catch (err) {
-      console.warn("Midtrans API call skipped or errored, falling back to instant QRIS sandbox engine:", err);
+      console.warn("Midtrans API call attempt skipped:", err);
     }
   }
 
-  // QR Code Image representation (Generates high quality QR code URL via standard reliable QR generator)
-  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrisRaw)}&color=17-50-77`;
+  // QR Code URL: If Midtrans Snap redirect URL is available, encode the checkout portal so camera scanners directly open Midtrans mobile pay!
+  const qrTarget = snapRedirectUrl || qrisRaw;
+  const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(qrTarget)}&color=17-50-77`;
 
   const expiresAt = new Date(timestamp + 15 * 60 * 1000).toISOString(); // 15 mins expiry
 
@@ -107,8 +143,8 @@ export async function createProjectPassOrder(
     userName,
     amount,
     currency: "IDR",
-    itemType: "project_pass",
-    itemDescription: "Top-Up +1 Active Systematic Review Project Pass",
+    itemType,
+    itemDescription: itemName,
     status: "pending",
     paymentType: "qris",
     qrisString: qrisRaw,
@@ -117,8 +153,10 @@ export async function createProjectPassOrder(
     invoiceUrl: `/api/payment/invoice/${orderId}`,
     createdAt: new Date().toISOString(),
     metadata: {
+      planKey,
+      usdEquivalent,
       expiresAt,
-      provider: MIDTRANS_SERVER_KEY ? "midtrans" : "qris_sandbox",
+      provider: snapToken ? "midtrans_production" : "qris_sandbox",
     },
   };
 
