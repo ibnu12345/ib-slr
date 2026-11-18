@@ -95,17 +95,6 @@ export async function createProjectPassOrder(
           first_name: userName || "Researcher",
           email: userEmail || "researcher@ib-slr.com",
         },
-        enabled_payments: [
-          "qris",
-          "gopay",
-          "shopeepay",
-          "bca_va",
-          "bni_va",
-          "bri_va",
-          "echannel",
-          "permata_va",
-          "credit_card",
-        ],
       };
 
       const res = await fetch(MIDTRANS_SNAP_URL, {

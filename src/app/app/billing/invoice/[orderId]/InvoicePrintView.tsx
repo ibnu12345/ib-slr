@@ -127,7 +127,7 @@ export function InvoicePrintView({ order, isId = true }: Props) {
                 {isId ? "Penerima Pembayaran (Merchant):" : "Issued By (Merchant):"}
               </span>
               <p className="font-bold text-[#17324D] text-sm">IB-SLR Research Technologies</p>
-              <p className="text-[#667085]">Gateway: QRIS Bank Indonesia (EMVCo) / Midtrans</p>
+              <p className="text-[#667085]">Sistem: Standar Nasional Bank Indonesia (QRIS / Virtual Account)</p>
               <p className="text-[11px] text-[#667085]">Jakarta, Indonesia</p>
             </div>
           </div>

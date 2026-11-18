@@ -184,7 +184,7 @@ export function PricingSection({ section, plans = [] }: PricingSectionProps) {
               </div>
               <p className="text-xs text-[#667085] mt-1 max-w-2xl leading-relaxed">
                 {isId
-                  ? "Setiap pengguna baru langsung mendapatkan 1 Active Systematic Review Project secara gratis. Setelah kuota gratis digunakan, Anda bisa menambah 1x proyek aktif kapan saja hanya seharga Rp 20.000 (~$1.30) via QRIS/Midtrans tanpa perlu berlangganan paket bulanan."
+                  ? "Setiap pengguna baru langsung mendapatkan 1 Active Systematic Review Project secara gratis. Setelah kuota gratis digunakan, Anda bisa menambah 1x proyek aktif kapan saja hanya seharga Rp 20.000 (~$1.30) secara instan tanpa perlu berlangganan paket bulanan."
                   : "Every new user gets 1 Active Systematic Review Project free forever. Once your free project slot is in use, you can unlock an additional active review project at any time for just $1.30 (~Rp 20,000) per project."}
               </p>
             </div>

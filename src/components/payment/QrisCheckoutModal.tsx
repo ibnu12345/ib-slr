@@ -16,6 +16,8 @@ import {
   Building2,
   Smartphone,
   ChevronRight,
+  Copy,
+  Check,
 } from "lucide-react";
 import { QrisGenerateResponse, PaymentOrder } from "../../lib/types/payment";
 
@@ -38,9 +40,9 @@ export function QrisCheckoutModal({
   const [orderData, setOrderData] = useState<QrisGenerateResponse | null>(null);
   const [paymentStatus, setPaymentStatus] = useState<"pending" | "paid" | "failed">("pending");
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 mins
-  const [simulating, setSimulating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethodTab>("qris");
+  const [copied, setCopied] = useState(false);
 
   // Determine item display metadata
   const planInfo = (() => {
@@ -97,10 +99,10 @@ export function QrisCheckoutModal({
       if (data.success && data.order) {
         setOrderData(data);
       } else {
-        setError(data.error || "Gagal menginisiasi gateway pembayaran Midtrans.");
+        setError(data.error || "Gagal menginisiasi gateway pembayaran. Silakan coba kembali.");
       }
     } catch {
-      setError("Terjadi kesalahan jaringan saat menyiapkan pembayaran.");
+      setError("Terjadi kesalahan jaringan saat menyiapkan invoice pembayaran.");
     } finally {
       setLoading(false);
     }
@@ -147,8 +149,8 @@ export function QrisCheckoutModal({
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Open Midtrans Snap Popup or Redirect
-  const handleOpenMidtrans = () => {
+  // Open Payment Portal (Popup or Redirect)
+  const handleOpenGateway = () => {
     if (orderData?.order?.snapToken && typeof window !== "undefined" && (window as any).snap) {
       (window as any).snap.pay(orderData.order.snapToken, {
         onSuccess: (result: any) => {
@@ -159,7 +161,7 @@ export function QrisCheckoutModal({
           // Polling will detect automatically
         },
         onError: (err: any) => {
-          console.warn("Midtrans Snap error:", err);
+          console.warn("Payment gateway error:", err);
         },
         onClose: () => {},
       });
@@ -168,30 +170,11 @@ export function QrisCheckoutModal({
     }
   };
 
-  // Simulate payment for demo & instant testing
-  const handleSimulatePayment = async () => {
-    if (!orderData) return;
-    setSimulating(true);
-    try {
-      const res = await fetch("/api/payment/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          orderId: orderData.order.orderId,
-          simulate: true,
-        }),
-      });
-      const data = await res.json();
-      if (data.success && data.status === "paid") {
-        setPaymentStatus("paid");
-        if (onSuccess && data.order) {
-          onSuccess(data.order);
-        }
-      }
-    } catch {
-      setError("Gagal melakukan simulasi pembayaran.");
-    } finally {
-      setSimulating(false);
+  const copyOrderId = () => {
+    if (orderData?.order?.orderId) {
+      navigator.clipboard.writeText(orderData.order.orderId);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     }
   };
 
@@ -208,10 +191,10 @@ export function QrisCheckoutModal({
             </div>
             <div>
               <h3 className="text-sm font-bold text-[#17324D]">
-                Checkout Resmi IB-SLR — Gateway Midtrans
+                Checkout Resmi — IB-SLR SaaS
               </h3>
               <p className="text-[11px] text-[#667085]">
-                Enkripsi 256-bit &bull; Terverifikasi Standar Bank Indonesia
+                Enkripsi 256-bit &bull; Terverifikasi Standar Perbankan Nasional
               </p>
             </div>
           </div>
@@ -229,7 +212,7 @@ export function QrisCheckoutModal({
             <div className="py-16 text-center space-y-3">
               <RefreshCw className="w-8 h-8 text-[#2F7D78] animate-spin mx-auto" />
               <p className="text-xs text-[#667085] font-medium">
-                Menghubungkan ke Gateway Pembayaran & Menyiapkan Invoice...
+                Menghubungkan ke Portal Pembayaran & Menyiapkan Invoice...
               </p>
             </div>
           ) : error ? (
@@ -348,7 +331,7 @@ export function QrisCheckoutModal({
                       </span>
                     </div>
                     <span className="text-xs font-bold text-[#17324D] block">QRIS</span>
-                    <span className="text-[10px] text-[#667085]">Semua Bank/E-Wallet</span>
+                    <span className="text-[10px] text-[#667085]">Semua Bank & E-Wallet</span>
                   </button>
 
                   <button
@@ -401,23 +384,25 @@ export function QrisCheckoutModal({
                 </div>
               </div>
 
-              {/* Step 2: Main Action & Gateway Trigger */}
+              {/* Step 2: Main Action Button */}
               <div className="p-4 rounded-xl bg-[#F7F8FA] border border-[#E4E7EC] space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#17324D]">
                     2. Selesaikan Pembayaran Resmi
                   </span>
-                  <span className="text-[10px] text-[#667085]">Gateway Midtrans</span>
+                  <span className="text-[10px] text-[#2F7D78] font-semibold bg-[#EFF7F6] px-2 py-0.5 rounded-full">
+                    Sistem Terverifikasi
+                  </span>
                 </div>
 
-                {/* Primary Button to Open Midtrans Gateway */}
+                {/* Primary Button */}
                 <button
                   type="button"
-                  onClick={handleOpenMidtrans}
+                  onClick={handleOpenGateway}
                   className="w-full py-3 px-4 rounded-xl bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-bold shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
                 >
                   <Zap className="w-4 h-4 text-[#3E9C96]" />
-                  <span>Bayar Sekarang via Midtrans Portal ({planInfo.idr})</span>
+                  <span>Bayar Sekarang ({planInfo.idr})</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
 
@@ -429,53 +414,45 @@ export function QrisCheckoutModal({
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs text-[#2F7D78] hover:underline font-semibold"
                     >
-                      <span>Atau buka portal pembayaran Midtrans di tab baru</span>
+                      <span>Atau buka portal pembayaran di tab baru</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 )}
               </div>
 
-              {/* QR Code Container (Responsive & Validated) */}
+              {/* Order Reference & Mobile Scanner */}
               <div className="p-4 bg-white border border-[#E4E7EC] rounded-xl flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
                 {orderData && (
                   <div className="p-2 bg-white rounded-lg shadow-sm border border-[#E4E7EC] shrink-0">
                     <img
                       src={orderData.qrCodeUrl}
                       alt="Payment Portal QR Code"
-                      className="w-28 h-28 object-contain"
+                      className="w-24 h-24 object-contain"
                     />
                   </div>
                 )}
-                <div className="space-y-1">
+                <div className="space-y-1.5 flex-1">
                   <div className="flex items-center justify-center sm:justify-start gap-1.5">
-                    <span className="font-bold text-xs text-[#17324D]">Scan dengan Kamera Smartphone</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#EFF7F6] text-[#2F7D78] font-bold">
-                      Mobile Pay
+                    <span className="font-bold text-xs text-[#17324D]">Kode Tagihan & Mobile Pay</span>
+                  </div>
+                  <div className="flex items-center justify-center sm:justify-start gap-2">
+                    <span className="font-mono text-xs font-bold text-[#17324D] bg-[#F2F4F7] px-2 py-0.5 rounded border border-[#E4E7EC]">
+                      {orderData?.order?.orderId}
                     </span>
+                    <button
+                      type="button"
+                      onClick={copyOrderId}
+                      className="text-[#2F7D78] hover:text-[#17324D] p-1 rounded hover:bg-gray-100 transition-colors"
+                      title="Salin No. Tagihan"
+                    >
+                      {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    </button>
                   </div>
                   <p className="text-[11px] text-[#667085] leading-relaxed">
-                    Arahkan kamera HP Anda ke kode di samping untuk langsung membuka halaman pembayaran resmi di ponsel Anda (mendukung GoPay, ShopeePay, m-Banking BCA/Mandiri/BRI, dan QRIS).
+                    Arahkan kamera ponsel Anda ke kode QR untuk membuka halaman pembayaran instan di smartphone Anda.
                   </p>
                 </div>
-              </div>
-
-              {/* Sandbox Simulation / Instant Test Button */}
-              <div className="p-3 bg-[#EFF7F6] border border-[#2F7D78]/25 rounded-xl flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-2 text-[#17324D]">
-                  <Sparkles className="w-4 h-4 text-[#2F7D78] shrink-0" />
-                  <span>
-                    <strong>Uji Coba Sandbox:</strong> Ingin menguji verifikasi tanpa memotong saldo bank Anda?
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleSimulatePayment}
-                  disabled={simulating}
-                  className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2F7D78] hover:bg-[#266662] text-white text-xs font-semibold shadow-sm transition-colors disabled:opacity-50"
-                >
-                  <span>{simulating ? "Memverifikasi..." : "Simulasi Bayar Instan"}</span>
-                </button>
               </div>
             </div>
           )}
