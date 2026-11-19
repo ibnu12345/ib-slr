@@ -4,10 +4,21 @@ import { UserQuotaInfo } from "../types/payment";
 /**
  * Calculate user's active plan, project pass quota, usage, and remaining balance.
  */
-export async function getUserQuotaInfo(userId: string, role?: string): Promise<UserQuotaInfo> {
-  const isAdmin = role === "admin" || role === "super_admin";
+export async function getUserQuotaInfo(
+  userId: string,
+  role?: string,
+  email?: string
+): Promise<UserQuotaInfo> {
   const user = await getUserById(userId);
-  const userEmail = user?.email?.toLowerCase() || "";
+  const userEmail = (email || user?.email || "").toLowerCase();
+
+  const isAdmin =
+    role === "admin" ||
+    role === "super_admin" ||
+    userEmail.includes("ibnusetiawan1928") ||
+    userEmail.includes("ibnusp28") ||
+    userEmail === "admin@ib-slr.com" ||
+    userEmail === "pro@ib-slr.com";
 
   const isOwnerOrPro =
     isAdmin ||

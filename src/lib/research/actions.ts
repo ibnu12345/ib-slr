@@ -33,7 +33,7 @@ export async function createProjectAction(formData: FormData) {
   }
 
   // Enforce Active Project Quota (Base Free 1 + Paid QRIS Passes)
-  const quota = await getUserQuotaInfo(session.userId, session.role);
+  const quota = await getUserQuotaInfo(session.userId, session.role, session.email);
   if (!quota.canCreateNewProject) {
     return {
       success: false,

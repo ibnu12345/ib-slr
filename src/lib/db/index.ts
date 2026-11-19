@@ -972,13 +972,61 @@ export function saveDb(data: DatabaseSchema): void {
   }
 }
 
-let supabaseChecked = false;
-export async function syncFromSupabase(): Promise<void> {
-  if (!supabaseChecked && isSupabaseConfigured()) {
-    supabaseChecked = true;
-    const remote = await loadStateFromSupabase();
-    if (remote) {
-      memoryDb = remote;
+let lastSupabaseSync = 0;
+const SYNC_DEBOUNCE_MS = 4000;
+
+export async function syncFromSupabase(force = false): Promise<void> {
+  if (!isSupabaseConfigured()) return;
+  const now = Date.now();
+  if (force || now - lastSupabaseSync > SYNC_DEBOUNCE_MS) {
+    lastSupabaseSync = now;
+    try {
+      const remote = await loadStateFromSupabase();
+      if (remote) {
+        memoryDb = {
+          ...getInitialDatabase(),
+          ...remote,
+          workspaces: remote.workspaces || getInitialDatabase().workspaces,
+          projects: remote.projects || getInitialDatabase().projects,
+          protocols: remote.protocols || getInitialDatabase().protocols,
+          eligibilityCriteria: remote.eligibilityCriteria || getInitialDatabase().eligibilityCriteria,
+          searchRuns: remote.searchRuns || getInitialDatabase().searchRuns,
+          articles: remote.articles || getInitialDatabase().articles,
+          duplicateCandidates: remote.duplicateCandidates || [],
+          screeningDecisions: remote.screeningDecisions || [],
+          screeningConflicts: remote.screeningConflicts || [],
+          exclusionReasons: remote.exclusionReasons || defaultExclusionReasons,
+          prismaEvents: remote.prismaEvents || getInitialDatabase().prismaEvents,
+          extractionTemplates: remote.extractionTemplates || getInitialDatabase().extractionTemplates,
+          extractedDataRecords: remote.extractedDataRecords || getInitialDatabase().extractedDataRecords,
+          aiScreeningSuggestions: remote.aiScreeningSuggestions || [],
+          appraisalRecords: remote.appraisalRecords || getInitialDatabase().appraisalRecords,
+          thematicCodes: remote.thematicCodes || getInitialDatabase().thematicCodes,
+          thematicExcerpts: remote.thematicExcerpts || getInitialDatabase().thematicExcerpts,
+          manuscripts: remote.manuscripts || getInitialDatabase().manuscripts,
+          tableDefinitions: remote.tableDefinitions || getInitialDatabase().tableDefinitions,
+          users: remote.users || getInitialDatabase().users,
+          paymentOrders: remote.paymentOrders || [],
+        };
+        try {
+          ensureDirectoryExists();
+          fs.writeFileSync(DB_FILE, JSON.stringify(memoryDb, null, 2), "utf-8");
+          lastDbMtime = fs.statSync(DB_FILE).mtimeMs;
+        } catch {}
+      }
+    } catch (err) {
+      console.warn("Supabase sync warning:", err);
+    }
+  }
+}
+
+export async function saveDbAsync(data: DatabaseSchema): Promise<void> {
+  saveDb(data);
+  if (isSupabaseConfigured()) {
+    try {
+      await saveStateToSupabase(data);
+    } catch (err) {
+      console.warn("Supabase saveStateToSupabase error:", err);
     }
   }
 }
@@ -1426,9 +1474,17 @@ export async function getProjectsByUserId(userId: string): Promise<Project[]> {
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
+  await syncFromSupabase();
   const db = getDb();
   const normalizedId = resolveProjectId(id);
-  const project = db.projects.find((p) => p.id === normalizedId || p.id === id);
+  let project = db.projects.find((p) => p.id === normalizedId || p.id === id);
+
+  if (!project) {
+    await syncFromSupabase(true);
+    const freshDb = getDb();
+    project = freshDb.projects.find((p) => p.id === normalizedId || p.id === id);
+  }
+
   return project || null;
 }
 
@@ -1437,6 +1493,7 @@ export async function createProject(
   userId: string,
   userEmail?: string
 ): Promise<Project> {
+  await syncFromSupabase();
   const db = getDb();
   const newProject: Project = {
     id: `prj-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -1452,7 +1509,7 @@ export async function createProject(
     projectId: newProject.id,
     version: 1,
     framework: "PICO",
-    background: "",
+    background: data.description || "",
     objectives: "",
     isLocked: false,
     createdAt: new Date().toISOString(),
@@ -1461,7 +1518,7 @@ export async function createProject(
   db.protocols.push(newProtocol);
 
   createAuditLogSync("CREATE_PROJECT", "project", newProject.id, { title: newProject.title }, userId, userEmail);
-  saveDb(db);
+  await saveDbAsync(db);
   return newProject;
 }
 
@@ -1470,9 +1527,38 @@ export async function createProject(
 // =====================================================================
 
 export async function getProtocolByProjectId(projectId: string): Promise<Protocol | null> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
-  const proto = db.protocols.find((p) => p.projectId === id || p.projectId === projectId);
+  let proto = db.protocols.find((p) => p.projectId === id || p.projectId === projectId);
+
+  if (!proto) {
+    await syncFromSupabase(true);
+    const freshDb = getDb();
+    proto = freshDb.protocols.find((p) => p.projectId === id || p.projectId === projectId);
+  }
+
+  // Self-heal: If the project exists but has no protocol record yet, auto-create a default PICO protocol
+  if (!proto) {
+    const project = db.projects.find((p) => p.id === id || p.id === projectId);
+    if (project) {
+      const autoProto: Protocol = {
+        id: `proto-${project.id}`,
+        projectId: project.id,
+        version: 1,
+        framework: "PICO",
+        background: project.description || "",
+        objectives: "",
+        isLocked: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      db.protocols.push(autoProto);
+      await saveDbAsync(db);
+      return autoProto;
+    }
+  }
+
   return proto || null;
 }
 
@@ -1481,6 +1567,7 @@ export async function saveProtocol(
   userId: string,
   userEmail?: string
 ): Promise<Protocol> {
+  await syncFromSupabase();
   const db = getDb();
   protocol.updatedAt = new Date().toISOString();
   const index = db.protocols.findIndex((p) => p.id === protocol.id || p.projectId === protocol.projectId);
@@ -1496,7 +1583,7 @@ export async function saveProtocol(
     db.protocols.push(protocol);
     createAuditLogSync("CREATE_PROTOCOL", "protocol", protocol.id, { version: protocol.version }, userId, userEmail);
   }
-  saveDb(db);
+  await saveDbAsync(db);
   return protocol;
 }
 
@@ -1505,6 +1592,7 @@ export async function lockProtocol(
   userId: string,
   userEmail?: string
 ): Promise<Protocol> {
+  await syncFromSupabase();
   const db = getDb();
   const proto = db.protocols.find((p) => p.projectId === projectId);
   if (!proto) throw new Error("Protocol not found.");
@@ -1515,11 +1603,12 @@ export async function lockProtocol(
   proto.updatedAt = new Date().toISOString();
 
   createAuditLogSync("LOCK_PROTOCOL", "protocol", proto.id, { lockedAt: proto.lockedAt }, userId, userEmail);
-  saveDb(db);
+  await saveDbAsync(db);
   return proto;
 }
 
 export async function getCriteriaByProjectId(projectId: string): Promise<EligibilityCriterion[]> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   return db.eligibilityCriteria.filter((c) => c.projectId === id || c.projectId === projectId).sort((a, b) => a.sortOrder - b.sortOrder);
@@ -1530,6 +1619,7 @@ export async function saveCriterion(
   userId?: string,
   userEmail?: string
 ): Promise<EligibilityCriterion> {
+  await syncFromSupabase();
   const db = getDb();
   const index = db.eligibilityCriteria.findIndex((c) => c.id === criterion.id);
   if (index >= 0) {
@@ -1538,7 +1628,7 @@ export async function saveCriterion(
     db.eligibilityCriteria.push(criterion);
   }
   createAuditLogSync("SAVE_CRITERION", "eligibility_criterion", criterion.id, criterion, userId, userEmail);
-  saveDb(db);
+  await saveDbAsync(db);
   return criterion;
 }
 
@@ -1547,12 +1637,13 @@ export async function deleteCriterion(
   userId?: string,
   userEmail?: string
 ): Promise<boolean> {
+  await syncFromSupabase();
   const db = getDb();
   const countBefore = db.eligibilityCriteria.length;
   db.eligibilityCriteria = db.eligibilityCriteria.filter((c) => c.id !== id);
   if (db.eligibilityCriteria.length !== countBefore) {
     createAuditLogSync("DELETE_CRITERION", "eligibility_criterion", id, { id }, userId, userEmail);
-    saveDb(db);
+    await saveDbAsync(db);
     return true;
   }
   return false;
@@ -1563,6 +1654,7 @@ export async function deleteCriterion(
 // =====================================================================
 
 export async function getSearchRunsByProjectId(projectId: string): Promise<SearchRun[]> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   return db.searchRuns.filter((s) => s.projectId === id || s.projectId === projectId).sort((a, b) => new Date(b.searchDate).getTime() - new Date(a.searchDate).getTime());
@@ -1573,6 +1665,7 @@ export async function createSearchRun(
   userId: string,
   userEmail?: string
 ): Promise<SearchRun> {
+  await syncFromSupabase();
   const db = getDb();
   const newRun: SearchRun = {
     id: `sr-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -1582,7 +1675,7 @@ export async function createSearchRun(
 
   db.searchRuns.push(newRun);
   createAuditLogSync("CREATE_SEARCH_RUN", "search_run", newRun.id, { source: newRun.sourceDatabase, count: newRun.resultsCount }, userId, userEmail);
-  saveDb(db);
+  await saveDbAsync(db);
   return newRun;
 }
 
@@ -1590,6 +1683,7 @@ export async function getArticlesByProjectId(
   projectId: string,
   filters?: { screeningStatus?: string; search?: string }
 ): Promise<Article[]> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   let list = db.articles.filter((a) => (a.projectId === id || a.projectId === projectId) && !a.isDuplicate);
@@ -1630,6 +1724,7 @@ export async function importArticlesBatch(
   userId?: string,
   userEmail?: string
 ): Promise<{ importedCount: number; articles: Article[] }> {
+  await syncFromSupabase();
   const db = getDb();
   const createdArticles: Article[] = [];
 
@@ -1681,7 +1776,7 @@ export async function importArticlesBatch(
     userEmail
   );
 
-  saveDb(db);
+  await saveDbAsync(db);
   return { importedCount: createdArticles.length, articles: createdArticles };
 }
 

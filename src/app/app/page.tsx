@@ -34,7 +34,7 @@ export default async function AppDashboardPage() {
   const isId = lang === "id";
 
   const projects = await getProjects(session.userId);
-  const quota = await getUserQuotaInfo(session.userId, session.role);
+  const quota = await getUserQuotaInfo(session.userId, session.role, session.email);
   let totalArticles = 0;
   for (const prj of projects) {
     const arts = await getArticlesByProjectId(prj.id);

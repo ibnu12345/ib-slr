@@ -33,7 +33,7 @@ export default async function BillingPage() {
   const lang = cookieStore.get("ib_slr_lang")?.value || "en";
   const isId = lang === "id";
 
-  const quota = await getUserQuotaInfo(session.userId, session.role);
+  const quota = await getUserQuotaInfo(session.userId, session.role, session.email);
   const orders = await getUserPaymentOrders(session.userId);
   const projects = await getProjects(session.userId);
 

@@ -8,6 +8,6 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const quota = await getUserQuotaInfo(session.userId, session.role);
+  const quota = await getUserQuotaInfo(session.userId, session.role, session.email);
   return NextResponse.json({ success: true, quota });
 }
