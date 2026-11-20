@@ -61,6 +61,10 @@ import {
   loadStateFromSupabase,
   saveProjectDecisionsToSupabase,
   loadProjectDecisionsFromSupabase,
+  saveProjectAppraisalsToSupabase,
+  loadProjectAppraisalsFromSupabase,
+  saveProjectExtractionsToSupabase,
+  loadProjectExtractionsFromSupabase,
 } from "./supabaseSync";
 
 export interface StoredUser extends UserProfile {
@@ -1321,8 +1325,8 @@ export async function createAuditLogSync(
   };
   const db = getDb();
   db.auditLogs.unshift(log);
-  if (db.auditLogs.length > 1000) {
-    db.auditLogs.length = 1000;
+  if (db.auditLogs.length > 5000) {
+    db.auditLogs.length = 5000;
   }
 }
 
@@ -2371,6 +2375,17 @@ export async function getExtractedDataRecords(
   const db = getDb();
   const id = resolveProjectId(projectId);
   let list = db.extractedDataRecords.filter((r) => r.projectId === id || r.projectId === projectId);
+  if (list.length === 0) {
+    const remote = await loadProjectExtractionsFromSupabase(id);
+    if (remote && Array.isArray(remote) && remote.length > 0) {
+      for (const rec of remote) {
+        if (!db.extractedDataRecords.some((r) => r.id === rec.id)) {
+          db.extractedDataRecords.push(rec);
+        }
+      }
+      list = remote;
+    }
+  }
   if (articleId) {
     list = list.filter((r) => r.articleId === articleId);
   }
@@ -2473,6 +2488,17 @@ export async function getAppraisalRecords(
   const db = getDb();
   const id = resolveProjectId(projectId);
   let list = db.appraisalRecords.filter((r) => r.projectId === id || r.projectId === projectId);
+  if (list.length === 0) {
+    const remote = await loadProjectAppraisalsFromSupabase(id);
+    if (remote && Array.isArray(remote) && remote.length > 0) {
+      for (const rec of remote) {
+        if (!db.appraisalRecords.some((r) => r.id === rec.id)) {
+          db.appraisalRecords.push(rec);
+        }
+      }
+      list = remote;
+    }
+  }
   if (articleId) {
     list = list.filter((r) => r.articleId === articleId);
   }
