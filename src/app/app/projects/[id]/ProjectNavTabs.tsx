@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "../../../../components/i18n/LanguageContext";
+import { useProjectNavigation } from "./ProjectNavigationContext";
 import {
   LayoutDashboard,
   FileText,
@@ -30,12 +31,7 @@ interface Props {
 export function ProjectNavTabs({ projectId }: Props) {
   const pathname = usePathname();
   const { isId } = useLanguage();
-  const [pendingHref, setPendingHref] = useState<string | null>(null);
-
-  // Clear pending state when navigation arrives at the target pathname
-  useEffect(() => {
-    setPendingHref(null);
-  }, [pathname]);
+  const { pendingHref, startNavigation } = useProjectNavigation();
 
   const tabs = [
     { label: isId ? "Ringkasan" : "Overview", href: `/app/projects/${projectId}/overview`, icon: LayoutDashboard },
@@ -73,16 +69,15 @@ export function ProjectNavTabs({ projectId }: Props) {
               <Link
                 key={tab.href}
                 href={tab.href}
+                prefetch={true}
                 onClick={() => {
-                  if (pathname !== tab.href) {
-                    setPendingHref(tab.href);
-                  }
+                  startNavigation(tab.href, tab.label);
                 }}
                 className={`inline-flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold border-b-2 transition-all ${
                   isActive
                     ? "border-[#2F7D78] text-[#17324D] bg-[#FFFFFF] rounded-t-lg shadow-xs"
                     : isPending
-                    ? "border-[#2F7D78] text-[#2F7D78] bg-[#EFF7F6]/60 rounded-t-lg animate-pulse"
+                    ? "border-[#2F7D78] text-[#2F7D78] bg-[#EFF7F6]/80 rounded-t-lg animate-pulse"
                     : "border-transparent text-[#667085] hover:text-[#17212B] hover:border-[#E4E7EC]"
                 }`}
               >
@@ -93,7 +88,7 @@ export function ProjectNavTabs({ projectId }: Props) {
                 )}
                 <span>{tab.label}</span>
                 {isPending && (
-                  <span className="text-[10px] text-[#2F7D78] font-normal ml-0.5">...</span>
+                  <span className="text-[10px] text-[#2F7D78] font-bold ml-0.5 animate-pulse">Memuat...</span>
                 )}
               </Link>
             );

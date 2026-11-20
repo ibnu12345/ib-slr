@@ -33,6 +33,7 @@ import {
   Layers,
   Clock,
   Compass,
+  Loader2,
 } from "lucide-react";
 import { AIScreeningCard } from "../../../../../../components/research/AIScreeningCard";
 import { PdfArticleViewer } from "../../../../../../components/research/PdfArticleViewer";
@@ -88,6 +89,7 @@ export function ScreeningStudio({
   );
   const [reviewerNotes, setReviewerNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [activeDecision, setActiveDecision] = useState<ScreeningDecisionType | null>(null);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null
   );
@@ -283,6 +285,7 @@ export function ScreeningStudio({
 
   const handleDecision = async (decision: ScreeningDecisionType, reason?: string) => {
     if (!currentArticle) return;
+    setActiveDecision(decision);
     const targetArticle = currentArticle;
     const targetNumber = currentArticleNumber;
     const previousStatus = targetArticle.screeningStatus;
@@ -344,6 +347,11 @@ export function ScreeningStudio({
         setSelectedArticleId(updated[currentIdx + 1].id);
       }
     }
+
+    // Reset active decision spinner once advanced
+    setTimeout(() => {
+      setActiveDecision(null);
+    }, 150);
 
     // 3. ASYNC BACKGROUND PERSISTENCE
     const formData = new FormData();
@@ -788,17 +796,21 @@ export function ScreeningStudio({
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <button
                     type="button"
-                    disabled={submitting}
+                    disabled={activeDecision !== null || submitting}
                     onClick={() => handleDecision("include")}
                     className="py-3 px-4 rounded-xl bg-[#18794E] hover:bg-[#125D3B] text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>INCLUDE (Inklusi - I)</span>
+                    {activeDecision === "include" ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    ) : (
+                      <CheckCircle2 className="w-4 h-4" />
+                    )}
+                    <span>{activeDecision === "include" ? "Menyimpan Inklusi..." : "INCLUDE (Inklusi - I)"}</span>
                   </button>
 
                   <button
                     type="button"
-                    disabled={submitting}
+                    disabled={activeDecision !== null || submitting}
                     onClick={() => setShowExcludeModal(true)}
                     className="py-3 px-4 rounded-xl bg-[#B42318] hover:bg-[#8E1C13] text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
                   >
@@ -808,12 +820,16 @@ export function ScreeningStudio({
 
                   <button
                     type="button"
-                    disabled={submitting}
+                    disabled={activeDecision !== null || submitting}
                     onClick={() => handleDecision("unclear")}
                     className="py-3 px-4 rounded-xl bg-[#B7791F] hover:bg-[#8F5E16] text-white text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 disabled:opacity-50"
                   >
-                    <HelpCircle className="w-4 h-4" />
-                    <span>UNCLEAR (Ragu - U)</span>
+                    {activeDecision === "unclear" ? (
+                      <Loader2 className="w-4 h-4 animate-spin text-white" />
+                    ) : (
+                      <HelpCircle className="w-4 h-4" />
+                    )}
+                    <span>{activeDecision === "unclear" ? "Menyimpan..." : "UNCLEAR (Ragu - U)"}</span>
                   </button>
                 </div>
 
@@ -1019,10 +1035,21 @@ export function ScreeningStudio({
               <button
                 type="button"
                 disabled={submitting}
-                onClick={() => handleDecision("exclude", selectedExclusionReason)}
-                className="px-4 py-2 rounded-lg bg-[#B42318] hover:bg-[#8E1C13] text-white text-xs font-bold shadow-sm disabled:opacity-50"
+                onClick={async () => {
+                  setSubmitting(true);
+                  await handleDecision("exclude", selectedExclusionReason);
+                  setSubmitting(false);
+                }}
+                className="px-4 py-2 rounded-lg bg-[#B42318] hover:bg-[#8E1C13] text-white text-xs font-bold shadow-sm disabled:opacity-50 flex items-center gap-1.5"
               >
-                {submitting ? "Menyimpan..." : "Konfirmasi Eksklusi"}
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-3.5 h-3.5 animate-spin text-white" />
+                    <span>Menyimpan Eksklusi...</span>
+                  </>
+                ) : (
+                  <span>Konfirmasi Eksklusi</span>
+                )}
               </button>
             </div>
           </div>

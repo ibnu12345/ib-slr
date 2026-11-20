@@ -85,6 +85,12 @@ export async function saveStateToSupabase(data: DatabaseSchema): Promise<boolean
   }
 }
 
+// In-memory read-cache to eliminate redundant Supabase network round-trips (15s TTL)
+const CACHE_TTL_MS = 15000;
+const decisionsCache: Record<string, { data: any[]; timestamp: number }> = {};
+const appraisalsCache: Record<string, { data: any[]; timestamp: number }> = {};
+const extractionsCache: Record<string, { data: any[]; timestamp: number }> = {};
+
 /**
  * Save project screening decisions to Supabase (fast, isolated row upsert <250ms)
  */
@@ -93,6 +99,9 @@ export async function saveProjectDecisionsToSupabase(
   decisions: any[]
 ): Promise<boolean> {
   if (!isSupabaseConfigured() || !projectId) return false;
+
+  // Immediately update local memory cache
+  decisionsCache[projectId] = { data: decisions, timestamp: Date.now() };
 
   try {
     const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state`;
@@ -126,6 +135,11 @@ export async function loadProjectDecisionsFromSupabase(
 ): Promise<any[] | null> {
   if (!isSupabaseConfigured() || !projectId) return null;
 
+  const now = Date.now();
+  if (decisionsCache[projectId] && now - decisionsCache[projectId].timestamp < CACHE_TTL_MS) {
+    return decisionsCache[projectId].data;
+  }
+
   try {
     const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state?key=eq.decisions_${projectId}&select=*`;
     const res = await fetch(endpoint, {
@@ -140,6 +154,7 @@ export async function loadProjectDecisionsFromSupabase(
     if (!res.ok) return null;
     const rows = await res.json();
     if (Array.isArray(rows) && rows.length > 0 && Array.isArray(rows[0].payload)) {
+      decisionsCache[projectId] = { data: rows[0].payload, timestamp: now };
       return rows[0].payload;
     }
   } catch (err) {
@@ -157,6 +172,9 @@ export async function saveProjectAppraisalsToSupabase(
   appraisals: any[]
 ): Promise<boolean> {
   if (!isSupabaseConfigured() || !projectId) return false;
+
+  // Immediately update local memory cache
+  appraisalsCache[projectId] = { data: appraisals, timestamp: Date.now() };
 
   try {
     const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state`;
@@ -190,6 +208,11 @@ export async function loadProjectAppraisalsFromSupabase(
 ): Promise<any[] | null> {
   if (!isSupabaseConfigured() || !projectId) return null;
 
+  const now = Date.now();
+  if (appraisalsCache[projectId] && now - appraisalsCache[projectId].timestamp < CACHE_TTL_MS) {
+    return appraisalsCache[projectId].data;
+  }
+
   try {
     const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state?key=eq.appraisals_${projectId}&select=*`;
     const res = await fetch(endpoint, {
@@ -204,6 +227,7 @@ export async function loadProjectAppraisalsFromSupabase(
     if (!res.ok) return null;
     const rows = await res.json();
     if (Array.isArray(rows) && rows.length > 0 && Array.isArray(rows[0].payload)) {
+      appraisalsCache[projectId] = { data: rows[0].payload, timestamp: now };
       return rows[0].payload;
     }
   } catch (err) {
@@ -221,6 +245,9 @@ export async function saveProjectExtractionsToSupabase(
   extractions: any[]
 ): Promise<boolean> {
   if (!isSupabaseConfigured() || !projectId) return false;
+
+  // Immediately update local memory cache
+  extractionsCache[projectId] = { data: extractions, timestamp: Date.now() };
 
   try {
     const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state`;
@@ -254,6 +281,11 @@ export async function loadProjectExtractionsFromSupabase(
 ): Promise<any[] | null> {
   if (!isSupabaseConfigured() || !projectId) return null;
 
+  const now = Date.now();
+  if (extractionsCache[projectId] && now - extractionsCache[projectId].timestamp < CACHE_TTL_MS) {
+    return extractionsCache[projectId].data;
+  }
+
   try {
     const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state?key=eq.extractions_${projectId}&select=*`;
     const res = await fetch(endpoint, {
@@ -268,6 +300,7 @@ export async function loadProjectExtractionsFromSupabase(
     if (!res.ok) return null;
     const rows = await res.json();
     if (Array.isArray(rows) && rows.length > 0 && Array.isArray(rows[0].payload)) {
+      extractionsCache[projectId] = { data: rows[0].payload, timestamp: now };
       return rows[0].payload;
     }
   } catch (err) {

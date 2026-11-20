@@ -997,7 +997,7 @@ export function triggerDebouncedSupabaseSave(data: DatabaseSchema) {
 }
 
 let lastSupabaseSync = 0;
-const SYNC_DEBOUNCE_MS = 4000;
+const SYNC_DEBOUNCE_MS = 15000;
 
 export async function syncFromSupabase(force = false): Promise<void> {
   if (!isSupabaseConfigured()) return;
