@@ -227,7 +227,7 @@
       },
       "status": "published",
       "createdAt": "2026-11-16T11:34:25.461Z",
-      "updatedAt": "2026-11-17T03:26:06.760Z",
+      "updatedAt": "2026-11-20T13:00:24.610Z",
       "sections": [
         {
           "id": "sec-hero",
@@ -1224,6 +1224,1032 @@
     }
   ],
   "auditLogs": [
+    {
+      "id": "log-1795179627763-fequq",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_TABLE_DEFINITION",
+      "entityType": "journal_table_definition",
+      "entityId": "tbl-custom-outcomes",
+      "details": {
+        "title": "Table 3. Detailed Outcome Metrics Matrix",
+        "tableType": "synthesis_matrix"
+      },
+      "createdAt": "2026-11-20T13:00:27.763Z"
+    },
+    {
+      "id": "log-1795179627747-11o94",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_MANUSCRIPT",
+      "entityType": "project_manuscript",
+      "entityId": "ms-demo-1",
+      "details": {
+        "title": "Digital Health and Smartphone-Delivered Interventions for Glycemic Control in Adults with Type 2 Diabetes: A Systematic Review and Evidence Synthesis"
+      },
+      "createdAt": "2026-11-20T13:00:27.747Z"
+    },
+    {
+      "id": "log-1795179626970-8td00",
+      "action": "MERGE_DUPLICATES",
+      "entityType": "article",
+      "entityId": "art-1",
+      "details": {
+        "survivorId": "art-1",
+        "duplicateId": "art-3",
+        "candidateId": "cand-dummy"
+      },
+      "createdAt": "2026-11-20T13:00:26.970Z"
+    },
+    {
+      "id": "log-1795179626207-2v4lj",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_EXTRACTED_DATA",
+      "entityType": "extracted_data_record",
+      "entityId": "rec-test-workflow",
+      "details": {
+        "articleId": "art-test-workflow",
+        "status": "in_progress"
+      },
+      "createdAt": "2026-11-20T13:00:26.207Z"
+    },
+    {
+      "id": "log-1795179626194-6xkoj",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_EXTRACTION_TEMPLATE",
+      "entityType": "extraction_template",
+      "entityId": "tmpl-custom-qualitative",
+      "details": {
+        "name": "Qualitative SLR Extraction Template"
+      },
+      "createdAt": "2026-11-20T13:00:26.194Z"
+    },
+    {
+      "id": "log-1795179625418-qg8uj",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_EXCERPT",
+      "entityType": "thematic_excerpt",
+      "entityId": "exc-test-1",
+      "details": {
+        "articleId": "art-1",
+        "codeId": "thm-test-telehealth"
+      },
+      "createdAt": "2026-11-20T13:00:25.418Z"
+    },
+    {
+      "id": "log-1795179625408-6f3hz",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_CODE",
+      "entityType": "thematic_code",
+      "entityId": "thm-test-telehealth",
+      "details": {
+        "name": "Telehealth Scalability & Cost"
+      },
+      "createdAt": "2026-11-20T13:00:25.408Z"
+    },
+    {
+      "id": "log-1795179625394-iongz",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_APPRAISAL_RECORD",
+      "entityType": "appraisal_record",
+      "entityId": "app-test-new",
+      "details": {
+        "articleId": "art-3",
+        "overallJudgment": "high_risk",
+        "status": "completed"
+      },
+      "createdAt": "2026-11-20T13:00:25.394Z"
+    },
+    {
+      "id": "log-1795179624610-ufirq",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-hero",
+          "sec-features",
+          "sec-workflow",
+          "sec-metrics",
+          "sec-testimonials",
+          "sec-pricing",
+          "sec-faq",
+          "sec-cta"
+        ]
+      },
+      "createdAt": "2026-11-20T13:00:24.610Z"
+    },
+    {
+      "id": "log-1795179624600-h82up",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-cta",
+          "sec-faq",
+          "sec-pricing",
+          "sec-testimonials",
+          "sec-metrics",
+          "sec-workflow",
+          "sec-features",
+          "sec-hero"
+        ]
+      },
+      "createdAt": "2026-11-20T13:00:24.600Z"
+    },
+    {
+      "id": "log-1795179624582-9ehky",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "UPDATE_SITE_SETTINGS",
+      "entityType": "site_settings",
+      "entityId": "global",
+      "details": {
+        "contactEmail": "lead-researcher@ib-slr.local"
+      },
+      "createdAt": "2026-11-20T13:00:24.582Z"
+    },
+    {
+      "id": "log-1795179623788-473gr",
+      "userId": "usr-test-1795179623731",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1795179623778-71ql9",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-623778-71QL9"
+      },
+      "createdAt": "2026-11-20T13:00:23.788Z"
+    },
+    {
+      "id": "log-1795179623779-jods7",
+      "userId": "usr-test-1795179623731",
+      "userEmail": "test@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179623778-71ql9",
+      "details": {
+        "orderId": "INV-SLR-2026-623778-71QL9",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T13:00:23.779Z"
+    },
+    {
+      "id": "log-1795179623721-hr7yr",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1795179623709-0s3or",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-623709-0S3OR"
+      },
+      "createdAt": "2026-11-20T13:00:23.721Z"
+    },
+    {
+      "id": "log-1795179623710-in74p",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179623709-0s3or",
+      "details": {
+        "orderId": "INV-SLR-2026-623709-0S3OR",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T13:00:23.710Z"
+    },
+    {
+      "id": "log-1795179623697-h4bx1",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179623451-1z2we",
+      "details": {
+        "orderId": "INV-SLR-2026-623451-1Z2WE",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T13:00:23.697Z"
+    },
+    {
+      "id": "log-1795179622856-mb9d4",
+      "userId": "usr-admin-1",
+      "userEmail": "Lead Reviewer",
+      "action": "ADJUDICATE_CONFLICT",
+      "entityType": "screening_conflict",
+      "entityId": "conf-1795179622809-y82ok",
+      "details": {
+        "resolvedDecision": "include",
+        "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol."
+      },
+      "createdAt": "2026-11-20T13:00:22.856Z"
+    },
+    {
+      "id": "log-1795179622831-fvhwa",
+      "userId": "rev-2",
+      "userEmail": "Reviewer Two",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560942-wmg4r",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "exclude",
+        "exclusionReason": "Desain Studi Tidak Memenuhi Syarat"
+      },
+      "createdAt": "2026-11-20T13:00:22.831Z"
+    },
+    {
+      "id": "log-1795179622809-s2qr0",
+      "userId": "rev-1",
+      "userEmail": "Reviewer One",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560772-uk51l",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-20T13:00:22.809Z"
+    },
+    {
+      "id": "log-1795179622771-uzvrx",
+      "userId": "usr-researcher-1",
+      "userEmail": "Dr. Clara Oswald",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871608793-pgan0",
+      "details": {
+        "articleId": "art-1",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-20T13:00:22.771Z"
+    },
+    {
+      "id": "log-1795179621801-yg05q",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1795179621678-gif80",
+      "details": {
+        "email": "reset.test.1795179621600@university.edu"
+      },
+      "createdAt": "2026-11-20T13:00:21.801Z"
+    },
+    {
+      "id": "log-1795179621693-3rz6n",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1795179621678-gif80",
+      "details": {
+        "email": "reset.test.1795179621600@university.edu"
+      },
+      "createdAt": "2026-11-20T13:00:21.693Z"
+    },
+    {
+      "id": "log-1795179621678-h0ti2",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179621678-gif80",
+      "details": {
+        "email": "reset.test.1795179621600@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T13:00:21.678Z"
+    },
+    {
+      "id": "log-1795179621590-zvk1w",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1795179621570-d00oi",
+      "details": {
+        "email": "verify.test.1795179621493@university.edu"
+      },
+      "createdAt": "2026-11-20T13:00:21.590Z"
+    },
+    {
+      "id": "log-1795179621570-vf0y0",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179621570-d00oi",
+      "details": {
+        "email": "verify.test.1795179621493@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T13:00:21.570Z"
+    },
+    {
+      "id": "log-1795179621482-6ijoa",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179621482-hfl2c",
+      "details": {
+        "email": "test.researcher.1795179621408@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T13:00:21.482Z"
+    },
+    {
+      "id": "log-1795179553281-vwddb",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_EXTRACTED_DATA",
+      "entityType": "extracted_data_record",
+      "entityId": "rec-test-workflow",
+      "details": {
+        "articleId": "art-test-workflow",
+        "status": "in_progress"
+      },
+      "createdAt": "2026-11-20T12:59:13.281Z"
+    },
+    {
+      "id": "log-1795179553268-yi1yl",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_EXTRACTION_TEMPLATE",
+      "entityType": "extraction_template",
+      "entityId": "tmpl-custom-qualitative",
+      "details": {
+        "name": "Qualitative SLR Extraction Template"
+      },
+      "createdAt": "2026-11-20T12:59:13.268Z"
+    },
+    {
+      "id": "log-1795179552443-9316f",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_TABLE_DEFINITION",
+      "entityType": "journal_table_definition",
+      "entityId": "tbl-custom-outcomes",
+      "details": {
+        "title": "Table 3. Detailed Outcome Metrics Matrix",
+        "tableType": "synthesis_matrix"
+      },
+      "createdAt": "2026-11-20T12:59:12.443Z"
+    },
+    {
+      "id": "log-1795179552420-jim1z",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_MANUSCRIPT",
+      "entityType": "project_manuscript",
+      "entityId": "ms-demo-1",
+      "details": {
+        "title": "Digital Health and Smartphone-Delivered Interventions for Glycemic Control in Adults with Type 2 Diabetes: A Systematic Review and Evidence Synthesis"
+      },
+      "createdAt": "2026-11-20T12:59:12.420Z"
+    },
+    {
+      "id": "log-1795179551621-rp8c3",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_EXCERPT",
+      "entityType": "thematic_excerpt",
+      "entityId": "exc-test-1",
+      "details": {
+        "articleId": "art-1",
+        "codeId": "thm-test-telehealth"
+      },
+      "createdAt": "2026-11-20T12:59:11.621Z"
+    },
+    {
+      "id": "log-1795179551610-40v7m",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_CODE",
+      "entityType": "thematic_code",
+      "entityId": "thm-test-telehealth",
+      "details": {
+        "name": "Telehealth Scalability & Cost"
+      },
+      "createdAt": "2026-11-20T12:59:11.610Z"
+    },
+    {
+      "id": "log-1795179551595-ewd8l",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_APPRAISAL_RECORD",
+      "entityType": "appraisal_record",
+      "entityId": "app-test-new",
+      "details": {
+        "articleId": "art-3",
+        "overallJudgment": "high_risk",
+        "status": "completed"
+      },
+      "createdAt": "2026-11-20T12:59:11.595Z"
+    },
+    {
+      "id": "log-1795179550767-4905b",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-hero",
+          "sec-features",
+          "sec-workflow",
+          "sec-metrics",
+          "sec-testimonials",
+          "sec-pricing",
+          "sec-faq",
+          "sec-cta"
+        ]
+      },
+      "createdAt": "2026-11-20T12:59:10.767Z"
+    },
+    {
+      "id": "log-1795179550757-0kjto",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-cta",
+          "sec-faq",
+          "sec-pricing",
+          "sec-testimonials",
+          "sec-metrics",
+          "sec-workflow",
+          "sec-features",
+          "sec-hero"
+        ]
+      },
+      "createdAt": "2026-11-20T12:59:10.757Z"
+    },
+    {
+      "id": "log-1795179550738-9j1k2",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "UPDATE_SITE_SETTINGS",
+      "entityType": "site_settings",
+      "entityId": "global",
+      "details": {
+        "contactEmail": "lead-researcher@ib-slr.local"
+      },
+      "createdAt": "2026-11-20T12:59:10.738Z"
+    },
+    {
+      "id": "log-1795179549919-5wgzl",
+      "userId": "usr-test-1795179549842",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1795179549907-2i95n",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-549907-2I95N"
+      },
+      "createdAt": "2026-11-20T12:59:09.919Z"
+    },
+    {
+      "id": "log-1795179549908-du9hc",
+      "userId": "usr-test-1795179549842",
+      "userEmail": "test@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179549907-2i95n",
+      "details": {
+        "orderId": "INV-SLR-2026-549907-2I95N",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T12:59:09.908Z"
+    },
+    {
+      "id": "log-1795179549806-cpci6",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1795179549792-wlncs",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-549792-WLNCS"
+      },
+      "createdAt": "2026-11-20T12:59:09.806Z"
+    },
+    {
+      "id": "log-1795179549794-vkb3g",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179549792-wlncs",
+      "details": {
+        "orderId": "INV-SLR-2026-549792-WLNCS",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T12:59:09.794Z"
+    },
+    {
+      "id": "log-1795179549778-8a9h6",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179549539-rxw80",
+      "details": {
+        "orderId": "INV-SLR-2026-549539-RXW80",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T12:59:09.778Z"
+    },
+    {
+      "id": "log-1795179548824-1cn5a",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1795179548726-5owve",
+      "details": {
+        "email": "reset.test.1795179548651@university.edu"
+      },
+      "createdAt": "2026-11-20T12:59:08.824Z"
+    },
+    {
+      "id": "log-1795179548736-0cgxe",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1795179548726-5owve",
+      "details": {
+        "email": "reset.test.1795179548651@university.edu"
+      },
+      "createdAt": "2026-11-20T12:59:08.736Z"
+    },
+    {
+      "id": "log-1795179548726-4s8yp",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179548726-5owve",
+      "details": {
+        "email": "reset.test.1795179548651@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T12:59:08.726Z"
+    },
+    {
+      "id": "log-1795179548639-uorgm",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1795179548617-891ic",
+      "details": {
+        "email": "verify.test.1795179548537@university.edu"
+      },
+      "createdAt": "2026-11-20T12:59:08.639Z"
+    },
+    {
+      "id": "log-1795179548617-esjw3",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179548617-891ic",
+      "details": {
+        "email": "verify.test.1795179548537@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T12:59:08.617Z"
+    },
+    {
+      "id": "log-1795179548524-ce9i1",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179548524-booey",
+      "details": {
+        "email": "test.researcher.1795179548443@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T12:59:08.524Z"
+    },
+    {
+      "id": "log-1795179546945-5tq05",
+      "action": "MERGE_DUPLICATES",
+      "entityType": "article",
+      "entityId": "art-1",
+      "details": {
+        "survivorId": "art-1",
+        "duplicateId": "art-3",
+        "candidateId": "cand-dummy"
+      },
+      "createdAt": "2026-11-20T12:59:06.945Z"
+    },
+    {
+      "id": "log-1795179546081-xq6wd",
+      "userId": "usr-admin-1",
+      "userEmail": "Lead Reviewer",
+      "action": "ADJUDICATE_CONFLICT",
+      "entityType": "screening_conflict",
+      "entityId": "conf-1795179546032-vbojc",
+      "details": {
+        "resolvedDecision": "include",
+        "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol."
+      },
+      "createdAt": "2026-11-20T12:59:06.081Z"
+    },
+    {
+      "id": "log-1795179546054-6amyc",
+      "userId": "rev-2",
+      "userEmail": "Reviewer Two",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560942-wmg4r",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "exclude",
+        "exclusionReason": "Desain Studi Tidak Memenuhi Syarat"
+      },
+      "createdAt": "2026-11-20T12:59:06.054Z"
+    },
+    {
+      "id": "log-1795179546032-asb1s",
+      "userId": "rev-1",
+      "userEmail": "Reviewer One",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560772-uk51l",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-20T12:59:06.032Z"
+    },
+    {
+      "id": "log-1795179545987-hd3s2",
+      "userId": "usr-researcher-1",
+      "userEmail": "Dr. Clara Oswald",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871608793-pgan0",
+      "details": {
+        "articleId": "art-1",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-20T12:59:05.987Z"
+    },
+    {
+      "id": "log-1795179419826-329sa",
+      "action": "MERGE_DUPLICATES",
+      "entityType": "article",
+      "entityId": "art-1",
+      "details": {
+        "survivorId": "art-1",
+        "duplicateId": "art-3",
+        "candidateId": "cand-dummy"
+      },
+      "createdAt": "2026-11-20T12:56:59.826Z"
+    },
+    {
+      "id": "log-1795179419007-sz03j",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_EXCERPT",
+      "entityType": "thematic_excerpt",
+      "entityId": "exc-test-1",
+      "details": {
+        "articleId": "art-1",
+        "codeId": "thm-test-telehealth"
+      },
+      "createdAt": "2026-11-20T12:56:59.007Z"
+    },
+    {
+      "id": "log-1795179418996-bbnl4",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_THEMATIC_CODE",
+      "entityType": "thematic_code",
+      "entityId": "thm-test-telehealth",
+      "details": {
+        "name": "Telehealth Scalability & Cost"
+      },
+      "createdAt": "2026-11-20T12:56:58.996Z"
+    },
+    {
+      "id": "log-1795179418979-7a0hj",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_APPRAISAL_RECORD",
+      "entityType": "appraisal_record",
+      "entityId": "app-test-new",
+      "details": {
+        "articleId": "art-3",
+        "overallJudgment": "high_risk",
+        "status": "completed"
+      },
+      "createdAt": "2026-11-20T12:56:58.979Z"
+    },
+    {
+      "id": "log-1795179418154-oztuk",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_TABLE_DEFINITION",
+      "entityType": "journal_table_definition",
+      "entityId": "tbl-custom-outcomes",
+      "details": {
+        "title": "Table 3. Detailed Outcome Metrics Matrix",
+        "tableType": "synthesis_matrix"
+      },
+      "createdAt": "2026-11-20T12:56:58.154Z"
+    },
+    {
+      "id": "log-1795179418138-pbaj8",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_MANUSCRIPT",
+      "entityType": "project_manuscript",
+      "entityId": "ms-demo-1",
+      "details": {
+        "title": "Digital Health and Smartphone-Delivered Interventions for Glycemic Control in Adults with Type 2 Diabetes: A Systematic Review and Evidence Synthesis"
+      },
+      "createdAt": "2026-11-20T12:56:58.138Z"
+    },
+    {
+      "id": "log-1795179417292-k3ibn",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "SAVE_EXTRACTED_DATA",
+      "entityType": "extracted_data_record",
+      "entityId": "rec-test-workflow",
+      "details": {
+        "articleId": "art-test-workflow",
+        "status": "in_progress"
+      },
+      "createdAt": "2026-11-20T12:56:57.292Z"
+    },
+    {
+      "id": "log-1795179417281-7s65j",
+      "userId": "usr-test",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_EXTRACTION_TEMPLATE",
+      "entityType": "extraction_template",
+      "entityId": "tmpl-custom-qualitative",
+      "details": {
+        "name": "Qualitative SLR Extraction Template"
+      },
+      "createdAt": "2026-11-20T12:56:57.281Z"
+    },
+    {
+      "id": "log-1795179416421-rwjye",
+      "userId": "usr-admin-1",
+      "userEmail": "Lead Reviewer",
+      "action": "ADJUDICATE_CONFLICT",
+      "entityType": "screening_conflict",
+      "entityId": "conf-1795179416378-zzz77",
+      "details": {
+        "resolvedDecision": "include",
+        "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol."
+      },
+      "createdAt": "2026-11-20T12:56:56.421Z"
+    },
+    {
+      "id": "log-1795179416399-wdi5i",
+      "userId": "rev-2",
+      "userEmail": "Reviewer Two",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560942-wmg4r",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "exclude",
+        "exclusionReason": "Desain Studi Tidak Memenuhi Syarat"
+      },
+      "createdAt": "2026-11-20T12:56:56.399Z"
+    },
+    {
+      "id": "log-1795179416378-l87mb",
+      "userId": "rev-1",
+      "userEmail": "Reviewer One",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871560772-uk51l",
+      "details": {
+        "articleId": "art-2",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-20T12:56:56.378Z"
+    },
+    {
+      "id": "log-1795179416334-6hub6",
+      "userId": "usr-researcher-1",
+      "userEmail": "Dr. Clara Oswald",
+      "action": "SCREENING_DECISION",
+      "entityType": "screening_decision",
+      "entityId": "dec-1794871608793-pgan0",
+      "details": {
+        "articleId": "art-1",
+        "stage": "title_abstract",
+        "decision": "include"
+      },
+      "createdAt": "2026-11-20T12:56:56.334Z"
+    },
+    {
+      "id": "log-1795179415451-sqrw9",
+      "userId": "usr-test-1795179415390",
+      "userEmail": "test@ib-slr.local",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1795179415439-04d26",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-415439-04D26"
+      },
+      "createdAt": "2026-11-20T12:56:55.451Z"
+    },
+    {
+      "id": "log-1795179415440-mrisv",
+      "userId": "usr-test-1795179415390",
+      "userEmail": "test@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179415439-04d26",
+      "details": {
+        "orderId": "INV-SLR-2026-415439-04D26",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T12:56:55.440Z"
+    },
+    {
+      "id": "log-1795179415381-eayzg",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "UPDATE_PAYMENT_STATUS",
+      "entityType": "payment",
+      "entityId": "ord-1795179415369-gsa9p",
+      "details": {
+        "status": "paid",
+        "orderId": "INV-SLR-2026-415369-GSA9P"
+      },
+      "createdAt": "2026-11-20T12:56:55.381Z"
+    },
+    {
+      "id": "log-1795179415370-fottg",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179415369-gsa9p",
+      "details": {
+        "orderId": "INV-SLR-2026-415369-GSA9P",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T12:56:55.370Z"
+    },
+    {
+      "id": "log-1795179415359-xfn5e",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "action": "CREATE_PAYMENT_ORDER",
+      "entityType": "payment",
+      "entityId": "ord-1795179415111-xb5gd",
+      "details": {
+        "orderId": "INV-SLR-2026-415111-XB5GD",
+        "amount": 20000,
+        "paymentType": "qris"
+      },
+      "createdAt": "2026-11-20T12:56:55.359Z"
+    },
+    {
+      "id": "log-1795179414453-7p6rb",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-hero",
+          "sec-features",
+          "sec-workflow",
+          "sec-metrics",
+          "sec-testimonials",
+          "sec-pricing",
+          "sec-faq",
+          "sec-cta"
+        ]
+      },
+      "createdAt": "2026-11-20T12:56:54.453Z"
+    },
+    {
+      "id": "log-1795179414443-9g5lu",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "REORDER_SECTIONS",
+      "entityType": "page",
+      "entityId": "page-home",
+      "details": {
+        "orderedSectionIds": [
+          "sec-cta",
+          "sec-faq",
+          "sec-pricing",
+          "sec-testimonials",
+          "sec-metrics",
+          "sec-workflow",
+          "sec-features",
+          "sec-hero"
+        ]
+      },
+      "createdAt": "2026-11-20T12:56:54.443Z"
+    },
+    {
+      "id": "log-1795179414424-svbyu",
+      "userId": "usr-admin-1",
+      "userEmail": "admin@ib-slr.local",
+      "action": "UPDATE_SITE_SETTINGS",
+      "entityType": "site_settings",
+      "entityId": "global",
+      "details": {
+        "contactEmail": "lead-researcher@ib-slr.local"
+      },
+      "createdAt": "2026-11-20T12:56:54.424Z"
+    },
+    {
+      "id": "log-1795179413501-q8bo7",
+      "action": "PASSWORD_RESET_COMPLETED",
+      "entityType": "user",
+      "entityId": "usr-1795179413401-bgjx1",
+      "details": {
+        "email": "reset.test.1795179413320@university.edu"
+      },
+      "createdAt": "2026-11-20T12:56:53.501Z"
+    },
+    {
+      "id": "log-1795179413412-lk94s",
+      "action": "PASSWORD_RESET_REQUESTED",
+      "entityType": "user",
+      "entityId": "usr-1795179413401-bgjx1",
+      "details": {
+        "email": "reset.test.1795179413320@university.edu"
+      },
+      "createdAt": "2026-11-20T12:56:53.412Z"
+    },
+    {
+      "id": "log-1795179413401-hh0t1",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179413401-bgjx1",
+      "details": {
+        "email": "reset.test.1795179413320@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T12:56:53.401Z"
+    },
+    {
+      "id": "log-1795179413309-l5seh",
+      "action": "EMAIL_VERIFIED",
+      "entityType": "user",
+      "entityId": "usr-1795179413285-n4gb8",
+      "details": {
+        "email": "verify.test.1795179413203@university.edu"
+      },
+      "createdAt": "2026-11-20T12:56:53.309Z"
+    },
+    {
+      "id": "log-1795179413285-2bo6b",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179413285-n4gb8",
+      "details": {
+        "email": "verify.test.1795179413203@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T12:56:53.285Z"
+    },
+    {
+      "id": "log-1795179413193-bqold",
+      "action": "USER_REGISTERED",
+      "entityType": "user",
+      "entityId": "usr-1795179413193-q94t4",
+      "details": {
+        "email": "test.researcher.1795179413114@university.edu",
+        "role": "user"
+      },
+      "createdAt": "2026-11-20T12:56:53.193Z"
+    },
     {
       "id": "log-1794885968871-83d6d",
       "action": "MERGE_DUPLICATES",
@@ -6260,6 +7286,105 @@
       "mfaEnabled": false,
       "createdAt": "2026-11-17T03:25:59.713Z",
       "updatedAt": "2026-11-17T03:25:59.848Z"
+    },
+    {
+      "id": "usr-1795179413193-q94t4",
+      "email": "test.researcher.1795179413114@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$Rh1qM19dLXm94l/ErU3Rput29acf/cWgvoMhLZ5Oc9tRYM6ISwdne",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T12:56:53.193Z",
+      "updatedAt": "2026-11-20T12:56:53.193Z"
+    },
+    {
+      "id": "usr-1795179413285-n4gb8",
+      "email": "verify.test.1795179413203@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$EHEd.VvgZVTYM.HwR9XxFeSnUzS53JtafJFqwXxWIJPlWx5.TER6y",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T12:56:53.285Z",
+      "updatedAt": "2026-11-20T12:56:53.309Z"
+    },
+    {
+      "id": "usr-1795179413401-bgjx1",
+      "email": "reset.test.1795179413320@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$eocEmIwHqFvZvhjEQMf8OOZ30lqxzBUKVfetWoCaEMnT9Ki.nmm5e",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T12:56:53.401Z",
+      "updatedAt": "2026-11-20T12:56:53.501Z"
+    },
+    {
+      "id": "usr-1795179548524-booey",
+      "email": "test.researcher.1795179548443@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$vn/NW5PFjeOskvHAF0dujOdJqASsTEZV28bSX99G37Iyct/l1g1/e",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T12:59:08.524Z",
+      "updatedAt": "2026-11-20T12:59:08.524Z"
+    },
+    {
+      "id": "usr-1795179548617-891ic",
+      "email": "verify.test.1795179548537@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$jA8A6Hi0y1KdX/zmcFa4AeuaC/.5yvZqSRs9jkwZfI2nbHWIN/3fG",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T12:59:08.617Z",
+      "updatedAt": "2026-11-20T12:59:08.639Z"
+    },
+    {
+      "id": "usr-1795179548726-5owve",
+      "email": "reset.test.1795179548651@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$nLvAZqLT8Tew/TETUskCieoCyaubuzPTHaMQGTuq5W0ds0/W14cZi",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T12:59:08.726Z",
+      "updatedAt": "2026-11-20T12:59:08.824Z"
+    },
+    {
+      "id": "usr-1795179621482-hfl2c",
+      "email": "test.researcher.1795179621408@university.edu",
+      "fullName": "Test Academic",
+      "passwordHash": "$2a$10$EpctgBo0b9iWXWl2wPJJU.hjAsPnpM9lNzm7LsGLaQumnCiXCy.yS",
+      "role": "user",
+      "emailVerified": false,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T13:00:21.482Z",
+      "updatedAt": "2026-11-20T13:00:21.482Z"
+    },
+    {
+      "id": "usr-1795179621570-d00oi",
+      "email": "verify.test.1795179621493@university.edu",
+      "fullName": "Verification Tester",
+      "passwordHash": "$2a$10$oQPXdh75lnzDtwaW4uRHEemDNpewUqF4Gai7ccoFVFu9O8VSJeN02",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T13:00:21.570Z",
+      "updatedAt": "2026-11-20T13:00:21.590Z"
+    },
+    {
+      "id": "usr-1795179621678-gif80",
+      "email": "reset.test.1795179621600@university.edu",
+      "fullName": "Reset Tester",
+      "passwordHash": "$2a$10$jaFk/MhyBE781q3f/K5Lg.f/DW4woIUu/YTi9U8YGLQ6OwmHu9z3.",
+      "role": "user",
+      "emailVerified": true,
+      "mfaEnabled": false,
+      "createdAt": "2026-11-20T13:00:21.678Z",
+      "updatedAt": "2026-11-20T13:00:21.801Z"
     }
   ],
   "verificationTokens": [],
@@ -6545,7 +7670,8 @@
         }
       ],
       "createdAt": "2026-11-16T11:34:25.687Z",
-      "updatedAt": "2026-11-17T03:26:01.090Z"
+      "updatedAt": "2026-11-20T13:00:22.771Z",
+      "titleAbstractStatus": "included"
     },
     {
       "id": "art-2",
@@ -6596,7 +7722,8 @@
         }
       ],
       "createdAt": "2026-11-16T11:34:25.687Z",
-      "updatedAt": "2026-11-17T03:26:01.138Z"
+      "updatedAt": "2026-11-20T13:00:22.856Z",
+      "titleAbstractStatus": "conflict"
     },
     {
       "id": "art-3",
@@ -6615,7 +7742,7 @@
       "screeningStatus": "pending",
       "sourceDatabase": "Crossref Import",
       "createdAt": "2026-11-16T11:34:25.687Z",
-      "updatedAt": "2026-11-17T03:26:08.871Z",
+      "updatedAt": "2026-11-20T13:00:26.969Z",
       "isDuplicate": true,
       "mergedIntoId": "art-1"
     },
@@ -7162,7 +8289,7 @@
       "stage": "title_abstract",
       "decision": "include",
       "createdAt": "2026-11-16T23:26:00.772Z",
-      "updatedAt": "2026-11-17T03:26:01.106Z"
+      "updatedAt": "2026-11-20T13:00:22.809Z"
     },
     {
       "id": "dec-1794871560942-wmg4r",
@@ -7174,7 +8301,7 @@
       "decision": "exclude",
       "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
       "createdAt": "2026-11-16T23:26:00.942Z",
-      "updatedAt": "2026-11-17T03:26:01.121Z"
+      "updatedAt": "2026-11-20T13:00:22.831Z"
     },
     {
       "id": "dec-1794871608793-pgan0",
@@ -7186,7 +8313,7 @@
       "decision": "include",
       "notes": "Meets PICO criteria",
       "createdAt": "2026-11-16T23:26:48.793Z",
-      "updatedAt": "2026-11-17T03:26:01.090Z"
+      "updatedAt": "2026-11-20T13:00:22.771Z"
     },
     {
       "id": "dec-1794876729492-qjxw2",
@@ -8137,6 +9264,114 @@
       "adjudicatedBy": "Lead Reviewer",
       "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol.",
       "resolvedAt": "2026-11-17T03:26:01.138Z"
+    },
+    {
+      "id": "conf-1795179416378-zzz77",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "stage": "title_abstract",
+      "decisions": [
+        {
+          "id": "dec-1794871560772-uk51l",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-1",
+          "reviewerName": "Reviewer One",
+          "stage": "title_abstract",
+          "decision": "include",
+          "createdAt": "2026-11-16T23:26:00.772Z",
+          "updatedAt": "2026-11-20T12:56:56.378Z"
+        },
+        {
+          "id": "dec-1794871560942-wmg4r",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-2",
+          "reviewerName": "Reviewer Two",
+          "stage": "title_abstract",
+          "decision": "exclude",
+          "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
+          "createdAt": "2026-11-16T23:26:00.942Z",
+          "updatedAt": "2026-11-17T03:26:01.121Z"
+        }
+      ],
+      "status": "resolved",
+      "resolvedDecision": "include",
+      "adjudicatedBy": "Lead Reviewer",
+      "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol.",
+      "resolvedAt": "2026-11-20T12:56:56.421Z"
+    },
+    {
+      "id": "conf-1795179546032-vbojc",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "stage": "title_abstract",
+      "decisions": [
+        {
+          "id": "dec-1794871560772-uk51l",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-1",
+          "reviewerName": "Reviewer One",
+          "stage": "title_abstract",
+          "decision": "include",
+          "createdAt": "2026-11-16T23:26:00.772Z",
+          "updatedAt": "2026-11-20T12:59:06.032Z"
+        },
+        {
+          "id": "dec-1794871560942-wmg4r",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-2",
+          "reviewerName": "Reviewer Two",
+          "stage": "title_abstract",
+          "decision": "exclude",
+          "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
+          "createdAt": "2026-11-16T23:26:00.942Z",
+          "updatedAt": "2026-11-20T12:56:56.399Z"
+        }
+      ],
+      "status": "resolved",
+      "resolvedDecision": "include",
+      "adjudicatedBy": "Lead Reviewer",
+      "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol.",
+      "resolvedAt": "2026-11-20T12:59:06.081Z"
+    },
+    {
+      "id": "conf-1795179622809-y82ok",
+      "projectId": "prj-demo-1",
+      "articleId": "art-2",
+      "stage": "title_abstract",
+      "decisions": [
+        {
+          "id": "dec-1794871560772-uk51l",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-1",
+          "reviewerName": "Reviewer One",
+          "stage": "title_abstract",
+          "decision": "include",
+          "createdAt": "2026-11-16T23:26:00.772Z",
+          "updatedAt": "2026-11-20T13:00:22.809Z"
+        },
+        {
+          "id": "dec-1794871560942-wmg4r",
+          "projectId": "prj-demo-1",
+          "articleId": "art-2",
+          "reviewerId": "rev-2",
+          "reviewerName": "Reviewer Two",
+          "stage": "title_abstract",
+          "decision": "exclude",
+          "exclusionReason": "Desain Studi Tidak Memenuhi Syarat",
+          "createdAt": "2026-11-16T23:26:00.942Z",
+          "updatedAt": "2026-11-20T12:59:06.054Z"
+        }
+      ],
+      "status": "resolved",
+      "resolvedDecision": "include",
+      "adjudicatedBy": "Lead Reviewer",
+      "adjudicationNotes": "Intervensi digital terbukti memenuhi spesifikasi protokol.",
+      "resolvedAt": "2026-11-20T13:00:22.856Z"
     }
   ],
   "exclusionReasons": [
@@ -8366,6 +9601,69 @@
       "deltaCount": 1,
       "reason": "Merged into survivor article ID art-1",
       "createdAt": "2026-11-17T03:26:08.871Z"
+    },
+    {
+      "id": "ev-1795179416399-6pjcb",
+      "projectId": "prj-demo-1",
+      "eventType": "records_excluded_title_abstract",
+      "deltaCount": 1,
+      "reason": "Desain Studi Tidak Memenuhi Syarat",
+      "metadata": {
+        "articleId": "art-2",
+        "reviewerId": "rev-2"
+      },
+      "triggeredBy": "Reviewer Two",
+      "createdAt": "2026-11-20T12:56:56.399Z"
+    },
+    {
+      "id": "ev-1795179419826-qwqi5",
+      "projectId": "prj-demo-1",
+      "eventType": "duplicates_removed",
+      "deltaCount": 1,
+      "reason": "Merged into survivor article ID art-1",
+      "createdAt": "2026-11-20T12:56:59.826Z"
+    },
+    {
+      "id": "ev-1795179546054-829q1",
+      "projectId": "prj-demo-1",
+      "eventType": "records_excluded_title_abstract",
+      "deltaCount": 1,
+      "reason": "Desain Studi Tidak Memenuhi Syarat",
+      "metadata": {
+        "articleId": "art-2",
+        "reviewerId": "rev-2"
+      },
+      "triggeredBy": "Reviewer Two",
+      "createdAt": "2026-11-20T12:59:06.054Z"
+    },
+    {
+      "id": "ev-1795179546945-hy8qr",
+      "projectId": "prj-demo-1",
+      "eventType": "duplicates_removed",
+      "deltaCount": 1,
+      "reason": "Merged into survivor article ID art-1",
+      "createdAt": "2026-11-20T12:59:06.945Z"
+    },
+    {
+      "id": "ev-1795179622831-893ja",
+      "projectId": "prj-demo-1",
+      "eventType": "records_excluded_title_abstract",
+      "deltaCount": 1,
+      "reason": "Desain Studi Tidak Memenuhi Syarat",
+      "metadata": {
+        "articleId": "art-2",
+        "reviewerId": "rev-2"
+      },
+      "triggeredBy": "Reviewer Two",
+      "createdAt": "2026-11-20T13:00:22.831Z"
+    },
+    {
+      "id": "ev-1795179626969-yjodj",
+      "projectId": "prj-demo-1",
+      "eventType": "duplicates_removed",
+      "deltaCount": 1,
+      "reason": "Merged into survivor article ID art-1",
+      "createdAt": "2026-11-20T13:00:26.969Z"
     }
   ],
   "extractionTemplates": [
@@ -8493,8 +9791,8 @@
           "sortOrder": 2
         }
       ],
-      "createdAt": "2026-11-17T03:26:02.192Z",
-      "updatedAt": "2026-11-17T03:26:02.194Z"
+      "createdAt": "2026-11-20T13:00:26.193Z",
+      "updatedAt": "2026-11-20T13:00:26.194Z"
     }
   ],
   "extractedDataRecords": [
@@ -8617,10 +9915,10 @@
       },
       "status": "verified",
       "extractedBy": "ai_assisted",
-      "createdAt": "2026-11-17T03:26:02.207Z",
-      "updatedAt": "2026-11-17T03:26:02.231Z",
+      "createdAt": "2026-11-20T13:00:26.205Z",
+      "updatedAt": "2026-11-20T13:00:26.224Z",
       "verifiedBy": "Dr. Clara",
-      "verifiedAt": "2026-11-17T03:26:02.231Z"
+      "verifiedAt": "2026-11-20T13:00:26.224Z"
     }
   ],
   "aiScreeningSuggestions": [
@@ -11148,8 +12446,8 @@
       },
       "overallJudgment": "high_risk",
       "status": "completed",
-      "createdAt": "2026-11-17T03:26:05.587Z",
-      "updatedAt": "2026-11-17T03:26:05.588Z"
+      "createdAt": "2026-11-20T13:00:25.392Z",
+      "updatedAt": "2026-11-20T13:00:25.394Z"
     }
   ],
   "thematicCodes": [
@@ -11195,7 +12493,7 @@
       "name": "Telehealth Scalability & Cost",
       "category": "Health Economics",
       "color": "#2F7D78",
-      "createdAt": "2026-11-17T03:26:05.605Z"
+      "createdAt": "2026-11-20T13:00:25.406Z"
     }
   ],
   "thematicExcerpts": [
@@ -11239,7 +12537,7 @@
       "codeId": "thm-test-telehealth",
       "verbatimQuote": "The intervention achieved cost-effective outpatient outreach.",
       "pageNumber": 5,
-      "createdAt": "2026-11-17T03:26:05.619Z"
+      "createdAt": "2026-11-20T13:00:25.417Z"
     }
   ],
   "manuscripts": [
@@ -11258,7 +12556,7 @@
         "conclusion": "Interactive mobile health applications represent effective, scalable, and safe adjuncts for ambulatory type 2 diabetes care. Future pragmatic multicenter trials should evaluate long-term durability and cost-effectiveness in diverse socioeconomic populations."
       },
       "createdAt": "2026-11-16T11:38:28.143Z",
-      "updatedAt": "2026-11-17T03:26:07.785Z"
+      "updatedAt": "2026-11-20T13:00:27.747Z"
     }
   ],
   "tableDefinitions": [
@@ -11371,8 +12669,8 @@
           "visible": true
         }
       ],
-      "createdAt": "2026-11-17T03:26:07.801Z",
-      "updatedAt": "2026-11-17T03:26:07.802Z"
+      "createdAt": "2026-11-20T13:00:27.762Z",
+      "updatedAt": "2026-11-20T13:00:27.763Z"
     }
   ],
   "paymentOrders": [
@@ -11675,6 +12973,228 @@
         "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
       },
       "paidAt": "2026-11-17T03:26:04.531Z"
+    },
+    {
+      "id": "ord-1795179415111-xb5gd",
+      "orderId": "INV-SLR-2026-415111-XB5GD",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "userName": "Dr. Aris Thorne",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "pending",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-415111-XB5GD0303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-415111-XB5GD0303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-415111-XB5GD6304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-415111-XB5GD",
+      "createdAt": "2026-11-20T12:56:55.112Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:11:55.111Z",
+        "provider": "qris_sandbox"
+      }
+    },
+    {
+      "id": "ord-1795179415369-gsa9p",
+      "orderId": "INV-SLR-2026-415369-GSA9P",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "userName": "Dr. Aris Thorne",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-415369-GSA9P0303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-415369-GSA9P0303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-415369-GSA9P6304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-415369-GSA9P",
+      "createdAt": "2026-11-20T12:56:55.369Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:11:55.369Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-20T12:56:55.380Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-20T12:56:55.381Z"
+    },
+    {
+      "id": "ord-1795179415439-04d26",
+      "orderId": "INV-SLR-2026-415439-04D26",
+      "userId": "usr-test-1795179415390",
+      "userEmail": "test@ib-slr.local",
+      "userName": "Test User",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-415439-04D260303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-415439-04D260303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-415439-04D266304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-415439-04D26",
+      "createdAt": "2026-11-20T12:56:55.439Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:11:55.439Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-20T12:56:55.450Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-20T12:56:55.451Z"
+    },
+    {
+      "id": "ord-1795179549539-rxw80",
+      "orderId": "INV-SLR-2026-549539-RXW80",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "userName": "Dr. Aris Thorne",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "pending",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-549539-RXW800303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-549539-RXW800303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-549539-RXW806304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-549539-RXW80",
+      "createdAt": "2026-11-20T12:59:09.540Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:14:09.539Z",
+        "provider": "qris_sandbox"
+      }
+    },
+    {
+      "id": "ord-1795179549792-wlncs",
+      "orderId": "INV-SLR-2026-549792-WLNCS",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "userName": "Dr. Aris Thorne",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-549792-WLNCS0303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-549792-WLNCS0303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-549792-WLNCS6304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-549792-WLNCS",
+      "createdAt": "2026-11-20T12:59:09.792Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:14:09.792Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-20T12:59:09.805Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-20T12:59:09.806Z"
+    },
+    {
+      "id": "ord-1795179549907-2i95n",
+      "orderId": "INV-SLR-2026-549907-2I95N",
+      "userId": "usr-test-1795179549842",
+      "userEmail": "test@ib-slr.local",
+      "userName": "Test User",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-549907-2I95N0303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-549907-2I95N0303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-549907-2I95N6304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-549907-2I95N",
+      "createdAt": "2026-11-20T12:59:09.907Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:14:09.907Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-20T12:59:09.917Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-20T12:59:09.919Z"
+    },
+    {
+      "id": "ord-1795179623451-1z2we",
+      "orderId": "INV-SLR-2026-623451-1Z2WE",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "userName": "Dr. Aris Thorne",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "pending",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-623451-1Z2WE0303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-623451-1Z2WE0303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-623451-1Z2WE6304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-623451-1Z2WE",
+      "createdAt": "2026-11-20T13:00:23.451Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:15:23.451Z",
+        "provider": "qris_sandbox"
+      }
+    },
+    {
+      "id": "ord-1795179623709-0s3or",
+      "orderId": "INV-SLR-2026-623709-0S3OR",
+      "userId": "usr-researcher-1",
+      "userEmail": "researcher@ib-slr.local",
+      "userName": "Dr. Aris Thorne",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-623709-0S3OR0303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-623709-0S3OR0303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-623709-0S3OR6304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-623709-0S3OR",
+      "createdAt": "2026-11-20T13:00:23.709Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:15:23.709Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-20T13:00:23.719Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-20T13:00:23.721Z"
+    },
+    {
+      "id": "ord-1795179623778-71ql9",
+      "orderId": "INV-SLR-2026-623778-71QL9",
+      "userId": "usr-test-1795179623731",
+      "userEmail": "test@ib-slr.local",
+      "userName": "Test User",
+      "amount": 20000,
+      "currency": "IDR",
+      "itemType": "project_pass",
+      "itemDescription": "1X Active Systematic Review Project Pass",
+      "status": "paid",
+      "paymentType": "qris",
+      "qrisString": "00020101021226670014ID.GO.BI.QRIS01189360091800000000000215INV-SLR-2026-623778-71QL90303UMI51440014ID.LINKAJA.WWW01189360091800000000000215INV-SLR-2026-623778-71QL90303UMI5204581253033605405200005802ID5920IB-SLR Research SaaS6007JAKARTA61051011062240125INV-SLR-2026-623778-71QL96304",
+      "invoiceUrl": "/api/payment/invoice/INV-SLR-2026-623778-71QL9",
+      "createdAt": "2026-11-20T13:00:23.778Z",
+      "metadata": {
+        "planKey": "pay_per_project",
+        "usdEquivalent": "$1.30",
+        "expiresAt": "2026-11-20T13:15:23.778Z",
+        "provider": "qris_sandbox",
+        "simulated": true,
+        "simulatedAt": "2026-11-20T13:00:23.787Z",
+        "verificationMethod": "INSTANT_SANDBOX_SIMULATION"
+      },
+      "paidAt": "2026-11-20T13:00:23.788Z"
     }
   ]
 }

@@ -129,14 +129,10 @@ export function calculatePrismaCounts(
   }
 
   // Studies Included in review:
-  // Articles included at full-text stage, or passed full-text without being excluded
-  const fullTextIncludedArticles = activeArticles.filter(
-    (a) => a.fullTextStatus === "included" || (a.screeningStatus === "included" && a.titleAbstractStatus !== "excluded" && a.fullTextStatus !== "excluded")
-  );
-
+  // Strictly PRISMA 2020: Studies Included = Reports Assessed for Full Text - Reports Excluded at Full Text
   const studiesIncluded = Math.min(
     reportsAssessed,
-    Math.max(0, fullTextIncludedArticles.length > 0 ? fullTextIncludedArticles.length : reportsAssessed - reportsExcludedFullText)
+    Math.max(0, reportsAssessed - reportsExcludedFullText)
   );
 
   return {

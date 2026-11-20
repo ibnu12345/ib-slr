@@ -159,6 +159,37 @@ export function PdfArticleViewer({ article, highlightQuote, onQuoteSelected }: P
           <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200">
             {article.ocrQuality === "native" ? "Native PDF Text (100% OCR)" : "OCR Terekstraksi"}
           </span>
+          {(() => {
+            const cleanDoi = article.doi
+              ? article.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").trim()
+              : "";
+            return (
+              <div className="flex items-center gap-1.5 ml-1">
+                {cleanDoi && (
+                  <a
+                    href={`https://doi.org/${cleanDoi}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white text-[#2F7D78] border border-[#2F7D78]/30 hover:bg-[#EFF7F6]"
+                    title="Buka naskah artikel via tautan resmi DOI"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    <span>DOI</span>
+                  </a>
+                )}
+                <a
+                  href={`https://scholar.google.com/scholar?q=${encodeURIComponent(article.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold bg-white text-blue-700 border border-blue-200 hover:bg-blue-50"
+                  title="Cari naskah PDF di Google Scholar"
+                >
+                  <ExternalLink className="w-3 h-3" />
+                  <span>Google Scholar</span>
+                </a>
+              </div>
+            );
+          })()}
         </div>
 
         {/* View Mode Tabs */}

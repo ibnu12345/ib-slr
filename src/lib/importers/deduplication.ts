@@ -65,13 +65,13 @@ export function calculateTitleSimilarity(a: string, b: string): number {
   const maxLen = Math.max(lenA, lenB);
   if (maxLen === 0) return 1.0;
 
-  // Length heuristic: if difference exceeds 15%, similarity is strictly < 0.85
-  if (Math.abs(lenA - lenB) / maxLen > 0.15) {
+  // Length heuristic: if difference exceeds 25%, similarity is strictly < 0.75
+  if (Math.abs(lenA - lenB) / maxLen > 0.25) {
     return 0.0;
   }
 
-  // Maximum edits allowed for >= 0.85 similarity
-  const maxEdits = Math.floor(maxLen * 0.15);
+  // Maximum edits allowed for >= 0.75 similarity
+  const maxEdits = Math.floor(maxLen * 0.25);
   const distance = levenshteinDistance(cleanA, cleanB, maxEdits);
   if (distance > maxEdits) return 0.0;
 

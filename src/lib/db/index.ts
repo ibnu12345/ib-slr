@@ -436,8 +436,8 @@ function getInitialDatabase(): DatabaseSchema {
   const defaultExtractionTemplates: ExtractionTemplate[] = [
     {
       id: "tmpl-pico-default",
-      projectId: "prj-demo-1",
-      name: "PICO Clinical Trial & Intervention Review (Standard)",
+      projectId: "global",
+      name: "PICO & Karakteristik Studi Review (Standar)",
       description: "Standard template for extracting participant characteristics, interventions, comparators, and clinical outcomes for systematic reviews.",
       version: 1,
       isDefault: true,
@@ -2321,7 +2321,20 @@ export async function updateArticlePdf(
 export async function getExtractionTemplates(projectId: string): Promise<ExtractionTemplate[]> {
   const db = getDb();
   const id = resolveProjectId(projectId);
-  return db.extractionTemplates.filter((t) => t.projectId === id || t.projectId === projectId || t.projectId === "global");
+  const found = db.extractionTemplates.filter((t) => t.projectId === id || t.projectId === projectId || t.projectId === "global");
+  if (found.length > 0) return found;
+
+  // Fallback: create default template for this project
+  const initial = db.extractionTemplates[0] || getInitialDatabase().extractionTemplates[0];
+  const fallbackTemplate: ExtractionTemplate = {
+    ...initial,
+    id: `tmpl-${id}-default`,
+    projectId: id,
+    isDefault: true,
+  };
+  db.extractionTemplates.push(fallbackTemplate);
+  saveDb(db);
+  return [fallbackTemplate];
 }
 
 export async function getExtractionTemplateById(templateId: string): Promise<ExtractionTemplate | undefined> {

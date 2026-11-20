@@ -30,8 +30,106 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { PdfArticleViewer } from "../../../../../components/research/PdfArticleViewer";
-import { runAIExtractionForArticleAction, verifyExtractionFieldAction } from "../../../../../lib/ai/actions";
+import {
+  runAIExtractionForArticleAction,
+  runBatchAIExtractionAction,
+  verifyExtractionFieldAction,
+} from "../../../../../lib/ai/actions";
 import { generateVosviewerRis } from "../../../../../lib/export/vosviewer";
+
+const fallbackDefaultTemplate: ExtractionTemplate = {
+  id: "tmpl-pico-default",
+  projectId: "global",
+  name: "PICO & Karakteristik Studi Review (Standar)",
+  description: "Template standar ekstraksi karakteristik partisipan, fokus kajian/intervensi, komparator, dan luaran studi.",
+  version: 1,
+  isDefault: true,
+  fields: [
+    {
+      id: "fld-1",
+      key: "study_design",
+      label: "Desain Studi (Study Design)",
+      type: "select",
+      category: "study_characteristics",
+      options: [
+        "Qualitative Study / Kualitatif",
+        "Cross-Sectional Survey / Kuantitatif",
+        "Quasi-Experimental Study",
+        "Mixed Methods Study",
+        "Research & Development (R&D)",
+        "Classroom Action Research (PTK)",
+        "Systematic Literature Review",
+      ],
+      required: true,
+      sortOrder: 1,
+    },
+    {
+      id: "fld-2",
+      key: "sample_size",
+      label: "Jumlah Sampel / Partisipan (N)",
+      type: "number",
+      category: "population",
+      required: true,
+      sortOrder: 2,
+    },
+    {
+      id: "fld-3",
+      key: "country",
+      label: "Setting / Lokasi Penelitian",
+      type: "text",
+      category: "population",
+      required: true,
+      sortOrder: 3,
+    },
+    {
+      id: "fld-4",
+      key: "intervention_detail",
+      label: "Fokus Kajian / Program Intervensi",
+      type: "long_text",
+      category: "interventions",
+      required: true,
+      sortOrder: 4,
+    },
+    {
+      id: "fld-5",
+      key: "comparator_detail",
+      label: "Konteks Pembanding / Baseline",
+      type: "long_text",
+      category: "interventions",
+      required: true,
+      sortOrder: 5,
+    },
+    {
+      id: "fld-6",
+      key: "primary_outcome",
+      label: "Temuan / Luaran Utama Penelitian",
+      type: "long_text",
+      category: "outcomes",
+      required: true,
+      sortOrder: 6,
+    },
+    {
+      id: "fld-7",
+      key: "follow_up_duration",
+      label: "Durasi / Periode Penelitian",
+      type: "text",
+      category: "outcomes",
+      required: false,
+      sortOrder: 7,
+    },
+    {
+      id: "fld-8",
+      key: "risk_of_bias_notes",
+      label: "Keterbatasan Metodologi / Catatan Bias",
+      type: "long_text",
+      category: "methodology",
+      required: false,
+      sortOrder: 8,
+    },
+  ],
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+};
 
 interface Props {
   projectId: string;
@@ -46,9 +144,11 @@ export function ExtractionStudio({
   templates: initialTemplates,
   initialRecords,
 }: Props) {
-  const [templates, setTemplates] = useState<ExtractionTemplate[]>(initialTemplates);
+  const [templates, setTemplates] = useState<ExtractionTemplate[]>(
+    initialTemplates.length > 0 ? initialTemplates : [fallbackDefaultTemplate]
+  );
   const [selectedTemplateId, setSelectedTemplateId] = useState<string>(
-    initialTemplates.find((t) => t.isDefault)?.id || initialTemplates[0]?.id || ""
+    initialTemplates.find((t) => t.isDefault)?.id || initialTemplates[0]?.id || fallbackDefaultTemplate.id
   );
 
   const [records, setRecords] = useState<ExtractedDataRecord[]>(initialRecords);
@@ -60,6 +160,7 @@ export function ExtractionStudio({
 
   // AI loading state
   const [extractingAI, setExtractingAI] = useState(false);
+  const [runningBatchAI, setRunningBatchAI] = useState(false);
   const [savingFieldKey, setSavingFieldKey] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
@@ -118,12 +219,13 @@ export function ExtractionStudio({
   }, [articles, records, selectedTemplateId, statusFilter]);
 
   const handleRunAIExtraction = async () => {
-    if (!selectedArticle || !currentTemplate || extractingAI) return;
+    const templateToUse = currentTemplate || templates[0] || fallbackDefaultTemplate;
+    if (!selectedArticle || extractingAI) return;
     setExtractingAI(true);
     setFeedback(null);
 
     try {
-      const res = await runAIExtractionForArticleAction(selectedArticle.id, projectId, currentTemplate.id);
+      const res = await runAIExtractionForArticleAction(selectedArticle.id, projectId, templateToUse.id);
       if (res.success && res.record) {
         // Update local records state
         const index = records.findIndex((r) => r.id === res.record!.id);
@@ -136,7 +238,7 @@ export function ExtractionStudio({
         }
         setFeedback({
           type: "success",
-          message: "Ekstraksi data AI selesai dengan kutipan bukti berakar pada teks naskah.",
+          message: `Ekstraksi data AI selesai untuk "${selectedArticle.title.slice(0, 45)}..." dengan kutipan bukti berakar pada teks naskah.`,
         });
       } else {
         setFeedback({
@@ -151,6 +253,57 @@ export function ExtractionStudio({
       });
     } finally {
       setExtractingAI(false);
+    }
+  };
+
+  const handleRunBatchAIExtraction = async () => {
+    if (runningBatchAI || articles.length === 0) return;
+    const templateToUse = currentTemplate || templates[0] || fallbackDefaultTemplate;
+    const unextracted = articles.filter(
+      (a) => !records.some((r) => r.articleId === a.id && r.templateId === templateToUse.id)
+    );
+    const targetArticles = unextracted.length > 0 ? unextracted : articles;
+
+    if (
+      !confirm(
+        `Jalankan Ekstraksi AI Otomatis untuk ${targetArticles.length} artikel menggunakan template "${templateToUse.name}"?`
+      )
+    ) {
+      return;
+    }
+
+    setRunningBatchAI(true);
+    setFeedback(null);
+
+    try {
+      const res = await runBatchAIExtractionAction(
+        projectId,
+        templateToUse.id,
+        targetArticles.map((a) => a.id)
+      );
+      if (res.success && res.records) {
+        const updatedMap = new Map<string, ExtractedDataRecord>();
+        for (const r of records) updatedMap.set(`${r.articleId}_${r.templateId}`, r);
+        for (const r of res.records) updatedMap.set(`${r.articleId}_${r.templateId}`, r);
+        setRecords(Array.from(updatedMap.values()));
+
+        setFeedback({
+          type: "success",
+          message: `Batch Ekstraksi AI sukses: Berhasil mengekstrak ${res.count || res.records.length} artikel secara otomatis!`,
+        });
+      } else {
+        setFeedback({
+          type: "error",
+          message: res.error || "Gagal melakukan batch ekstraksi AI.",
+        });
+      }
+    } catch {
+      setFeedback({
+        type: "error",
+        message: "Terjadi kesalahan server saat batch ekstraksi AI.",
+      });
+    } finally {
+      setRunningBatchAI(false);
     }
   };
 
@@ -284,8 +437,22 @@ export function ExtractionStudio({
             </p>
           </div>
 
-          {/* Action Buttons: Export & Manage Template */}
-          <div className="flex items-center gap-2 shrink-0">
+          {/* Action Buttons: Export & Manage Template & Batch AI */}
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              disabled={runningBatchAI}
+              onClick={handleRunBatchAIExtraction}
+              className="px-3.5 py-1.5 rounded-lg bg-[#2F7D78] hover:bg-[#25635f] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
+              title="Ekstrak otomatis seluruh studi dengan bantuan AI"
+            >
+              {runningBatchAI ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5" />
+              )}
+              <span>{runningBatchAI ? "Mengekstrak Semua..." : `Batch AI: Ekstrak Semua (${articles.length})`}</span>
+            </button>
             <button
               type="button"
               onClick={() => setShowTemplateModal(true)}
@@ -451,6 +618,53 @@ export function ExtractionStudio({
                   <h3 className="text-sm font-bold text-[#17212B] mt-1 leading-snug">
                     {selectedArticle.title}
                   </h3>
+                  {/* Action / Download Links Bar */}
+                  {(() => {
+                    const cleanDoi = selectedArticle.doi
+                      ? selectedArticle.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").trim()
+                      : "";
+                    const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : null;
+                    const scholarUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(selectedArticle.title)}`;
+
+                    return (
+                      <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-[#E4E7EC]/60">
+                        {doiUrl && (
+                          <a
+                            href={doiUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-[#EFF7F6] text-[#2F7D78] hover:bg-[#d8ecea] border border-[#2F7D78]/20 transition-colors"
+                            title="Buka naskah artikel langsung via tautan resmi DOI"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                            <span>DOI: {cleanDoi}</span>
+                          </a>
+                        )}
+                        <a
+                          href={scholarUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition-colors"
+                          title="Cari dan unduh naskah PDF lengkap di Google Scholar"
+                        >
+                          <Download className="w-3 h-3" />
+                          <span>Unduh PDF via Google Scholar</span>
+                        </a>
+                        {selectedArticle.pdfUrl && (
+                          <a
+                            href={selectedArticle.pdfUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            download
+                            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 transition-colors"
+                          >
+                            <FileText className="w-3 h-3" />
+                            <span>PDF Tersimpan</span>
+                          </a>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <button

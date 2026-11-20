@@ -24,8 +24,13 @@ import {
   ExternalLink,
   Table,
   Check,
+  Sparkles,
 } from "lucide-react";
-import { saveAppraisalRecordAction } from "../../../../../lib/appraisal/actions";
+import {
+  saveAppraisalRecordAction,
+  runAIAppraisalForArticleAction,
+  runBatchAIAppraisalAction,
+} from "../../../../../lib/appraisal/actions";
 import { PdfArticleViewer } from "../../../../../components/research/PdfArticleViewer";
 
 interface Props {
@@ -46,6 +51,8 @@ export function AppraisalStudio({
   const [selectedArticleId, setSelectedArticleId] = useState<string>(articles[0]?.id || "");
   const [showPdfModal, setShowPdfModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [runningSingleAI, setRunningSingleAI] = useState(false);
+  const [runningBatchAI, setRunningBatchAI] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
   const currentFramework = useMemo(() => {
@@ -174,6 +181,81 @@ export function AppraisalStudio({
     }
   };
 
+  const handleRunSingleAIAppraisal = async () => {
+    if (!selectedArticle || runningSingleAI) return;
+    setRunningSingleAI(true);
+    setFeedback(null);
+    try {
+      const res = await runAIAppraisalForArticleAction(selectedArticle.id, projectId, selectedFrameworkId);
+      if (res.success && res.record) {
+        const idx = records.findIndex(
+          (r) => r.articleId === selectedArticle.id && r.frameworkId === selectedFrameworkId
+        );
+        if (idx >= 0) {
+          const updated = [...records];
+          updated[idx] = res.record;
+          setRecords(updated);
+        } else {
+          setRecords([res.record, ...records]);
+        }
+        setFeedback({
+          type: "success",
+          message: `Evaluasi kualitas AI untuk "${selectedArticle.title.slice(0, 45)}..." selesai dengan justifikasi bukti.`,
+        });
+      } else {
+        setFeedback({ type: "error", message: res.error || "Gagal melakukan penilaian kualitas AI." });
+      }
+    } catch {
+      setFeedback({ type: "error", message: "Terjadi kesalahan server saat evaluasi kualitas AI." });
+    } finally {
+      setRunningSingleAI(false);
+    }
+  };
+
+  const handleRunBatchAIAppraisal = async () => {
+    if (runningBatchAI || articles.length === 0) return;
+    const unassessed = articles.filter(
+      (a) => !records.some((r) => r.articleId === a.id && r.frameworkId === selectedFrameworkId)
+    );
+    const targetArticles = unassessed.length > 0 ? unassessed : articles;
+
+    if (
+      !confirm(
+        `Jalankan Penilaian Kualitas AI otomatis untuk ${targetArticles.length} artikel menggunakan instrumen "${currentFramework.name}"?`
+      )
+    ) {
+      return;
+    }
+
+    setRunningBatchAI(true);
+    setFeedback(null);
+
+    try {
+      const res = await runBatchAIAppraisalAction(
+        projectId,
+        selectedFrameworkId,
+        targetArticles.map((a) => a.id)
+      );
+      if (res.success && res.records) {
+        const updatedMap = new Map<string, AppraisalRecord>();
+        for (const r of records) updatedMap.set(`${r.articleId}_${r.frameworkId}`, r);
+        for (const r of res.records) updatedMap.set(`${r.articleId}_${r.frameworkId}`, r);
+        setRecords(Array.from(updatedMap.values()));
+
+        setFeedback({
+          type: "success",
+          message: `Batch Appraisal AI sukses: Berhasil mengevaluasi kualitas ${res.count || res.records.length} artikel secara otomatis!`,
+        });
+      } else {
+        setFeedback({ type: "error", message: res.error || "Gagal memproses batch appraisal." });
+      }
+    } catch {
+      setFeedback({ type: "error", message: "Terjadi kesalahan server saat memproses batch appraisal." });
+    } finally {
+      setRunningBatchAI(false);
+    }
+  };
+
   const handleExportAppraisalCSV = () => {
     const headers = [
       "Article ID",
@@ -232,7 +314,21 @@ export function AppraisalStudio({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              type="button"
+              disabled={runningBatchAI}
+              onClick={handleRunBatchAIAppraisal}
+              className="px-3.5 py-1.5 rounded-lg bg-[#2F7D78] hover:bg-[#25635f] text-white text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-colors disabled:opacity-50"
+              title="Nilai otomatis seluruh studi menggunakan instrumen aktif dengan bantuan AI"
+            >
+              {runningBatchAI ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Sparkles className="w-3.5 h-3.5" />
+              )}
+              <span>{runningBatchAI ? "Menilai Semua..." : `Batch AI: Nilai Semua (${articles.length})`}</span>
+            </button>
             <button
               type="button"
               onClick={handleExportAppraisalCSV}
@@ -407,22 +503,76 @@ export function AppraisalStudio({
                   {selectedArticle.id}
                 </span>
                 <span className="text-xs text-[#667085]">
-                  Penilai: <strong>Dr. Clara Oswald</strong>
+                  Penilai: <strong>Dr. Clara Oswald / AI Methodological Evaluator</strong>
                 </span>
               </div>
               <h3 className="text-base font-bold text-[#17212B] mt-1">
                 {selectedArticle.title}
               </h3>
+
+              {/* Action / Download Links Bar */}
+              {(() => {
+                const cleanDoi = selectedArticle.doi
+                  ? selectedArticle.doi.replace(/^https?:\/\/(dx\.)?doi\.org\//i, "").trim()
+                  : "";
+                const doiUrl = cleanDoi ? `https://doi.org/${cleanDoi}` : null;
+                const scholarUrl = `https://scholar.google.com/scholar?q=${encodeURIComponent(selectedArticle.title)}`;
+
+                return (
+                  <div className="flex flex-wrap items-center gap-2 mt-2 pt-2 border-t border-[#E4E7EC]/60">
+                    <span className="text-[11px] text-[#667085]">
+                      {selectedArticle.journal || "Jurnal"} ({selectedArticle.publicationYear || "N/A"})
+                    </span>
+                    {doiUrl && (
+                      <a
+                        href={doiUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-[#EFF7F6] text-[#2F7D78] hover:bg-[#d8ecea] border border-[#2F7D78]/20 transition-colors"
+                        title="Buka naskah artikel langsung via tautan resmi DOI"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>DOI: {cleanDoi}</span>
+                      </a>
+                    )}
+                    <a
+                      href={scholarUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200 transition-colors"
+                      title="Cari dan unduh naskah PDF lengkap di Google Scholar"
+                    >
+                      <Download className="w-3 h-3" />
+                      <span>Unduh PDF via Google Scholar</span>
+                    </a>
+                  </div>
+                );
+              })()}
             </div>
 
-            <button
-              type="button"
-              onClick={() => setShowPdfModal(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E4E7EC] bg-[#F7F8FA] hover:bg-gray-100 text-xs font-semibold text-[#17324D] transition-colors"
-            >
-              <FileText className="w-3.5 h-3.5 text-[#2F7D78]" />
-              <span>Buka Dokumen / PDF Viewer</span>
-            </button>
+            <div className="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                type="button"
+                disabled={runningSingleAI}
+                onClick={handleRunSingleAIAppraisal}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#2F7D78] hover:bg-[#25635f] text-white text-xs font-bold shadow-xs transition-all disabled:opacity-50"
+              >
+                {runningSingleAI ? (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                ) : (
+                  <Sparkles className="w-3.5 h-3.5" />
+                )}
+                <span>{runningSingleAI ? "Menilai AI..." : "Nilai Otomatis dengan AI"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowPdfModal(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#E4E7EC] bg-[#F7F8FA] hover:bg-gray-100 text-xs font-semibold text-[#17324D] transition-colors"
+              >
+                <FileText className="w-3.5 h-3.5 text-[#2F7D78]" />
+                <span>Buka PDF Viewer</span>
+              </button>
+            </div>
           </div>
 
           {/* Domain-by-Domain Assessment Cards */}
