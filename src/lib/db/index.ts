@@ -1896,6 +1896,7 @@ export async function dismissDuplicateCandidate(
 // =====================================================================
 
 export async function getExclusionReasons(projectId: string, stage?: ScreeningStage): Promise<ExclusionReason[]> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   let reasons = db.exclusionReasons.filter((r) => r.projectId === "global" || r.projectId === id || r.projectId === projectId);
@@ -1915,6 +1916,7 @@ export async function recordScreeningDecision(
   exclusionReason?: string,
   notes?: string
 ): Promise<{ decision: ScreeningDecision; status: Article["screeningStatus"] }> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   const article = db.articles.find((a) => a.id === articleId && (a.projectId === id || a.projectId === projectId));
@@ -2010,7 +2012,7 @@ export async function recordScreeningDecision(
     exclusionReason,
   }, reviewerId, reviewerName);
 
-  saveDb(db);
+  await saveDbAsync(db);
   return { decision: decisionRecord, status: newStatus };
 }
 
@@ -2018,6 +2020,7 @@ export async function getScreeningConflicts(
   projectId: string,
   status: "open" | "resolved" = "open"
 ): Promise<Array<ScreeningConflict & { article?: Article }>> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   const conflicts = db.screeningConflicts.filter(
@@ -2038,6 +2041,7 @@ export async function adjudicateConflict(
   adjudicatorName?: string,
   adjudicationNotes?: string
 ): Promise<boolean> {
+  await syncFromSupabase();
   const db = getDb();
   const conflict = db.screeningConflicts.find((c) => c.id === conflictId);
   if (!conflict) return false;
@@ -2061,7 +2065,7 @@ export async function adjudicateConflict(
     adjudicationNotes,
   }, adjudicatorId, adjudicatorName);
 
-  saveDb(db);
+  await saveDbAsync(db);
   return true;
 }
 
