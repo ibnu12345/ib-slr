@@ -110,21 +110,25 @@ export async function sendVerificationEmail({
   const gmailPass = process.env.GMAIL_APP_PASSWORD || process.env.SMTP_PASS || process.env.SMTP_PASSWORD;
 
   if (gmailUser && gmailPass) {
+    const cleanGmailUser = gmailUser.trim();
+    // Strip any whitespace from Google App Password (e.g. "ryka mbia msoc cwzv" -> "rykambiamsoccwzv")
+    const cleanGmailPass = gmailPass.replace(/\s+/g, "");
+
     try {
       const transporter = process.env.SMTP_HOST
         ? nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: Number(process.env.SMTP_PORT) || 587,
             secure: process.env.SMTP_SECURE === "true" || Number(process.env.SMTP_PORT) === 465,
-            auth: { user: gmailUser, pass: gmailPass },
+            auth: { user: cleanGmailUser, pass: cleanGmailPass },
           })
         : nodemailer.createTransport({
             service: "gmail",
-            auth: { user: gmailUser, pass: gmailPass },
+            auth: { user: cleanGmailUser, pass: cleanGmailPass },
           });
 
       await transporter.sendMail({
-        from: `"${process.env.EMAIL_FROM_NAME || "IB-SLR Systematic Review"}" <${gmailUser}>`,
+        from: `"${process.env.EMAIL_FROM_NAME || "IB-SLR Systematic Review"}" <${cleanGmailUser}>`,
         to,
         subject,
         html: htmlContent,
