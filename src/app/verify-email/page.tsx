@@ -3,12 +3,14 @@
 import React, { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { BookOpen, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck } from "lucide-react";
+import { BookOpen, CheckCircle2, AlertCircle, ArrowRight, ShieldCheck, KeyRound } from "lucide-react";
 import { verifyEmailAction } from "../../lib/auth/actions";
+import { useLanguage } from "../../components/i18n/LanguageContext";
 
 function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const tokenParam = searchParams.get("token") || "";
+  const { isId } = useLanguage();
 
   const [tokenInput, setTokenInput] = useState(tokenParam);
   const [status, setStatus] = useState<"idle" | "verifying" | "success" | "error">("idle");
@@ -18,7 +20,11 @@ function VerifyEmailContent() {
   const performVerification = async (tok: string) => {
     if (!tok.trim()) {
       setStatus("error");
-      setErrorMessage("Please provide a valid verification token.");
+      setErrorMessage(
+        isId
+          ? "Silakan masukkan kode OTP 6 digit atau token verifikasi yang valid."
+          : "Please provide a valid 6-digit OTP or verification token."
+      );
       return;
     }
 
@@ -29,14 +35,28 @@ function VerifyEmailContent() {
       const res = await verifyEmailAction(tok.trim());
       if (!res.success) {
         setStatus("error");
-        setErrorMessage(res.error || "Email verification failed.");
+        setErrorMessage(
+          res.error ||
+            (isId
+              ? "Verifikasi email gagal. Kode tidak valid atau telah kadaluarsa."
+              : "Email verification failed.")
+        );
       } else {
         setStatus("success");
-        setSuccessMessage(res.message || "Email verified successfully!");
+        setSuccessMessage(
+          res.message ||
+            (isId
+              ? "Email berhasil diverifikasi! Akun Anda aktif dan aman."
+              : "Email verified successfully!")
+        );
       }
     } catch {
       setStatus("error");
-      setErrorMessage("An unexpected server error occurred during verification.");
+      setErrorMessage(
+        isId
+          ? "Terjadi kesalahan server saat proses verifikasi."
+          : "An unexpected server error occurred during verification."
+      );
     }
   };
 
@@ -58,26 +78,30 @@ function VerifyEmailContent() {
             />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-[#17324D]">
-            Email Verification
+            {isId ? "Verifikasi Email Akun" : "Email Verification"}
           </h1>
           <p className="text-xs text-[#667085] mt-1">
-            Mandatory research integrity security check
+            {isId
+              ? "Pemeriksaan keamanan wajib untuk integritas data riset SLR dan anti-spam"
+              : "Mandatory research integrity security check to prevent spam"}
           </p>
         </div>
 
         {status === "verifying" && (
           <div className="p-4 bg-[#F7F8FA] border border-[#E4E7EC] rounded-lg text-center space-y-2">
             <div className="w-6 h-6 border-2 border-[#2F7D78] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs text-[#17212B] font-medium">Verifying your token...</p>
+            <p className="text-xs text-[#17212B] font-medium">
+              {isId ? "Memverifikasi kode OTP / token..." : "Verifying your token..."}
+            </p>
           </div>
         )}
 
         {status === "success" && (
           <div className="p-5 bg-[#ECFDF3] border border-[#18794E]/30 rounded-lg text-center space-y-4">
-            <CheckCircle2 className="w-8 h-8 text-[#18794E] mx-auto" />
+            <CheckCircle2 className="w-8 h-8 text-[#18794E] mx-auto animate-bounce" />
             <div>
               <h2 className="text-sm font-bold text-[#18794E] mb-1">
-                Verification Complete
+                {isId ? "Verifikasi Selesai!" : "Verification Complete"}
               </h2>
               <p className="text-xs text-[#17212B]">{successMessage}</p>
             </div>
@@ -85,7 +109,7 @@ function VerifyEmailContent() {
               href="/app"
               className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg text-xs font-semibold text-white bg-[#17324D] hover:bg-[#12273D] transition-colors"
             >
-              <span>Enter Research Workspace</span>
+              <span>{isId ? "Masuk ke Workspace Riset" : "Enter Research Workspace"}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
@@ -109,32 +133,43 @@ function VerifyEmailContent() {
             className="space-y-4 pt-2"
           >
             <div>
-              <label className="block text-xs font-semibold text-[#17212B] mb-1">
-                Enter Verification Token
+              <label className="block text-xs font-semibold text-[#17212B] mb-1 flex items-center gap-1.5">
+                <KeyRound className="w-3.5 h-3.5 text-[#2F7D78]" />
+                <span>
+                  {isId
+                    ? "Masukkan 6-Digit Kode OTP atau Token Verifikasi"
+                    : "Enter 6-Digit OTP Code or Verification Token"}
+                </span>
               </label>
               <input
                 type="text"
                 required
                 value={tokenInput}
                 onChange={(e) => setTokenInput(e.target.value)}
-                placeholder="verify_..."
-                className="w-full px-3 py-2 text-xs sm:text-sm bg-[#FFFFFF] border border-[#E4E7EC] rounded-lg transition-colors font-mono"
+                placeholder={isId ? "Contoh: 849201 atau token tautan" : "e.g. 849201 or token"}
+                className="w-full px-3 py-2 text-sm bg-[#FFFFFF] border border-[#E4E7EC] rounded-lg transition-colors font-mono tracking-wider"
               />
+              <p className="text-[11px] text-[#667085] mt-1">
+                {isId
+                  ? "Kode 6 angka dikirimkan ke email Gmail Anda saat pendaftaran."
+                  : "The 6-digit code was sent to your Gmail inbox upon registration."}
+              </p>
             </div>
             <button
               type="submit"
               disabled={status === "verifying"}
-              className="w-full py-2.5 px-4 rounded-lg text-sm font-semibold text-white bg-[#17324D] hover:bg-[#12273D] disabled:opacity-50 transition-all shadow-sm"
+              className="w-full py-2.5 px-4 rounded-lg text-sm font-semibold text-white bg-[#17324D] hover:bg-[#12273D] disabled:opacity-50 transition-all shadow-sm flex items-center justify-center gap-2"
             >
-              Verify Token
+              <ShieldCheck className="w-4 h-4" />
+              <span>{isId ? "Verifikasi Sekarang" : "Verify Token"}</span>
             </button>
           </form>
         )}
 
         <div className="text-center pt-2 text-xs text-[#667085]">
-          Need to sign in to another account?{" "}
+          {isId ? "Ingin masuk ke akun lain?" : "Need to sign in to another account?"}{" "}
           <Link href="/login" className="text-[#2F7D78] hover:underline font-semibold">
-            Return to login
+            {isId ? "Kembali ke login" : "Return to login"}
           </Link>
         </div>
       </div>
@@ -149,3 +184,4 @@ export default function VerifyEmailPage() {
     </Suspense>
   );
 }
+

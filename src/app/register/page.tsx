@@ -1,10 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { BookOpen, Lock, Mail, User, AlertCircle, CheckCircle2, ArrowRight } from "lucide-react";
-import { registerAction } from "../../lib/auth/actions";
+import {
+  Lock,
+  Mail,
+  User,
+  AlertCircle,
+  CheckCircle2,
+  ArrowRight,
+  ShieldCheck,
+  RefreshCw,
+  KeyRound,
+  ExternalLink,
+} from "lucide-react";
+import {
+  registerAction,
+  verifyEmailAction,
+  resendVerificationOtpAction,
+} from "../../lib/auth/actions";
 import { useLanguage } from "../../components/i18n/LanguageContext";
 
 export default function RegisterPage() {
@@ -15,15 +30,41 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [successData, setSuccessData] = useState<{ token: string; message: string } | null>(null);
+  const [successData, setSuccessData] = useState<{
+    token: string;
+    email: string;
+    message: string;
+  } | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // OTP Verification States
+  const [otpInput, setOtpInput] = useState("");
+  const [otpVerifying, setOtpVerifying] = useState(false);
+  const [otpError, setOtpError] = useState<string | null>(null);
+  const [otpSuccess, setOtpSuccess] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(60);
+  const [resending, setResending] = useState(false);
+  const [resendNotice, setResendNotice] = useState<string | null>(null);
+
+  // Countdown timer for resend OTP
+  useEffect(() => {
+    if (!successData || resendCooldown <= 0) return;
+    const interval = setInterval(() => {
+      setResendCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [successData, resendCooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
     if (!acceptTerms) {
-      setError("You must accept the Terms of Service and Privacy Policy to continue.");
+      setError(
+        isId
+          ? "Anda wajib menyetujui Syarat & Ketentuan serta Kebijakan Privasi untuk mendaftar."
+          : "You must accept the Terms of Service and Privacy Policy to continue."
+      );
       return;
     }
 
@@ -37,17 +78,97 @@ export default function RegisterPage() {
     try {
       const res = await registerAction(formData);
       if (!res.success) {
-        setError(res.error || "Registration failed.");
+        setError(res.error || (isId ? "Pendaftaran gagal." : "Registration failed."));
       } else {
         setSuccessData({
           token: res.verificationToken || "",
-          message: res.message || "Registration successful!",
+          email: res.email || email,
+          message:
+            res.message ||
+            (isId
+              ? "Akun berhasil dibuat! Silakan verifikasi email Anda."
+              : "Account created! Please verify your email."),
         });
+        setResendCooldown(60);
       }
     } catch {
-      setError("An unexpected network or server error occurred.");
+      setError(
+        isId
+          ? "Terjadi kesalahan koneksi atau server saat pendaftaran."
+          : "An unexpected network or server error occurred."
+      );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleVerifyOtp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setOtpError(null);
+    setResendNotice(null);
+
+    const clean = otpInput.trim();
+    if (!clean) {
+      setOtpError(
+        isId
+          ? "Silakan masukkan 6 digit kode OTP verifikasi."
+          : "Please enter the 6-digit verification OTP code."
+      );
+      return;
+    }
+
+    setOtpVerifying(true);
+    try {
+      const res = await verifyEmailAction(clean);
+      if (!res.success) {
+        setOtpError(
+          res.error ||
+            (isId
+              ? "Kode OTP verifikasi tidak valid atau telah kadaluarsa."
+              : "Invalid or expired OTP code.")
+        );
+      } else {
+        setOtpSuccess(true);
+        setTimeout(() => {
+          router.push("/app");
+        }, 1500);
+      }
+    } catch {
+      setOtpError(
+        isId
+          ? "Gagal menghubungi server untuk memverifikasi OTP."
+          : "Server error during OTP verification."
+      );
+    } finally {
+      setOtpVerifying(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    if (resendCooldown > 0 || !successData?.email || resending) return;
+    setResending(true);
+    setOtpError(null);
+    setResendNotice(null);
+
+    try {
+      const res = await resendVerificationOtpAction(successData.email);
+      if (res.success) {
+        setResendNotice(
+          isId
+            ? "Kode OTP verifikasi baru telah dikirim ke Gmail Anda."
+            : "A new OTP code has been sent to your Gmail."
+        );
+        setResendCooldown(60);
+        if (res.token) {
+          setSuccessData((prev) => (prev ? { ...prev, token: res.token! } : null));
+        }
+      } else {
+        setOtpError(res.error || "Gagal mengirim ulang OTP.");
+      }
+    } catch {
+      setOtpError(isId ? "Gagal mengirim ulang OTP." : "Failed to resend OTP.");
+    } finally {
+      setResending(false);
     }
   };
 
@@ -63,10 +184,22 @@ export default function RegisterPage() {
             />
           </Link>
           <h1 className="text-2xl font-bold tracking-tight text-[#17324D]">
-            {isId ? "Daftar Akun IB-SLR Baru" : "Create your IB-SLR Account"}
+            {successData
+              ? isId
+                ? "Verifikasi Email Akun Anda"
+                : "Verify Your Email Account"
+              : isId
+              ? "Daftar Akun IB-SLR Baru"
+              : "Create your IB-SLR Account"}
           </h1>
           <p className="text-xs text-[#667085] mt-1">
-            {isId ? "Mulai tinjauan pustaka sistematis dengan asistensi AI berakar sitasi nyata" : "Start managing systematic reviews with verifiable AI assistance"}
+            {successData
+              ? isId
+                ? "Langkah wajib untuk verifikasi identitas riset dan mencegah akun bot/spam"
+                : "Mandatory security step to prevent automated spam and protect SLR data integrity"
+              : isId
+              ? "Mulai tinjauan pustaka sistematis dengan asistensi AI berakar sitasi nyata"
+              : "Start managing systematic reviews with verifiable AI assistance"}
           </p>
         </div>
 
@@ -115,32 +248,142 @@ export default function RegisterPage() {
         )}
 
         {successData ? (
-          <div className="space-y-4">
-            <div className="bg-[#ECFDF3] border border-[#18794E]/30 rounded-lg p-4 text-xs text-[#18794E] space-y-2">
-              <div className="flex items-center gap-2 font-semibold">
-                <CheckCircle2 className="w-4 h-4" />
-                <span>{successData.message}</span>
+          <div className="space-y-5">
+            {/* Success creation message */}
+            <div className="bg-[#ECFDF3] border border-[#18794E]/30 rounded-lg p-3.5 text-xs text-[#18794E] space-y-1.5">
+              <div className="flex items-center gap-2 font-bold text-sm">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-[#18794E]" />
+                <span>{isId ? "Akun Anda Siap Diverifikasi!" : "Account Ready for Verification!"}</span>
               </div>
-              <p className="text-[#17212B] leading-relaxed">
-                An email verification token has been generated. Before accessing research data and running AI extractions, your email must be verified.
+              <p className="text-[#17212B] text-xs leading-relaxed">
+                {isId
+                  ? "Kode OTP verifikasi 6 digit telah dikirimkan ke alamat email:"
+                  : "A 6-digit verification OTP code has been dispatched to:"}
               </p>
+              <div className="font-mono font-bold text-[#17324D] bg-[#FFFFFF] px-2.5 py-1 rounded border border-[#18794E]/20 text-xs inline-block">
+                {successData.email}
+              </div>
             </div>
 
-            <div className="bg-[#F7F8FA] border border-[#E4E7EC] p-3 rounded-lg text-xs space-y-2">
-              <span className="font-semibold text-[#17324D] block">
-                Verification Simulation (Local Development):
-              </span>
-              <p className="text-[#667085]">
-                Click below to instantly complete email verification:
-              </p>
-              <Link
-                href={`/verify-email?token=${successData.token}`}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#2F7D78] text-white rounded font-semibold text-xs hover:bg-[#266662] transition-colors"
-              >
-                <span>Verify Email Now</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
+            {/* OTP Status alerts */}
+            {otpError && (
+              <div className="bg-[#FEF3F2] border border-[#B42318]/30 rounded-lg p-3 text-xs text-[#B42318] flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{otpError}</span>
+              </div>
+            )}
+
+            {resendNotice && (
+              <div className="bg-[#EFF8FF] border border-[#2E90FA]/30 rounded-lg p-3 text-xs text-[#175CD3] flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{resendNotice}</span>
+              </div>
+            )}
+
+            {otpSuccess ? (
+              <div className="p-4 bg-[#ECFDF3] border border-[#18794E]/40 rounded-lg text-center space-y-2">
+                <CheckCircle2 className="w-8 h-8 text-[#18794E] mx-auto animate-bounce" />
+                <h3 className="text-sm font-bold text-[#18794E]">
+                  {isId ? "Verifikasi Berhasil!" : "Verification Successful!"}
+                </h3>
+                <p className="text-xs text-[#17212B]">
+                  {isId
+                    ? "Email Anda terverifikasi. Mengarahkan Anda ke Research Workspace..."
+                    : "Your email is verified. Redirecting to Research Workspace..."}
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleVerifyOtp} className="space-y-4">
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-bold text-[#17212B] flex items-center gap-1.5">
+                      <KeyRound className="w-3.5 h-3.5 text-[#2F7D78]" />
+                      <span>{isId ? "Masukkan 6-Digit Kode OTP" : "Enter 6-Digit OTP Code"}</span>
+                    </label>
+                    <span className="text-[11px] text-[#667085]">
+                      {isId ? "Cek Inbox / Spam Gmail" : "Check Inbox / Spam"}
+                    </span>
+                  </div>
+
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    maxLength={6}
+                    required
+                    autoFocus
+                    value={otpInput}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                      setOtpInput(val);
+                    }}
+                    placeholder="123456"
+                    className="w-full text-center font-mono text-2xl font-bold tracking-[10px] py-2.5 px-3 bg-[#FFFFFF] border-2 border-[#17324D]/30 focus:border-[#2F7D78] rounded-xl outline-none transition-all shadow-inner"
+                  />
+                  <p className="text-[11px] text-[#667085] mt-1.5 text-center">
+                    {isId
+                      ? "Masukkan 6 angka yang dikirimkan ke Gmail Anda."
+                      : "Enter the 6 numbers received in your Gmail."}
+                  </p>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={otpVerifying || otpInput.trim().length < 6}
+                  className="w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-bold text-white bg-[#2F7D78] hover:bg-[#266662] disabled:opacity-50 transition-all flex items-center justify-center gap-2 shadow-sm"
+                >
+                  {otpVerifying ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span>{isId ? "Memverifikasi Kode OTP..." : "Verifying OTP..."}</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShieldCheck className="w-4 h-4" />
+                      <span>{isId ? "Verifikasi Akun Sekarang" : "Verify Account Now"}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+
+                <div className="pt-2 border-t border-[#E4E7EC] flex flex-col items-center gap-2 text-xs">
+                  <div className="flex items-center justify-between w-full text-xs text-[#667085]">
+                    <span>{isId ? "Belum menerima kode OTP?" : "Didn't receive the OTP?"}</span>
+                    <button
+                      type="button"
+                      onClick={handleResendOtp}
+                      disabled={resendCooldown > 0 || resending}
+                      className="inline-flex items-center gap-1 font-semibold text-[#2F7D78] hover:underline disabled:text-[#98A2B3] disabled:no-underline"
+                    >
+                      <RefreshCw className={`w-3 h-3 ${resending ? "animate-spin" : ""}`} />
+                      <span>
+                        {resendCooldown > 0
+                          ? `${isId ? "Kirim Ulang dalam" : "Resend in"} (${resendCooldown}s)`
+                          : isId
+                          ? "Kirim Ulang Kode OTP"
+                          : "Resend OTP"}
+                      </span>
+                    </button>
+                  </div>
+
+                  {successData.token && (
+                    <div className="w-full pt-1">
+                      <Link
+                        href={`/verify-email?token=${successData.token}`}
+                        className="text-[11px] text-[#667085] hover:text-[#2F7D78] flex items-center justify-center gap-1 hover:underline text-center"
+                      >
+                        <ExternalLink className="w-3 h-3" />
+                        <span>
+                          {isId
+                            ? "Atau verifikasi langsung via tautan URL"
+                            : "Or verify directly via token link"}
+                        </span>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </form>
+            )}
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -163,7 +406,7 @@ export default function RegisterPage() {
 
             <div>
               <label className="block text-xs font-semibold text-[#17212B] mb-1">
-                {isId ? "Email Akademik / Institusi" : "Academic or Institutional Email"}
+                {isId ? "Email Akademik / Gmail" : "Academic or Gmail Address"}
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-[#667085] absolute left-3 top-3" />
@@ -172,7 +415,7 @@ export default function RegisterPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="jane.smith@institution.edu"
+                  placeholder="peneliti@gmail.com"
                   className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-[#FFFFFF] border border-[#E4E7EC] rounded-lg transition-colors"
                 />
               </div>

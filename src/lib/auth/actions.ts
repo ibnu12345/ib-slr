@@ -6,12 +6,14 @@ import {
   findUserByEmail,
   createUser,
   createEmailVerificationToken,
+  createEmailVerificationTokenAndOtp,
   createPasswordResetToken,
   resetPasswordWithToken,
   verifyEmailByToken,
 } from "../db";
 import { createSessionCookie, clearSessionCookie } from "./session";
 import { checkRateLimit } from "./rateLimit";
+import { sendVerificationEmail } from "../email/mailer";
 
 const registerSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -140,7 +142,19 @@ export async function registerAction(formData: FormData) {
       mfaEnabled: false,
     });
 
-    const verificationToken = await createEmailVerificationToken(newUser.id);
+    const { token: verificationToken, otp } = await createEmailVerificationTokenAndOtp(newUser.id);
+
+    // Generate full verification URL
+    const appOrigin = process.env.NEXT_PUBLIC_APP_URL || "https://ib-slr-app.vercel.app";
+    const verificationUrl = `${appOrigin}/verify-email?token=${verificationToken}`;
+
+    // Send real verification email with OTP and direct link to recipient
+    await sendVerificationEmail({
+      to: newUser.email,
+      name: newUser.fullName,
+      otp,
+      verificationUrl,
+    });
 
     // Create active session cookie for initial onboarding state
     await createSessionCookie({
@@ -153,8 +167,10 @@ export async function registerAction(formData: FormData) {
 
     return {
       success: true,
+      email: newUser.email,
       verificationToken,
-      message: "Account created successfully. Please verify your email to unlock all research tools.",
+      otp,
+      message: "Akun berhasil dibuat! Silakan masukkan kode OTP yang telah dikirimkan ke email Gmail Anda.",
     };
   } catch (err: any) {
     return {
@@ -162,6 +178,47 @@ export async function registerAction(formData: FormData) {
       error: err.message || "Failed to create account.",
     };
   }
+}
+
+export async function resendVerificationOtpAction(email: string) {
+  if (!email || !email.includes("@")) {
+    return { success: false, error: "Silakan masukkan alamat email yang valid." };
+  }
+
+  const rate = checkRateLimit(`resend-otp:${email.toLowerCase()}`, 3, 60 * 1000);
+  if (!rate.allowed) {
+    return {
+      success: false,
+      error: `Terlalu banyak permintaan kirim ulang. Tunggu ${Math.ceil(rate.resetInMs / 1000)} detik lagi.`,
+    };
+  }
+
+  const user = await findUserByEmail(email);
+  if (!user) {
+    return { success: false, error: "Akun dengan email ini tidak ditemukan." };
+  }
+
+  if (user.emailVerified) {
+    return { success: false, error: "Email ini sudah terverifikasi sebelumnya. Silakan langsung login." };
+  }
+
+  const { token, otp } = await createEmailVerificationTokenAndOtp(user.id);
+  const appOrigin = process.env.NEXT_PUBLIC_APP_URL || "https://ib-slr-app.vercel.app";
+  const verificationUrl = `${appOrigin}/verify-email?token=${token}`;
+
+  await sendVerificationEmail({
+    to: user.email,
+    name: user.fullName,
+    otp,
+    verificationUrl,
+  });
+
+  return {
+    success: true,
+    otp,
+    token,
+    message: "Kode OTP verifikasi baru telah dikirimkan ke email Gmail Anda.",
+  };
 }
 
 export async function logoutAction() {

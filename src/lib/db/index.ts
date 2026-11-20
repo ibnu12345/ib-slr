@@ -73,6 +73,7 @@ export interface StoredUser extends UserProfile {
 
 export interface VerificationToken {
   token: string;
+  otp?: string;
   userId: string;
   expiresAt: number;
 }
@@ -1380,34 +1381,53 @@ export async function createUser(
 }
 
 export async function createEmailVerificationToken(userId: string): Promise<string> {
+  const res = await createEmailVerificationTokenAndOtp(userId);
+  return res.token;
+}
+
+export async function createEmailVerificationTokenAndOtp(
+  userId: string
+): Promise<{ token: string; otp: string }> {
   const db = getDb();
   const token = `verify_${Date.now()}_${Math.random().toString(36).substring(2, 12)}`;
+  // 6-digit numeric OTP code
+  const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+  // Clear previous pending tokens for this user
+  db.verificationTokens = (db.verificationTokens || []).filter((t) => t.userId !== userId);
+
   db.verificationTokens.push({
     token,
+    otp,
     userId,
     expiresAt: Date.now() + 24 * 60 * 60 * 1000,
   });
   saveDb(db);
-  return token;
+  return { token, otp };
 }
 
-export async function verifyEmailByToken(token: string): Promise<{ success: boolean; user?: StoredUser; error?: string }> {
+export async function verifyEmailByToken(
+  tokenOrOtp: string
+): Promise<{ success: boolean; user?: StoredUser; error?: string }> {
   const db = getDb();
-  const index = db.verificationTokens.findIndex((t) => t.token === token);
+  const cleanInput = (tokenOrOtp || "").trim();
+  const index = (db.verificationTokens || []).findIndex(
+    (t) => t.token === cleanInput || (t.otp && t.otp === cleanInput)
+  );
   if (index === -1) {
-    return { success: false, error: "Invalid or expired email verification token." };
+    return { success: false, error: "Kode OTP atau token verifikasi tidak valid atau telah kadaluarsa." };
   }
 
   const item = db.verificationTokens[index];
   if (Date.now() > item.expiresAt) {
     db.verificationTokens.splice(index, 1);
     saveDb(db);
-    return { success: false, error: "Email verification link has expired. Please request a new one." };
+    return { success: false, error: "Kode OTP verifikasi telah kadaluarsa. Silakan minta kode baru." };
   }
 
   const user = await findUserById(item.userId);
   if (!user) {
-    return { success: false, error: "Associated user account was not found." };
+    return { success: false, error: "Akun pengguna tidak ditemukan." };
   }
 
   user.emailVerified = true;
