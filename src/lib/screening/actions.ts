@@ -41,8 +41,20 @@ export async function submitScreeningDecisionAction(formData: FormData) {
       notes
     );
 
-    // Revalidate current screening studio route
-    revalidatePath(`/app/projects/${projectId}/screening/${stage}`);
+    // Revalidate all screening routes and downstream pipeline steps
+    const stageRoute = stage === "title_abstract" ? "title-abstract" : "full-text";
+    revalidatePath(`/app/projects/${projectId}/screening/${stageRoute}`);
+    revalidatePath(`/app/projects/${projectId}/screening/title-abstract`);
+    revalidatePath(`/app/projects/${projectId}/screening/full-text`);
+    revalidatePath(`/app/projects/${projectId}/prisma`);
+    revalidatePath(`/app/projects/${projectId}/overview`);
+    revalidatePath(`/app/projects/${projectId}/library`);
+    revalidatePath(`/app/projects/${projectId}/extraction`);
+    revalidatePath(`/app/projects/${projectId}/appraisal`);
+    revalidatePath(`/app/projects/${projectId}/synthesis`);
+    revalidatePath(`/app/projects/${projectId}/publication`);
+    revalidatePath(`/app/projects/${projectId}`);
+    revalidatePath(`/app`);
 
     return {
       success: true,

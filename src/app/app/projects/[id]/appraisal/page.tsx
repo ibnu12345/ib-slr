@@ -24,10 +24,14 @@ export default async function QualityAppraisalPage({ params }: Props) {
     getAppraisalRecords(id),
   ]);
 
-  // Evaluated articles are included articles or articles in library
-  const eligibleArticles = articles.filter(
-    (a) => a.screeningStatus === "included" || a.screeningStatus === "pending" || a.screeningStatus === "unclear"
+  // Evaluated articles are included studies after full text review
+  const fullTextIncluded = articles.filter((a) => a.fullTextStatus === "included");
+  const fallbackIncluded = articles.filter(
+    (a) =>
+      (a.titleAbstractStatus === "included" || a.screeningStatus === "included") &&
+      a.fullTextStatus !== "excluded"
   );
+  const eligibleArticles = fullTextIncluded.length > 0 ? fullTextIncluded : fallbackIncluded;
 
   return (
     <div className="space-y-6">

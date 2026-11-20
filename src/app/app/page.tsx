@@ -36,10 +36,13 @@ export default async function AppDashboardPage() {
   const projects = await getProjects(session.userId);
   const quota = await getUserQuotaInfo(session.userId, session.role, session.email);
   let totalArticles = 0;
+  let totalScreened = 0;
   for (const prj of projects) {
     const arts = await getArticlesByProjectId(prj.id);
     totalArticles += arts.length;
+    totalScreened += arts.filter((a) => a.screeningStatus !== "pending").length;
   }
+  const screeningProgressPct = totalArticles > 0 ? Math.round((totalScreened / totalArticles) * 100) : 0;
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
@@ -148,9 +151,9 @@ export default async function AppDashboardPage() {
           <div className="text-xs font-semibold uppercase tracking-wider text-[#667085] mb-1">
             {isId ? "Progres Penyaringan" : "Screening Progress"}
           </div>
-          <div className="text-2xl font-bold text-[#17324D]">74%</div>
+          <div className="text-2xl font-bold text-[#17324D]">{screeningProgressPct}%</div>
           <div className="text-[11px] text-[#18794E] mt-1 font-medium">
-            {isId ? "Tahap judul & abstrak" : "Title & abstract stage"}
+            {totalScreened} / {totalArticles} {isId ? "artikel selesai" : "articles completed"}
           </div>
         </div>
 

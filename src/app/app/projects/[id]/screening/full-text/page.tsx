@@ -27,14 +27,10 @@ export default async function FullTextScreeningPage({ params }: Props) {
     getProtocolByProjectId(id),
   ]);
 
-  // Full-text stage evaluates reports that passed title/abstract (not excluded at Stage 1)
+  // Full-text stage evaluates reports that passed title/abstract (PRISMA 2020: reports sought for retrieval)
+  // Articles excluded at Title/Abstract are strictly filtered out and never enter Stage 2
   const fullTextCandidates = articles
-    .filter((a) => {
-      // If it already has a full text status (even excluded at full text), it belongs in the full text cohort
-      if (a.fullTextStatus && a.fullTextStatus !== "pending") return true;
-      // Otherwise, only include articles that were NOT excluded during title/abstract
-      return a.titleAbstractStatus !== "excluded";
-    })
+    .filter((a) => a.titleAbstractStatus !== "excluded")
     .map((a) => ({
       ...a,
       screeningStatus: a.fullTextStatus || "pending",

@@ -27,11 +27,20 @@ export default async function EvidenceSynthesisPage({ params }: Props) {
     getSynthesisSummary(id),
   ]);
 
+  // Studies included in synthesis
+  const fullTextIncluded = articles.filter((a) => a.fullTextStatus === "included");
+  const fallbackIncluded = articles.filter(
+    (a) =>
+      (a.titleAbstractStatus === "included" || a.screeningStatus === "included") &&
+      a.fullTextStatus !== "excluded"
+  );
+  const eligibleArticles = fullTextIncluded.length > 0 ? fullTextIncluded : fallbackIncluded;
+
   return (
     <div className="space-y-6">
       <SynthesisStudio
         projectId={id}
-        articles={articles}
+        articles={eligibleArticles.length > 0 ? eligibleArticles : articles}
         initialCodes={codes}
         initialExcerpts={excerpts}
         summary={summary}

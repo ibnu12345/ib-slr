@@ -71,32 +71,22 @@ export function calculatePrismaCounts(
   const duplicateArticles = articles.filter((a) => a.isDuplicate).length;
   const activeArticles = articles.filter((a) => !a.isDuplicate);
 
-  // Excluded at title & abstract
-  const titleAbstractExcluded = activeArticles.filter(
-    (a) => a.screeningStatus === "excluded"
-  ).length;
+  // Excluded specifically at Title & Abstract (Stage 1)
+  const titleAbstractExcluded = activeArticles.filter((a) => {
+    if (a.titleAbstractStatus === "excluded") return true;
+    if (a.screeningStatus === "excluded" && (!a.fullTextStatus || a.fullTextStatus === "pending")) return true;
+    return false;
+  }).length;
 
-  // Passed title/abstract
-  const titleAbstractIncluded = activeArticles.filter(
-    (a) => a.screeningStatus === "included" || a.screeningStatus === "unclear" || a.screeningStatus === "conflict"
-  ).length;
-
-  // Count events for reports sought and retrieved
+  // Count events for reports not retrieved
   let reportsNotRetrieved = 0;
-  let reportsExcludedFullText = 0;
-  const exclusionsByReason: Record<string, number> = {};
-
   for (const ev of events) {
     if (ev.eventType === "reports_not_retrieved") {
       reportsNotRetrieved += ev.deltaCount;
-    } else if (ev.eventType === "reports_excluded_full_text") {
-      reportsExcludedFullText += ev.deltaCount;
-      const reason = ev.reason || "Kriteria Umum";
-      exclusionsByReason[reason] = (exclusionsByReason[reason] || 0) + ev.deltaCount;
     }
   }
 
-  // PRISMA 2020 Equation checks:
+  // PRISMA 2020 Flow equations:
   // Records Screened = Records Identified - Duplicates Removed
   const recordsScreened = Math.max(0, totalArticles - duplicateArticles);
 
@@ -106,8 +96,48 @@ export function calculatePrismaCounts(
   // Reports Assessed for full-text eligibility = Reports Sought - Reports Not Retrieved
   const reportsAssessed = Math.max(0, reportsSought - reportsNotRetrieved);
 
-  // Studies Included in review = Reports Assessed - Reports Excluded at Full Text
-  const studiesIncluded = Math.max(0, reportsAssessed - reportsExcludedFullText);
+  // Excluded specifically at Full Text (Stage 2)
+  const fullTextExcludedArticles = activeArticles.filter((a) => a.fullTextStatus === "excluded");
+  let reportsExcludedFullText = fullTextExcludedArticles.length;
+
+  const exclusionsByReason: Record<string, number> = {};
+
+  // Accumulate reasons directly from excluded articles
+  for (const art of fullTextExcludedArticles) {
+    const reason = art.fullTextExclusionReason || art.activeExclusionReason || "Kriteria Kelayakan Spesifik";
+    exclusionsByReason[reason] = (exclusionsByReason[reason] || 0) + 1;
+  }
+
+  // Also integrate reasons from PRISMA audit ledger events
+  for (const ev of events) {
+    if (ev.eventType === "reports_excluded_full_text") {
+      const reason = ev.reason || "Kriteria Umum";
+      if (!exclusionsByReason[reason]) {
+        exclusionsByReason[reason] = ev.deltaCount;
+      }
+    }
+  }
+
+  if (reportsExcludedFullText === 0) {
+    let eventExcludedCount = 0;
+    for (const ev of events) {
+      if (ev.eventType === "reports_excluded_full_text") {
+        eventExcludedCount += ev.deltaCount;
+      }
+    }
+    reportsExcludedFullText = eventExcludedCount;
+  }
+
+  // Studies Included in review:
+  // Articles included at full-text stage, or passed full-text without being excluded
+  const fullTextIncludedArticles = activeArticles.filter(
+    (a) => a.fullTextStatus === "included" || (a.screeningStatus === "included" && a.titleAbstractStatus !== "excluded" && a.fullTextStatus !== "excluded")
+  );
+
+  const studiesIncluded = Math.min(
+    reportsAssessed,
+    Math.max(0, fullTextIncludedArticles.length > 0 ? fullTextIncludedArticles.length : reportsAssessed - reportsExcludedFullText)
+  );
 
   return {
     recordsIdentified: totalArticles,

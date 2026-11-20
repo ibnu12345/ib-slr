@@ -25,10 +25,15 @@ export default async function DataExtractionPage({ params }: Props) {
     getExtractedDataRecords(id),
   ]);
 
-  // Candidates for extraction are included articles or pending/unclear if early extraction
-  const eligibleArticles = articles.filter(
-    (a) => a.screeningStatus === "included" || a.screeningStatus === "pending" || a.screeningStatus === "unclear"
+  // Downstream pipeline evaluates studies that passed screening:
+  // Prefer studies included after full-text screening; if full-text not started, fallback to Stage 1 included
+  const fullTextIncluded = articles.filter((a) => a.fullTextStatus === "included");
+  const fallbackIncluded = articles.filter(
+    (a) =>
+      (a.titleAbstractStatus === "included" || a.screeningStatus === "included") &&
+      a.fullTextStatus !== "excluded"
   );
+  const eligibleArticles = fullTextIncluded.length > 0 ? fullTextIncluded : fallbackIncluded;
 
   return (
     <div className="space-y-6">

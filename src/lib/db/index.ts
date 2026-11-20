@@ -1716,12 +1716,24 @@ export async function getArticlesByProjectId(
           : "unclear"
         : "pending");
 
+    let effectiveScreeningStatus: Article["screeningStatus"] = titleAbstractStatus;
+    let activeExclusionReason = a.titleAbstractExclusionReason || taDecision?.exclusionReason;
+
+    if (fullTextStatus && fullTextStatus !== "pending") {
+      effectiveScreeningStatus = fullTextStatus;
+      if (fullTextStatus === "excluded") {
+        activeExclusionReason = a.fullTextExclusionReason || ftDecision?.exclusionReason;
+      }
+    }
+
     return {
       ...a,
+      screeningStatus: effectiveScreeningStatus,
       titleAbstractStatus,
       fullTextStatus,
       titleAbstractExclusionReason: a.titleAbstractExclusionReason || taDecision?.exclusionReason,
       fullTextExclusionReason: a.fullTextExclusionReason || ftDecision?.exclusionReason,
+      activeExclusionReason,
     };
   });
 
@@ -2127,10 +2139,11 @@ export async function getPrismaEvents(projectId: string): Promise<PrismaEvent[]>
 }
 
 export async function getProjectPrismaCounts(projectId: string): Promise<PrismaCounts> {
+  await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
   const events = db.prismaEvents.filter((e) => e.projectId === id || e.projectId === projectId);
-  const articles = db.articles.filter((a) => a.projectId === id || a.projectId === projectId);
+  const articles = await getArticlesByProjectId(projectId);
 
   return calculatePrismaCounts(events, articles);
 }
