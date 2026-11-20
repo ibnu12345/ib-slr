@@ -29,6 +29,7 @@ import {
   CheckCircle2,
   AlertCircle,
   FileCode,
+  Printer,
 } from "lucide-react";
 import { saveManuscriptAction } from "../../../../../lib/publication/actions";
 import { generateVosviewerRis, generateVosviewerCsv } from "../../../../../lib/export/vosviewer";
@@ -699,6 +700,31 @@ export function PublicationStudio({
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Export 0: Full Comprehensive Report (PDF / Print) */}
+            <div className="bg-gradient-to-br from-[#EFF7F6] to-white border-2 border-[#2F7D78] rounded-xl p-5 shadow-sm space-y-4 hover:shadow-md transition-all flex flex-col justify-between">
+              <div className="space-y-2">
+                <div className="w-9 h-9 rounded-lg bg-[#2F7D78] text-white flex items-center justify-center shadow-xs">
+                  <Printer className="w-5 h-5 text-white" />
+                </div>
+                <div className="flex items-center gap-2">
+                  <h4 className="text-sm font-bold text-[#17324D]">Laporan Komprehensif (Full PDF)</h4>
+                  <span className="px-1.5 py-0.5 rounded text-[10px] bg-[#2F7D78] text-white font-bold">
+                    Lengkap
+                  </span>
+                </div>
+                <p className="text-xs text-[#475467] leading-relaxed">
+                  Cetak / unduh ringkasan proyek komprehensif berstandar PRISMA 2020: <strong>Judul</strong>, <strong>Keywords</strong>, <strong>3 Research Questions (RQ)</strong>, <strong>Protokol SPIDER</strong>, <strong>Kriteria Inklusi/Eksklusi</strong>, <strong>Strategi & Kueri Pencarian</strong>, <strong>Alur PRISMA</strong>, dan <strong>Matriks 176 Studi Terpilih</strong>.
+                </p>
+              </div>
+              <a
+                href={`/app/projects/${project.id}/report`}
+                className="w-full py-2.5 rounded-lg bg-[#2F7D78] hover:bg-[#25635f] text-white text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all"
+              >
+                <Printer className="w-4 h-4 text-[#A3E5DE]" />
+                <span>Buka & Cetak PDF Lengkap</span>
+              </a>
+            </div>
+
             {/* Export 1: Manuscript Draft */}
             <div className="bg-white border border-[#E4E7EC] rounded-xl p-5 shadow-sm space-y-4 hover:border-[#2F7D78] transition-colors flex flex-col justify-between">
               <div className="space-y-2">

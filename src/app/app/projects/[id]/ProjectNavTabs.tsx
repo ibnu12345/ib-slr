@@ -20,6 +20,7 @@ import {
   Layers,
   Award,
   Loader2,
+  Printer,
 } from "lucide-react";
 
 interface Props {
@@ -51,6 +52,7 @@ export function ProjectNavTabs({ projectId }: Props) {
     { label: isId ? "Sintesis Bukti" : "Synthesis", href: `/app/projects/${projectId}/synthesis`, icon: Layers },
     { label: isId ? "Diagram PRISMA" : "PRISMA 2020", href: `/app/projects/${projectId}/prisma`, icon: GitBranch },
     { label: isId ? "Studio Publikasi" : "Publication Studio", href: `/app/projects/${projectId}/publication`, icon: Award },
+    { label: isId ? "Laporan Lengkap (PDF)" : "Full Report (PDF)", href: `/app/projects/${projectId}/report`, icon: Printer },
   ];
 
   return (
