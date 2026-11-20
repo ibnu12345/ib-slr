@@ -7,6 +7,100 @@ import { ExtractedDataRecord } from "../types/extraction";
  * VOSviewer parses TI (Title), AB (Abstract), AU (Authors), PY (Year), JO (Journal),
  * DO (DOI), and KW (Keywords) to build co-occurrence and co-authorship science maps.
  */
+function extractCleanKeywords(article: Article, rec?: ExtractedDataRecord): string[] {
+  const kwSet = new Set<string>();
+  const fullText = `${article.title} ${article.abstract || ""}`.toLowerCase();
+
+  // Systematic topic keywords
+  if (fullText.includes("pedagogik") || fullText.includes("pedagogic") || fullText.includes("kompetensi") || fullText.includes("competence")) {
+    kwSet.add("Pedagogical Competence");
+  }
+  if (fullText.includes("islam") || fullText.includes("religious") || fullText.includes("keagamaan") || fullText.includes("pai")) {
+    kwSet.add("Islamic Religious Education");
+  }
+  if (fullText.includes("nonformal") || fullText.includes("non-formal") || fullText.includes("non formal")) {
+    kwSet.add("Non-Formal Education");
+  }
+  if (fullText.includes("tpq") || fullText.includes("tpa") || fullText.includes("quran") || fullText.includes("qur'an")) {
+    kwSet.add("TPQ (Taman Pendidikan Al-Qur'an)");
+  }
+  if (fullText.includes("madrasah") || fullText.includes("madin") || fullText.includes("diniyah")) {
+    kwSet.add("Madrasah Diniyah Takmiliyah");
+  }
+  if (fullText.includes("pesantren") || fullText.includes("santri") || fullText.includes("boarding school")) {
+    kwSet.add("Pondok Pesantren");
+  }
+  if (fullText.includes("guru") || fullText.includes("teacher") || fullText.includes("pendidik") || fullText.includes("educator")) {
+    kwSet.add("Teacher Professionalism");
+  }
+  if (fullText.includes("ustadz") || fullText.includes("ustaz") || fullText.includes("ustadzah")) {
+    kwSet.add("Ustadz Identity");
+  }
+  if (fullText.includes("kesejahteraan") || fullText.includes("welfare") || fullText.includes("honor") || fullText.includes("insentif") || fullText.includes("gaji")) {
+    kwSet.add("Teacher Welfare");
+  }
+  if (fullText.includes("sertifikasi") || fullText.includes("certification") || fullText.includes("regulasi") || fullText.includes("kebijakan")) {
+    kwSet.add("Certification & Policy");
+  }
+  if (fullText.includes("tantangan") || fullText.includes("challenge") || fullText.includes("hambatan") || fullText.includes("masalah")) {
+    kwSet.add("Systemic Challenges");
+  }
+  if (fullText.includes("adaptasi") || fullText.includes("adaptation") || fullText.includes("strategi") || fullText.includes("strategy")) {
+    kwSet.add("Pedagogical Adaptation");
+  }
+  if (fullText.includes("kurikulum") || fullText.includes("curriculum")) {
+    kwSet.add("Curriculum Development");
+  }
+  if (fullText.includes("indonesia")) {
+    kwSet.add("Indonesia");
+  }
+
+  // Study design from extraction record
+  if (rec?.values.study_design) {
+    kwSet.add(String(rec.values.study_design).replace(/\s*\/\s*.*/, "").trim());
+  }
+  if (rec?.values.country) {
+    kwSet.add(String(rec.values.country).split(/[,(]/)[0].trim());
+  }
+
+  if (kwSet.size === 0) {
+    kwSet.add("Systematic Literature Review");
+    kwSet.add("Teacher Competence");
+  }
+
+  return Array.from(kwSet);
+}
+
+function parseAuthors(authorsStr?: string): string[] {
+  if (!authorsStr || !authorsStr.trim()) return ["Anonymous"];
+  const trimmed = authorsStr.trim();
+
+  // If semicolon separated: keep Last, First intact per author
+  if (trimmed.includes(";")) {
+    return trimmed
+      .split(";")
+      .map((a) => a.trim())
+      .filter(Boolean);
+  }
+
+  // If " and " separated
+  if (trimmed.includes(" and ")) {
+    return trimmed
+      .split(/\s+and\s+/i)
+      .map((a) => a.trim())
+      .filter(Boolean);
+  }
+
+  // If comma separated:
+  const parts = trimmed.split(",").map((a) => a.trim()).filter(Boolean);
+  // If exactly 2 parts and neither contains space, it's a single "Last, First" name
+  if (parts.length === 2 && !parts[0].includes(" ") && !parts[1].includes(" ")) {
+    return [`${parts[0]}, ${parts[1]}`];
+  }
+
+  return parts;
+}
+
 export function generateVosviewerRis(
   articles: Article[],
   extractedRecords: ExtractedDataRecord[] = []
@@ -21,17 +115,10 @@ export function generateVosviewerRis(
     lines.push(`TI  - ${art.title || "Untitled"}`);
 
     // Split authors into separate AU lines
-    const authorList = (art.authors || "Anonymous")
-      .split(/[,;]/)
-      .map((a) => a.trim())
-      .filter(Boolean);
+    const authorList = parseAuthors(art.authors);
 
-    if (authorList.length > 0) {
-      for (const author of authorList) {
-        lines.push(`AU  - ${author}`);
-      }
-    } else {
-      lines.push("AU  - Anonymous");
+    for (const author of authorList) {
+      lines.push(`AU  - ${author}`);
     }
 
     if (art.journal) {
@@ -54,18 +141,8 @@ export function generateVosviewerRis(
       lines.push(`AB  - ${art.abstract.replace(/\r?\n/g, " ")}`);
     }
 
-    // Add keywords from extracted variables (e.g. study design, country, intervention)
-    const keywords: string[] = [];
-    if (rec?.values.study_design) keywords.push(String(rec.values.study_design));
-    if (rec?.values.country) keywords.push(String(rec.values.country));
-    if (rec?.values.intervention_detail) keywords.push(String(rec.values.intervention_detail));
-    if (rec?.values.primary_outcome) keywords.push(String(rec.values.primary_outcome));
-
-    // Default academic keywords if none extracted
-    if (keywords.length === 0) {
-      keywords.push("Systematic Literature Review", "Evidence Synthesis");
-    }
-
+    // Add keywords from clean topic extraction
+    const keywords = extractCleanKeywords(art, rec);
     for (const kw of keywords) {
       lines.push(`KW  - ${kw}`);
     }
