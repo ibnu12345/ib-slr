@@ -164,12 +164,12 @@ export function middleware(request: NextRequest) {
   response.headers.set(
     "Content-Security-Policy",
     "default-src 'self'; " +
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://adservice.google.com https://app.midtrans.com https://app.sandbox.midtrans.com; " +
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google.com https://*.doubleclick.net https://*.googlesyndication.com https://pagead2.googlesyndication.com https://adservice.google.com https://app.midtrans.com https://app.sandbox.midtrans.com; " +
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
     "font-src 'self' https://fonts.gstatic.com data:; " +
     "img-src 'self' data: https: blob:; " +
-    "connect-src 'self' https://pagead2.googlesyndication.com https://app.midtrans.com https://app.sandbox.midtrans.com https://api.qrserver.com; " +
-    "frame-src 'self' https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://app.midtrans.com https://app.sandbox.midtrans.com; " +
+    "connect-src 'self' https://*.google.com https://*.doubleclick.net https://*.adtrafficquality.google https://*.googlesyndication.com https://pagead2.googlesyndication.com https://app.midtrans.com https://app.sandbox.midtrans.com https://api.qrserver.com; " +
+    "frame-src 'self' https://*.google.com https://*.doubleclick.net https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com https://app.midtrans.com https://app.sandbox.midtrans.com; " +
     "object-src 'none'; " +
     "base-uri 'self';"
   );

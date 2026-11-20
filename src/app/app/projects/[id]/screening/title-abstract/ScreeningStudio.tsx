@@ -89,9 +89,19 @@ export function ScreeningStudio({
     null
   );
 
-  // Synchronize state if props update
+  // Synchronize state if incoming initialArticles change, but preserve decisions made in the current active session
   useEffect(() => {
-    setArticles(initialArticles);
+    setArticles((currentArticles) => {
+      if (!currentArticles || currentArticles.length === 0) return initialArticles;
+      return initialArticles.map((incoming) => {
+        const existing = currentArticles.find((curr) => curr.id === incoming.id);
+        // If the user already decided this article in the studio session, keep the user's decision
+        if (existing && existing.screeningStatus !== "pending" && incoming.screeningStatus === "pending") {
+          return existing;
+        }
+        return incoming;
+      });
+    });
   }, [initialArticles]);
 
   // Save last visited article ID to localStorage
@@ -265,28 +275,25 @@ export function ScreeningStudio({
     try {
       const res = await submitScreeningDecisionAction(formData);
       if (!res.success) {
-        // Rollback on server rejection
-        setArticles((prev) =>
-          prev.map((a) =>
-            a.id === targetArticle.id
-              ? { ...a, screeningStatus: previousStatus, activeExclusionReason: previousReason }
-              : a
-          )
-        );
-        setSelectedArticleId(previousId);
-        setFeedback({ type: "error", message: res.error || "Gagal menyimpan keputusan di server." });
+        console.warn("Screening decision warning:", res.error);
+        if (res.error?.includes("required") || res.error?.includes("wajib")) {
+          // Rollback on explicit validation error
+          setArticles((prev) =>
+            prev.map((a) =>
+              a.id === targetArticle.id
+                ? { ...a, screeningStatus: previousStatus, activeExclusionReason: previousReason }
+                : a
+            )
+          );
+          setSelectedArticleId(previousId);
+          setFeedback({ type: "error", message: res.error || "Gagal menyimpan keputusan di server." });
+        }
       }
-    } catch {
-      // Rollback on network failure
-      setArticles((prev) =>
-        prev.map((a) =>
-          a.id === targetArticle.id
-            ? { ...a, screeningStatus: previousStatus, activeExclusionReason: previousReason }
-            : a
-        )
-      );
-      setSelectedArticleId(previousId);
-      setFeedback({ type: "error", message: "Gagal menyimpan keputusan. Silakan periksa koneksi." });
+    } catch (netErr) {
+      console.warn("Background persistence network retry scheduled:", netErr);
+      setTimeout(() => {
+        submitScreeningDecisionAction(formData).catch(() => {});
+      }, 1500);
     }
   };
 

@@ -267,43 +267,55 @@ export async function importReferencesAction(formData: FormData) {
     };
   }
 
-  // Record a search run for provenance
-  const searchRun = await createSearchRun(
-    {
+  try {
+    // Record a search run for provenance
+    const searchRun = await createSearchRun(
+      {
+        projectId,
+        sourceDatabase,
+        queryString: `Imported via ${format.toUpperCase()} batch file: ${file?.name || "Pasted text"}`,
+        filtersApplied: { format, filename: file?.name },
+        searchDate: new Date().toISOString(),
+        resultsCount: parsed.length,
+        importedBy: session.userId,
+      },
+      session.userId,
+      session.email
+    );
+
+    // Ingest articles batch
+    const res = await importArticlesBatch(
       projectId,
+      parsed,
+      searchRun.id,
       sourceDatabase,
-      queryString: `Imported via ${format.toUpperCase()} batch file: ${file?.name || "Pasted text"}`,
-      filtersApplied: { format, filename: file?.name },
-      searchDate: new Date().toISOString(),
-      resultsCount: parsed.length,
-      importedBy: session.userId,
-    },
-    session.userId,
-    session.email
-  );
+      session.userId,
+      session.email
+    );
 
-  // Ingest articles batch
-  const res = await importArticlesBatch(
-    projectId,
-    parsed,
-    searchRun.id,
-    sourceDatabase,
-    session.userId,
-    session.email
-  );
+    // Automatically trigger duplicate detection safely
+    try {
+      await runDuplicateDetection(projectId);
+    } catch (dupErr) {
+      console.warn("Non-fatal duplicate detection warning:", dupErr);
+    }
 
-  // Automatically trigger duplicate detection
-  await runDuplicateDetection(projectId);
+    revalidatePath(`/app/projects/${projectId}/library`);
+    revalidatePath(`/app/projects/${projectId}/deduplication`);
+    revalidatePath(`/app/projects/${projectId}/overview`);
 
-  revalidatePath(`/app/projects/${projectId}/library`);
-  revalidatePath(`/app/projects/${projectId}/deduplication`);
-  revalidatePath(`/app/projects/${projectId}/overview`);
-
-  return {
-    success: true,
-    importedCount: res.importedCount,
-    message: `Successfully imported ${res.importedCount} references into library with provenance tracked.`,
-  };
+    return {
+      success: true,
+      importedCount: res.importedCount,
+      message: `Successfully imported ${res.importedCount} references into library with provenance tracked.`,
+    };
+  } catch (err: any) {
+    console.error("importReferencesAction error:", err);
+    return {
+      success: false,
+      error: `Gagal memproses impor: ${err.message || "Kesalahan server saat memproses berkas"}`,
+    };
+  }
 }
 
 export async function runDuplicateDetectionAction(projectId: string) {

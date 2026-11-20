@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "../../../../components/i18n/LanguageContext";
@@ -19,6 +19,7 @@ import {
   ShieldAlert,
   Layers,
   Award,
+  Loader2,
 } from "lucide-react";
 
 interface Props {
@@ -28,6 +29,12 @@ interface Props {
 export function ProjectNavTabs({ projectId }: Props) {
   const pathname = usePathname();
   const { isId } = useLanguage();
+  const [pendingHref, setPendingHref] = useState<string | null>(null);
+
+  // Clear pending state when navigation arrives at the target pathname
+  useEffect(() => {
+    setPendingHref(null);
+  }, [pathname]);
 
   const tabs = [
     { label: isId ? "Ringkasan" : "Overview", href: `/app/projects/${projectId}/overview`, icon: LayoutDashboard },
@@ -47,27 +54,50 @@ export function ProjectNavTabs({ projectId }: Props) {
   ];
 
   return (
-    <div className="border-b border-[#E4E7EC] overflow-x-auto scrollbar-none">
-      <nav className="flex space-x-1 sm:space-x-1.5 whitespace-nowrap">
-        {tabs.map((tab) => {
-          const isActive = pathname === tab.href;
-          const Icon = tab.icon;
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`inline-flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold border-b-2 transition-colors ${
-                isActive
-                  ? "border-[#2F7D78] text-[#17324D] bg-[#FFFFFF] rounded-t-lg"
-                  : "border-transparent text-[#667085] hover:text-[#17212B] hover:border-[#E4E7EC]"
-              }`}
-            >
-              <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#2F7D78]" : "text-[#667085]"}`} />
-              <span>{tab.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+    <div className="relative border-b border-[#E4E7EC]">
+      {/* Sleek top animated loading progress bar when user clicks any tab */}
+      {pendingHref && (
+        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#2F7D78] via-[#18794E] to-[#2F7D78] animate-pulse z-20" />
+      )}
+
+      <div className="overflow-x-auto scrollbar-none">
+        <nav className="flex space-x-1 sm:space-x-1.5 whitespace-nowrap">
+          {tabs.map((tab) => {
+            const isActive = pathname === tab.href;
+            const isPending = pendingHref === tab.href;
+            const Icon = tab.icon;
+
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                onClick={() => {
+                  if (pathname !== tab.href) {
+                    setPendingHref(tab.href);
+                  }
+                }}
+                className={`inline-flex items-center gap-1.5 py-2.5 px-3 text-xs font-semibold border-b-2 transition-all ${
+                  isActive
+                    ? "border-[#2F7D78] text-[#17324D] bg-[#FFFFFF] rounded-t-lg shadow-xs"
+                    : isPending
+                    ? "border-[#2F7D78] text-[#2F7D78] bg-[#EFF7F6]/60 rounded-t-lg animate-pulse"
+                    : "border-transparent text-[#667085] hover:text-[#17212B] hover:border-[#E4E7EC]"
+                }`}
+              >
+                {isPending ? (
+                  <Loader2 className="w-3.5 h-3.5 text-[#2F7D78] animate-spin" />
+                ) : (
+                  <Icon className={`w-3.5 h-3.5 ${isActive ? "text-[#2F7D78]" : "text-[#667085]"}`} />
+                )}
+                <span>{tab.label}</span>
+                {isPending && (
+                  <span className="text-[10px] text-[#2F7D78] font-normal ml-0.5">...</span>
+                )}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
     </div>
   );
 }

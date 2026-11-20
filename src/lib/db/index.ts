@@ -964,12 +964,26 @@ export function saveDb(data: DatabaseSchema): void {
     console.error("Failed to persist database to disk:", err);
   }
 
-  // Auto-sync to Supabase Cloud if configured
+  // Auto-sync to Supabase Cloud with debounce to avoid hammering cloud API on fast screening
   if (isSupabaseConfigured()) {
-    saveStateToSupabase(data).catch((err) => {
-      console.warn("Supabase background sync warning:", err);
-    });
+    triggerDebouncedSupabaseSave(data);
   }
+}
+
+let supabaseSaveTimer: NodeJS.Timeout | null = null;
+let latestDataToPersist: DatabaseSchema | null = null;
+
+export function triggerDebouncedSupabaseSave(data: DatabaseSchema) {
+  latestDataToPersist = data;
+  if (!isSupabaseConfigured()) return;
+  if (supabaseSaveTimer) clearTimeout(supabaseSaveTimer);
+  supabaseSaveTimer = setTimeout(() => {
+    if (latestDataToPersist) {
+      saveStateToSupabase(latestDataToPersist).catch((err) => {
+        console.warn("Supabase debounced sync warning:", err);
+      });
+    }
+  }, 1200);
 }
 
 let lastSupabaseSync = 0;
@@ -2075,7 +2089,7 @@ export async function recordScreeningDecision(
     exclusionReason,
   }, reviewerId, reviewerName);
 
-  await saveDbAsync(db);
+  saveDb(db);
   return { decision: decisionRecord, status: newStatus };
 }
 
