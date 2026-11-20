@@ -41,11 +41,8 @@ export async function submitScreeningDecisionAction(formData: FormData) {
       notes
     );
 
+    // Revalidate current screening studio route
     revalidatePath(`/app/projects/${projectId}/screening/${stage}`);
-    revalidatePath(`/app/projects/${projectId}/conflicts`);
-    revalidatePath(`/app/projects/${projectId}/library`);
-    revalidatePath(`/app/projects/${projectId}/prisma`);
-    revalidatePath(`/app/projects/${projectId}/overview`);
 
     return {
       success: true,

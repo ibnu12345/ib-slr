@@ -98,6 +98,11 @@ export interface Article {
   doi?: string;
   abstract?: string;
   screeningStatus: "pending" | "included" | "excluded" | "unclear" | "conflict";
+  titleAbstractStatus?: "pending" | "included" | "excluded" | "unclear" | "conflict";
+  fullTextStatus?: "pending" | "included" | "excluded" | "unclear" | "conflict";
+  titleAbstractExclusionReason?: string;
+  fullTextExclusionReason?: string;
+  activeExclusionReason?: string;
   sourceDatabase?: string;
   pdfUrl?: string;
   pdfFileName?: string;

@@ -27,6 +27,12 @@ export default async function TitleAbstractScreeningPage({ params }: Props) {
     getProtocolByProjectId(id),
   ]);
 
+  const stage1Articles = articles.map((a) => ({
+    ...a,
+    screeningStatus: a.titleAbstractStatus || a.screeningStatus || "pending",
+    activeExclusionReason: a.titleAbstractExclusionReason,
+  }));
+
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="pb-4 border-b border-[#E4E7EC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -43,7 +49,7 @@ export default async function TitleAbstractScreeningPage({ params }: Props) {
       <ScreeningStudio
         projectId={id}
         stage="title_abstract"
-        articles={articles}
+        articles={stage1Articles}
         criteria={criteria}
         exclusionReasons={exclusionReasons}
         protocol={protocol}

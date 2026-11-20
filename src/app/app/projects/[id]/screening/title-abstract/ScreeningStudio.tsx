@@ -204,12 +204,59 @@ export function ScreeningStudio({
 
   const handleDecision = async (decision: ScreeningDecisionType, reason?: string) => {
     if (!currentArticle) return;
-    setSubmitting(true);
-    setFeedback(null);
+    const targetArticle = currentArticle;
+    const targetNumber = currentArticleNumber;
+    const previousStatus = targetArticle.screeningStatus;
+    const previousReason = (targetArticle as any).activeExclusionReason;
+    const previousId = selectedArticleId;
 
+    const newStatus: Article["screeningStatus"] =
+      decision === "include" ? "included" : decision === "exclude" ? "excluded" : "unclear";
+
+    // 1. INSTANT OPTIMISTIC UI UPDATE (0ms delay!)
+    const updated = articles.map((a) =>
+      a.id === targetArticle.id
+        ? {
+            ...a,
+            screeningStatus: newStatus,
+            activeExclusionReason: reason,
+            ...(stage === "full_text"
+              ? { fullTextStatus: newStatus, fullTextExclusionReason: reason }
+              : { titleAbstractStatus: newStatus, titleAbstractExclusionReason: reason }),
+          }
+        : a
+    );
+    setArticles(updated);
+    setShowExcludeModal(false);
+    setReviewerNotes("");
+
+    setFeedback({
+      type: "success",
+      message: `Artikel #${targetNumber} ditandai: ${decision.toUpperCase()}`,
+    });
+
+    // 2. INSTANT ADVANCE: Immediately jump to the next pending article
+    const currentIdx = masterIndex;
+    const nextPending = updated.find(
+      (a, idx) => idx > currentIdx && a.screeningStatus === "pending"
+    );
+    if (nextPending) {
+      setSelectedArticleId(nextPending.id);
+    } else {
+      const prevPending = updated.find(
+        (a, idx) => idx < currentIdx && a.screeningStatus === "pending"
+      );
+      if (prevPending) {
+        setSelectedArticleId(prevPending.id);
+      } else if (currentIdx < updated.length - 1) {
+        setSelectedArticleId(updated[currentIdx + 1].id);
+      }
+    }
+
+    // 3. ASYNC BACKGROUND PERSISTENCE
     const formData = new FormData();
     formData.append("projectId", projectId);
-    formData.append("articleId", currentArticle.id);
+    formData.append("articleId", targetArticle.id);
     formData.append("stage", stage);
     formData.append("decision", decision);
     if (reason) formData.append("exclusionReason", reason);
@@ -217,46 +264,29 @@ export function ScreeningStudio({
 
     try {
       const res = await submitScreeningDecisionAction(formData);
-      if (res.success && res.newStatus) {
-        // Update local article state
-        const updated = articles.map((a) =>
-          a.id === currentArticle.id ? { ...a, screeningStatus: res.newStatus } : a
+      if (!res.success) {
+        // Rollback on server rejection
+        setArticles((prev) =>
+          prev.map((a) =>
+            a.id === targetArticle.id
+              ? { ...a, screeningStatus: previousStatus, activeExclusionReason: previousReason }
+              : a
+          )
         );
-        setArticles(updated);
-        setFeedback({
-          type: "success",
-          message: `Artikel #${currentArticleNumber} ditandai: ${decision.toUpperCase()}`,
-        });
-
-        // Automatically advance to the next pending article
-        const currentIdx = masterIndex;
-        // 1. Look ahead for next pending
-        const nextPending = updated.find(
-          (a, idx) => idx > currentIdx && a.screeningStatus === "pending"
-        );
-        if (nextPending) {
-          setSelectedArticleId(nextPending.id);
-        } else {
-          // 2. Loop around to any remaining pending before current
-          const prevPending = updated.find(
-            (a, idx) => idx < currentIdx && a.screeningStatus === "pending"
-          );
-          if (prevPending) {
-            setSelectedArticleId(prevPending.id);
-          } else if (currentIdx < updated.length - 1) {
-            setSelectedArticleId(updated[currentIdx + 1].id);
-          }
-        }
-
-        setShowExcludeModal(false);
-        setReviewerNotes("");
-      } else {
-        setFeedback({ type: "error", message: res.error || "Gagal menyimpan keputusan." });
+        setSelectedArticleId(previousId);
+        setFeedback({ type: "error", message: res.error || "Gagal menyimpan keputusan di server." });
       }
     } catch {
-      setFeedback({ type: "error", message: "Terjadi kesalahan server saat menyimpan keputusan." });
-    } finally {
-      setSubmitting(false);
+      // Rollback on network failure
+      setArticles((prev) =>
+        prev.map((a) =>
+          a.id === targetArticle.id
+            ? { ...a, screeningStatus: previousStatus, activeExclusionReason: previousReason }
+            : a
+        )
+      );
+      setSelectedArticleId(previousId);
+      setFeedback({ type: "error", message: "Gagal menyimpan keputusan. Silakan periksa koneksi." });
     }
   };
 
@@ -574,8 +604,14 @@ export function ScreeningStudio({
                     </span>
                   )}
                   {currentArticle.screeningStatus === "excluded" && (
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#FEF3F2] text-[#B42318] border border-[#B42318]/20 flex items-center gap-1">
-                      <XCircle className="w-3 h-3" /> EXCLUDED (Eksklusi)
+                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-[#FEF3F2] text-[#B42318] border border-[#B42318]/20 flex items-center gap-1.5 flex-wrap">
+                      <XCircle className="w-3 h-3 shrink-0" />
+                      <span>EXCLUDED (Eksklusi)</span>
+                      {currentArticle.activeExclusionReason && (
+                        <span className="text-[10px] font-normal text-[#B42318]/80 bg-white/60 px-1.5 py-0.2 rounded border border-[#B42318]/20">
+                          {currentArticle.activeExclusionReason}
+                        </span>
+                      )}
                     </span>
                   )}
                   {currentArticle.screeningStatus === "unclear" && (

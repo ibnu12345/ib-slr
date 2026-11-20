@@ -27,8 +27,19 @@ export default async function FullTextScreeningPage({ params }: Props) {
     getProtocolByProjectId(id),
   ]);
 
-  // Full-text stage evaluates articles that were not excluded at title/abstract
-  const fullTextCandidates = articles.filter((a) => a.screeningStatus !== "excluded");
+  // Full-text stage evaluates reports that passed title/abstract (not excluded at Stage 1)
+  const fullTextCandidates = articles
+    .filter((a) => {
+      // If it already has a full text status (even excluded at full text), it belongs in the full text cohort
+      if (a.fullTextStatus && a.fullTextStatus !== "pending") return true;
+      // Otherwise, only include articles that were NOT excluded during title/abstract
+      return a.titleAbstractStatus !== "excluded";
+    })
+    .map((a) => ({
+      ...a,
+      screeningStatus: a.fullTextStatus || "pending",
+      activeExclusionReason: a.fullTextExclusionReason,
+    }));
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">

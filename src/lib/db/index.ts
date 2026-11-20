@@ -1688,6 +1688,43 @@ export async function getArticlesByProjectId(
   const id = resolveProjectId(projectId);
   let list = db.articles.filter((a) => (a.projectId === id || a.projectId === projectId) && !a.isDuplicate);
 
+  const decisions = db.screeningDecisions.filter(
+    (d) => d.projectId === id || d.projectId === projectId
+  );
+
+  list = list.map((a) => {
+    const taDecision = decisions.find((d) => d.articleId === a.id && d.stage === "title_abstract");
+    const ftDecision = decisions.find((d) => d.articleId === a.id && d.stage === "full_text");
+
+    const titleAbstractStatus: Article["screeningStatus"] =
+      a.titleAbstractStatus ||
+      (taDecision
+        ? taDecision.decision === "include"
+          ? "included"
+          : taDecision.decision === "exclude"
+          ? "excluded"
+          : "unclear"
+        : a.screeningStatus || "pending");
+
+    const fullTextStatus: Article["screeningStatus"] =
+      a.fullTextStatus ||
+      (ftDecision
+        ? ftDecision.decision === "include"
+          ? "included"
+          : ftDecision.decision === "exclude"
+          ? "excluded"
+          : "unclear"
+        : "pending");
+
+    return {
+      ...a,
+      titleAbstractStatus,
+      fullTextStatus,
+      titleAbstractExclusionReason: a.titleAbstractExclusionReason || taDecision?.exclusionReason,
+      fullTextExclusionReason: a.fullTextExclusionReason || ftDecision?.exclusionReason,
+    };
+  });
+
   if (filters?.screeningStatus && filters.screeningStatus !== "all") {
     list = list.filter((a) => a.screeningStatus === filters.screeningStatus);
   }
@@ -1977,7 +2014,21 @@ export async function recordScreeningDecision(
     }
   }
 
-  article.screeningStatus = newStatus;
+  if (stage === "title_abstract") {
+    article.titleAbstractStatus = newStatus;
+    if (newStatus === "excluded") {
+      article.screeningStatus = "excluded";
+      article.titleAbstractExclusionReason = exclusionReason;
+    } else {
+      article.screeningStatus = newStatus;
+    }
+  } else if (stage === "full_text") {
+    article.fullTextStatus = newStatus;
+    article.fullTextExclusionReason = exclusionReason;
+    article.screeningStatus = newStatus;
+  } else {
+    article.screeningStatus = newStatus;
+  }
   article.updatedAt = new Date().toISOString();
 
   // Record PRISMA event
