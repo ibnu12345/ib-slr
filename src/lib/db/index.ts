@@ -55,7 +55,13 @@ import {
 import { normalizeDoi, normalizeTitle } from "../importers/parsers";
 import { detectDuplicates } from "../importers/deduplication";
 import { defaultExclusionReasons, calculatePrismaCounts } from "../screening/prismaLedger";
-import { isSupabaseConfigured, saveStateToSupabase, loadStateFromSupabase } from "./supabaseSync";
+import {
+  isSupabaseConfigured,
+  saveStateToSupabase,
+  loadStateFromSupabase,
+  saveProjectDecisionsToSupabase,
+  loadProjectDecisionsFromSupabase,
+} from "./supabaseSync";
 
 export interface StoredUser extends UserProfile {
   passwordHash: string;
@@ -1700,6 +1706,26 @@ export async function getArticlesByProjectId(
   await syncFromSupabase();
   const db = getDb();
   const id = resolveProjectId(projectId);
+
+  // Load project-specific decisions from Supabase cloud and merge
+  try {
+    const remoteDecisions = await loadProjectDecisionsFromSupabase(id);
+    if (Array.isArray(remoteDecisions) && remoteDecisions.length > 0) {
+      for (const rd of remoteDecisions) {
+        const idx = db.screeningDecisions.findIndex(
+          (d) => d.articleId === rd.articleId && d.stage === rd.stage && d.reviewerId === rd.reviewerId
+        );
+        if (idx >= 0) {
+          db.screeningDecisions[idx] = rd;
+        } else {
+          db.screeningDecisions.push(rd);
+        }
+      }
+    }
+  } catch (err) {
+    console.warn("Non-fatal project decisions load warning:", err);
+  }
+
   let list = db.articles.filter((a) => (a.projectId === id || a.projectId === projectId) && !a.isDuplicate);
 
   const decisions = db.screeningDecisions.filter(
@@ -2090,7 +2116,87 @@ export async function recordScreeningDecision(
   }, reviewerId, reviewerName);
 
   saveDb(db);
+
+  // Directly await saving project decisions to Supabase (<250ms) so Vercel serverless never drops it!
+  try {
+    const projDecisions = db.screeningDecisions.filter(
+      (d) => d.projectId === id || d.projectId === projectId
+    );
+    await saveProjectDecisionsToSupabase(id, projDecisions);
+  } catch (err) {
+    console.warn("Failed to persist project decisions to Supabase:", err);
+  }
+
   return { decision: decisionRecord, status: newStatus };
+}
+
+export async function recordScreeningDecisionsBatch(
+  projectId: string,
+  stage: ScreeningStage,
+  decisions: Array<{ articleId: string; decision: ScreeningDecisionType; exclusionReason?: string; notes?: string }>,
+  reviewerId: string,
+  reviewerName: string
+): Promise<{ count: number }> {
+  await syncFromSupabase();
+  const db = getDb();
+  const id = resolveProjectId(projectId);
+
+  for (const item of decisions) {
+    const article = db.articles.find((a) => a.id === item.articleId && (a.projectId === id || a.projectId === projectId));
+    if (!article) continue;
+
+    const existingIndex = db.screeningDecisions.findIndex(
+      (d) => d.articleId === item.articleId && d.reviewerId === reviewerId && d.stage === stage
+    );
+
+    const decisionRecord: ScreeningDecision = {
+      id: existingIndex >= 0 ? db.screeningDecisions[existingIndex].id : `dec-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      projectId: id,
+      articleId: item.articleId,
+      reviewerId,
+      reviewerName,
+      stage,
+      decision: item.decision,
+      exclusionReason: item.exclusionReason,
+      notes: item.notes,
+      createdAt: existingIndex >= 0 ? db.screeningDecisions[existingIndex].createdAt : new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+
+    if (existingIndex >= 0) {
+      db.screeningDecisions[existingIndex] = decisionRecord;
+    } else {
+      db.screeningDecisions.push(decisionRecord);
+    }
+
+    const newStatus: Article["screeningStatus"] = item.decision === "include" ? "included" : item.decision === "exclude" ? "excluded" : "unclear";
+    if (stage === "title_abstract") {
+      article.titleAbstractStatus = newStatus;
+      if (newStatus === "excluded") {
+        article.screeningStatus = "excluded";
+        article.titleAbstractExclusionReason = item.exclusionReason;
+      } else {
+        article.screeningStatus = newStatus;
+      }
+    } else if (stage === "full_text") {
+      article.fullTextStatus = newStatus;
+      article.fullTextExclusionReason = item.exclusionReason;
+      article.screeningStatus = newStatus;
+    }
+  }
+
+  saveDb(db);
+
+  try {
+    const projDecisions = db.screeningDecisions.filter(
+      (d) => d.projectId === id || d.projectId === projectId
+    );
+    await saveProjectDecisionsToSupabase(id, projDecisions);
+  } catch (err) {
+    console.warn("Failed to persist batch decisions to Supabase:", err);
+  }
+
+  return { count: decisions.length };
 }
 
 export async function getScreeningConflicts(

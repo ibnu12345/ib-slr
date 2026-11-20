@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { requireEmailVerified } from "../auth/session";
 import {
   recordScreeningDecision,
+  recordScreeningDecisionsBatch,
   adjudicateConflict,
 } from "../db";
 import { ScreeningStage, ScreeningDecisionType } from "../types/screening";
@@ -53,6 +54,41 @@ export async function submitScreeningDecisionAction(formData: FormData) {
     };
   } catch (err: any) {
     return { success: false, error: err.message || "Gagal mencatat keputusan screening." };
+  }
+}
+
+export async function syncScreeningDecisionsBatchAction(formData: FormData) {
+  const session = await requireEmailVerified();
+
+  const projectId = formData.get("projectId")?.toString();
+  const stage = (formData.get("stage")?.toString() || "full_text") as ScreeningStage;
+  const decisionsJson = formData.get("decisions")?.toString();
+
+  if (!projectId || !decisionsJson) {
+    return { success: false, error: "Missing required batch parameters." };
+  }
+
+  try {
+    const decisions = JSON.parse(decisionsJson);
+    if (!Array.isArray(decisions) || decisions.length === 0) {
+      return { success: true, count: 0 };
+    }
+
+    const res = await recordScreeningDecisionsBatch(
+      projectId,
+      stage,
+      decisions,
+      session.userId,
+      session.fullName || session.email
+    );
+
+    revalidatePath(`/app/projects/${projectId}/prisma`);
+    revalidatePath(`/app/projects/${projectId}/overview`);
+
+    return { success: true, count: res.count, message: `${res.count} keputusan berhasil disinkronisasi ke cloud.` };
+  } catch (err: any) {
+    console.error("syncScreeningDecisionsBatchAction error:", err);
+    return { success: false, error: err.message || "Gagal menyinkronkan keputusan batch." };
   }
 }
 

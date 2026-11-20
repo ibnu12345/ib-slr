@@ -4,7 +4,10 @@ import React, { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { Article, EligibilityCriterion, Protocol } from "../../../../../../lib/types/research";
 import { ExclusionReason, ScreeningStage, ScreeningDecisionType } from "../../../../../../lib/types/screening";
-import { submitScreeningDecisionAction } from "../../../../../../lib/screening/actions";
+import {
+  submitScreeningDecisionAction,
+  syncScreeningDecisionsBatchAction,
+} from "../../../../../../lib/screening/actions";
 import {
   CheckCircle2,
   XCircle,
@@ -88,6 +91,72 @@ export function ScreeningStudio({
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(
     null
   );
+
+  // Restore decisions from persistent browser localStorage on mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const cacheKey = `ib_slr_decisions_cache_${projectId}_${stage}`;
+      const cachedRaw = localStorage.getItem(cacheKey);
+      if (cachedRaw) {
+        const cachedMap = JSON.parse(cachedRaw) as Record<
+          string,
+          { decision: ScreeningDecisionType; reason?: string }
+        >;
+        if (cachedMap && Object.keys(cachedMap).length > 0) {
+          setArticles((prev) =>
+            prev.map((a) => {
+              const cached = cachedMap[a.id];
+              if (cached && a.screeningStatus === "pending") {
+                const newStatus =
+                  cached.decision === "include"
+                    ? "included"
+                    : cached.decision === "exclude"
+                    ? "excluded"
+                    : "unclear";
+                return {
+                  ...a,
+                  screeningStatus: newStatus,
+                  activeExclusionReason: cached.reason,
+                  ...(stage === "full_text"
+                    ? { fullTextStatus: newStatus, fullTextExclusionReason: cached.reason }
+                    : { titleAbstractStatus: newStatus, titleAbstractExclusionReason: cached.reason }),
+                };
+              }
+              return a;
+            })
+          );
+
+          // Check if any cached decisions need to be pushed to the server
+          const toSync: Array<{
+            articleId: string;
+            decision: ScreeningDecisionType;
+            exclusionReason?: string;
+          }> = [];
+
+          initialArticles.forEach((initArt) => {
+            if (initArt.screeningStatus === "pending" && cachedMap[initArt.id]) {
+              toSync.push({
+                articleId: initArt.id,
+                decision: cachedMap[initArt.id].decision,
+                exclusionReason: cachedMap[initArt.id].reason,
+              });
+            }
+          });
+
+          if (toSync.length > 0) {
+            const fd = new FormData();
+            fd.append("projectId", projectId);
+            fd.append("stage", stage);
+            fd.append("decisions", JSON.stringify(toSync));
+            syncScreeningDecisionsBatchAction(fd).catch(console.warn);
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("Failed to load local screening cache:", err);
+    }
+  }, [projectId, stage, initialArticles]);
 
   // Synchronize state if incoming initialArticles change, but preserve decisions made in the current active session
   useEffect(() => {
@@ -239,6 +308,19 @@ export function ScreeningStudio({
     setArticles(updated);
     setShowExcludeModal(false);
     setReviewerNotes("");
+
+    // Persist immediately to browser localStorage (0ms) so refreshes never lose progress!
+    if (typeof window !== "undefined") {
+      try {
+        const cacheKey = `ib_slr_decisions_cache_${projectId}_${stage}`;
+        const existingCacheRaw = localStorage.getItem(cacheKey);
+        const cache = existingCacheRaw ? JSON.parse(existingCacheRaw) : {};
+        cache[targetArticle.id] = { decision, reason, timestamp: Date.now() };
+        localStorage.setItem(cacheKey, JSON.stringify(cache));
+      } catch (err) {
+        console.warn("LocalStorage save error:", err);
+      }
+    }
 
     setFeedback({
       type: "success",

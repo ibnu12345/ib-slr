@@ -84,3 +84,67 @@ export async function saveStateToSupabase(data: DatabaseSchema): Promise<boolean
     return false;
   }
 }
+
+/**
+ * Save project screening decisions to Supabase (fast, isolated row upsert <250ms)
+ */
+export async function saveProjectDecisionsToSupabase(
+  projectId: string,
+  decisions: any[]
+): Promise<boolean> {
+  if (!isSupabaseConfigured() || !projectId) return false;
+
+  try {
+    const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state`;
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "resolution=merge-duplicates",
+      },
+      body: JSON.stringify({
+        key: `decisions_${projectId}`,
+        payload: decisions,
+        updated_at: new Date().toISOString(),
+      }),
+    });
+
+    return res.ok;
+  } catch (err) {
+    console.warn("Failed to save project decisions to Supabase:", err);
+    return false;
+  }
+}
+
+/**
+ * Load project screening decisions from Supabase
+ */
+export async function loadProjectDecisionsFromSupabase(
+  projectId: string
+): Promise<any[] | null> {
+  if (!isSupabaseConfigured() || !projectId) return null;
+
+  try {
+    const endpoint = `${SUPABASE_URL.replace(/\/$/, "")}/rest/v1/app_state?key=eq.decisions_${projectId}&select=*`;
+    const res = await fetch(endpoint, {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+        Accept: "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!res.ok) return null;
+    const rows = await res.json();
+    if (Array.isArray(rows) && rows.length > 0 && Array.isArray(rows[0].payload)) {
+      return rows[0].payload;
+    }
+  } catch (err) {
+    console.warn("Failed to load project decisions from Supabase:", err);
+  }
+
+  return null;
+}
