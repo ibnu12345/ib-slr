@@ -197,7 +197,7 @@ ${searchRuns.map((s) => `| ${s.sourceDatabase} | \`${s.queryString.replace(/\|/g
 - **Catatan Disaring (Judul & Abstrak):** ${prismaCounts.recordsScreened} artikel
 - **Artikel Dieksklusi Awal:** ${prismaCounts.recordsExcludedTitleAbstract} artikel
 - **Naskah Lengkap Dinilai Kelayakannya:** ${prismaCounts.reportsSought} artikel
-- **Naskah Lengkap Dieksklusi:** ${prismaCounts.reportsExcluded} artikel
+- **Naskah Lengkap Dieksklusi:** ${prismaCounts.reportsExcludedFullText} artikel
   - Rincian Alasan Eksklusi:
 ${Object.entries(exclusionBreakdown).map(([k, v]) => `    - ${k}: ${v} artikel`).join("\n")}
 - **Total Studi Memenuhi Syarat & Diinklusi Akhir:** ${prismaCounts.studiesIncluded || includedArticles.length} artikel (100% Inklusi Sintesis)
@@ -658,7 +658,7 @@ ${includedArticles.map((a, idx) => {
                 3. Eksklusi Teks Lengkap
               </span>
               <div className="text-2xl font-black text-[#B42318] print:text-black">
-                {prismaCounts.reportsExcluded}
+                {prismaCounts.reportsExcludedFullText}
               </div>
               <span className="text-[10px] text-[#B42318] print:text-black">Gugur Syarat Naskah</span>
             </div>
@@ -679,7 +679,7 @@ ${includedArticles.map((a, idx) => {
           {/* Exclusion Breakdown Box */}
           <div className="bg-[#FEF3F2] border border-[#B42318]/30 rounded-xl p-4 print:bg-white print:border-black">
             <span className="text-xs font-bold text-[#B42318] uppercase tracking-wider block mb-2 print:text-black">
-              Rincian Alasan Eksklusi Penilaian Naskah Lengkap ({prismaCounts.reportsExcluded} Artikel):
+              Rincian Alasan Eksklusi Penilaian Naskah Lengkap ({prismaCounts.reportsExcludedFullText} Artikel):
             </span>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               {Object.entries(exclusionBreakdown).map(([reason, count], idx) => (
