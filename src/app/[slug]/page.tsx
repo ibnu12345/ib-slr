@@ -11,6 +11,9 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
+  if (slug === "robots.txt" || slug === "sitemap.xml" || slug === "ads.txt") {
+    return { title: "Page Not Found" };
+  }
   const page = await getPageBySlug(`/${slug}`);
   if (!page) {
     return { title: "Page Not Found" };
@@ -24,6 +27,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function CMSPageView({ params }: PageProps) {
   const { slug } = await params;
+  if (slug === "robots.txt" || slug === "sitemap.xml" || slug === "ads.txt") {
+    notFound();
+  }
   const normalizedSlug = `/${slug}`;
 
   const [page, faqs, pricingPlans, testimonials] = await Promise.all([
