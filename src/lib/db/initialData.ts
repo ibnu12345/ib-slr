@@ -28,8 +28,9 @@ export const defaultNavigationItems: NavigationItem[] = [
   { id: "nav-h-3", location: "header", label: "For Researchers", url: "/for-researchers", sortOrder: 3, isExternal: false, isVisible: true },
   { id: "nav-h-4", location: "header", label: "For Institutions", url: "/for-institutions", sortOrder: 4, isExternal: false, isVisible: true },
   { id: "nav-h-5", location: "header", label: "Pricing", url: "/pricing", sortOrder: 5, isExternal: false, isVisible: true },
-  { id: "nav-h-6", location: "header", label: "Resources", url: "/resources", sortOrder: 6, isExternal: false, isVisible: true },
-  { id: "nav-h-7", location: "header", label: "About", url: "/about", sortOrder: 7, isExternal: false, isVisible: true },
+  { id: "nav-h-blog", location: "header", label: "Blog & Guides", url: "/blog", sortOrder: 6, isExternal: false, isVisible: true },
+  { id: "nav-h-6", location: "header", label: "Resources", url: "/resources", sortOrder: 7, isExternal: false, isVisible: true },
+  { id: "nav-h-7", location: "header", label: "About", url: "/about", sortOrder: 8, isExternal: false, isVisible: true },
 
   // Footer Column 1: Product
   { id: "nav-f1-1", location: "footer_col1", label: "Features Overview", url: "/features", sortOrder: 1, isExternal: false, isVisible: true },

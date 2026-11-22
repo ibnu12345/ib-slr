@@ -6,6 +6,7 @@ import { getProjects, getArticlesByProjectId } from "../../lib/db";
 import { getUserQuotaInfo } from "../../lib/payment/quota";
 import { LanguageSwitcher } from "../../components/i18n/LanguageSwitcher";
 import { AccountQuotaCard } from "../../components/payment/AccountQuotaCard";
+import { AdSenseBanner } from "../../components/ads/AdSenseBanner";
 import {
   BookOpen,
   PlusCircle,
@@ -168,6 +169,16 @@ export default async function AppDashboardPage() {
             {isId ? "Buku besar kejadian deterministik" : "Deterministic event ledger"}
           </div>
         </div>
+      </div>
+
+      {/* Non-intrusive Sponsor & AdSense Placement */}
+      <div className="mb-8">
+        <AdSenseBanner
+          clientId="ca-pub-4685484644548395"
+          slotId="1234567890"
+          format="horizontal"
+          className="my-0"
+        />
       </div>
 
       {/* Projects List / Research Core Overview */}

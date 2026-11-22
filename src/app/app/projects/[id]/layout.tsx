@@ -8,6 +8,7 @@ import { ProjectNavigationProvider } from "./ProjectNavigationContext";
 import { ProjectContentContainer } from "./ProjectContentContainer";
 import { ArrowLeft, BookOpen, ShieldCheck, Lock } from "lucide-react";
 import { LanguageSwitcher } from "../../../../components/i18n/LanguageSwitcher";
+import { AdSenseBanner } from "../../../../components/ads/AdSenseBanner";
 
 export const dynamic = "force-dynamic";
 
@@ -94,6 +95,16 @@ export default async function ProjectLayout({ params, children }: Props) {
 
         {/* Page Canvas with smooth transition */}
         <ProjectContentContainer>{children}</ProjectContentContainer>
+
+        {/* Non-intrusive Workspace Sponsor Slot */}
+        <div className="mt-8 pt-4 border-t border-[#E4E7EC] no-print">
+          <AdSenseBanner
+            clientId="ca-pub-4685484644548395"
+            slotId="1234567890"
+            format="horizontal"
+            className="my-0"
+          />
+        </div>
       </div>
     </ProjectNavigationProvider>
   );

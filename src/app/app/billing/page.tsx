@@ -6,6 +6,7 @@ import { getUserQuotaInfo } from "../../../lib/payment/quota";
 import { getUserPaymentOrders, getProjects } from "../../../lib/db";
 import { LanguageSwitcher } from "../../../components/i18n/LanguageSwitcher";
 import { TopUpBannerClient } from "../../../components/payment/TopUpBannerClient";
+import { AdSenseBanner } from "../../../components/ads/AdSenseBanner";
 import {
   CreditCard,
   ShieldCheck,
@@ -346,6 +347,16 @@ export default async function BillingPage() {
             ))
           )}
         </div>
+      </div>
+
+      {/* Non-intrusive Billing Ad Placement */}
+      <div className="mt-8">
+        <AdSenseBanner
+          clientId="ca-pub-4685484644548395"
+          slotId="1234567890"
+          format="horizontal"
+          className="my-0"
+        />
       </div>
     </div>
   );

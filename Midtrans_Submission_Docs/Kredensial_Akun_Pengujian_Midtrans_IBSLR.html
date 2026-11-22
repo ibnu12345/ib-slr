@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kredensial Akun Pengujian & Panduan Transaksi - Midtrans Verifikasi</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 20mm;
+    }
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      color: #1f2937;
+      line-height: 1.6;
+      margin: 0;
+      padding: 24px;
+      background: #ffffff;
+    }
+    .header {
+      border-bottom: 3px solid #2F7D78;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .brand-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #17324D;
+      margin: 0;
+      letter-spacing: -0.5px;
+    }
+    .brand-subtitle {
+      font-size: 13px;
+      color: #2F7D78;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+    .meta-info {
+      text-align: right;
+      font-size: 11px;
+      color: #64748b;
+    }
+    .doc-badge {
+      display: inline-block;
+      background: #eff7f6;
+      border: 1px solid #2F7D78;
+      color: #2F7D78;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 19px;
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+    p {
+      font-size: 13px;
+      color: #334155;
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
+    .credential-card {
+      background: #f1f5f9;
+      border: 2px dashed #94a3b8;
+      border-radius: 8px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+    }
+    .credential-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+    .credential-row:last-child {
+      margin-bottom: 0;
+    }
+    .credential-label {
+      width: 170px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .credential-value {
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 4px 10px;
+      border-radius: 4px;
+      color: #0f172a;
+      font-weight: 600;
+      font-size: 13px;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #17324D;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 6px;
+      margin-top: 24px;
+      margin-bottom: 14px;
+    }
+    ol.step-list {
+      margin: 0;
+      padding-left: 20px;
+      font-size: 13px;
+      color: #334155;
+    }
+    ol.step-list li {
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .step-badge {
+      font-weight: 700;
+      color: #17324D;
+    }
+    .note-box {
+      background: #fefce8;
+      border-left: 4px solid #ca8a04;
+      padding: 12px 16px;
+      border-radius: 0 6px 6px 0;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      font-size: 12px;
+      color: #713f12;
+    }
+    .footer {
+      margin-top: 40px;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 14px;
+      font-size: 11px;
+      color: #64748b;
+      display: flex;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div>
+      <div class="brand-title">IB-SLR</div>
+      <div class="brand-subtitle">Platform SaaS Systematic Literature Review: &ldquo;From Literature to Evidence.&rdquo;</div>
+    </div>
+    <div class="meta-info">
+      <div><strong>Platform URL:</strong> https://ib-slr-app.vercel.app</div>
+      <div><strong>Tujuan:</strong> Verifikasi &amp; Onboarding Merchant Midtrans</div>
+      <div><strong>Tanggal:</strong> November 2026</div>
+    </div>
+  </div>
+
+  <span class="doc-badge">Dokumen Tambahan &bull; Akses Audit &amp; Verifikasi</span>
+  <h1>Kredensial Akun Pengujian &amp; Panduan Tes Transaksi Midtrans</h1>
+  <p>
+    Dokumen ini dilampirkan sebagai dokumen pendukung sesuai permintaan tim Onboarding / Risk Assessment Midtrans untuk melakukan pengujian alur transaksi (<em>test transaction</em>) dan audit antarmuka sistem pada platform <strong>IB-SLR</strong>.
+  </p>
+
+  <div class="section-title">1. Kredensial Akun Pengujian (Testing Credentials)</div>
+
+  <div class="credential-card">
+    <div class="credential-row">
+      <div class="credential-label">Halaman Login Sistem:</div>
+      <div class="credential-value">https://ib-slr-app.vercel.app/login</div>
+    </div>
+    <div class="credential-row">
+      <div class="credential-label">Email Akun Tester:</div>
+      <div class="credential-value">pro@ib-slr.com</div>
+    </div>
+    <div class="credential-row">
+      <div class="credential-label">Kata Sandi (Password):</div>
+      <div class="credential-value">ProPass123!</div>
+    </div>
+    <div class="credential-row">
+      <div class="credential-label">Tipe Akun:</div>
+      <div class="credential-value">Pengguna Aktif (Standard Researcher User)</div>
+    </div>
+  </div>
+
+  <div class="note-box">
+    <strong>Alternatif Pendaftaran Mandiri:</strong><br>
+    Tim verifikator Midtrans juga diperkenankan melakukan pendaftaran akun baru secara instan melalui tautan <code>https://ib-slr-app.vercel.app/register</code> menggunakan email tim verifikator.
+  </div>
+
+  <div class="section-title">2. Panduan Langkah Demi Langkah Pengujian Transaksi (Test Flow)</div>
+
+  <ol class="step-list">
+    <li>
+      <span class="step-badge">Langkah 1: Masuk ke Platform (Login)</span><br>
+      Buka peramban (browser) dan akses alamat <code>https://ib-slr-app.vercel.app/login</code>. Masukkan alamat email dan kata sandi di atas, lalu klik <strong>&ldquo;Masuk ke Akun&rdquo;</strong>.
+    </li>
+    <li>
+      <span class="step-badge">Langkah 2: Menuju Bagian Pembayaran / Top-Up</span><br>
+      Setelah berhasil masuk ke halaman dashboard/workspace, verifikator dapat mengakses fitur pembayaran melalui salah satu cara berikut:
+      <ul style="margin-top: 4px; padding-left: 20px; font-size: 12px;">
+        <li>Klik menu <strong>&ldquo;Pricing&rdquo;</strong> pada bilah navigasi utama (atau di halaman utama).</li>
+        <li>Atau klik tombol <strong>&ldquo;Top Up Project Pass&rdquo; / &ldquo;Upgrade Plan&rdquo;</strong> pada kartu kuota proyek di panel atas dashboard.</li>
+      </ul>
+    </li>
+    <li>
+      <span class="step-badge">Langkah 3: Pemilihan Paket &amp; Klik Bayar</span><br>
+      Pilih salah satu paket layanan, misalnya paket <strong>Pay-Per-Project Pass (Rp 20.000)</strong> atau <strong>Professional Researcher (Rp 450.000)</strong>, lalu tekan tombol <strong>&ldquo;Beli Sekarang&rdquo; / &ldquo;Top Up&rdquo;</strong>.
+    </li>
+    <li>
+      <span class="step-badge">Langkah 4: Munculnya Antarmuka Pembayaran Midtrans Snap</span><br>
+      Jendela pop-up atau antarmuka modal checkout Midtrans akan langsung terbuka secara otomatis di layar. Verifikator dapat melihat metode pembayaran yang tersedia (QRIS Nasional, Virtual Account Bank, dan E-Wallet) dan mengonfirmasi bahwa inisiasi transaksi berjalan lancar tanpa hambatan.
+    </li>
+  </ol>
+
+  <div class="footer">
+    <div>
+      <strong>IB-SLR Platform</strong> &bull; Hak Cipta &copy; 2026.<br>
+      Kontak Pengelola: ibnusetiawan1928@gmail.com
+    </div>
+    <div style="text-align: right;">
+      Lampiran: <em>Dokumen Kredensial Pengujian Onboarding Midtrans</em><br>
+      URL: https://ib-slr-app.vercel.app
+    </div>
+  </div>
+
+</body>
+</html>

@@ -7,7 +7,8 @@ export function translateNavLabel(label: string, url: string, isId: boolean): st
   if (url === "/for-researchers" || l.includes("researcher")) return "Untuk Peneliti";
   if (url === "/for-institutions" || l.includes("institution")) return "Institusi & Lab";
   if (url === "/pricing" || l.includes("pricing")) return "Biaya & Paket";
-  if (url === "/resources" || l.includes("resource") || l.includes("blog")) return "Panduan & Blog";
+  if (url === "/blog" || l.includes("blog")) return "Blog Riset";
+  if (url === "/resources" || l.includes("resource")) return "Panduan & Checklist";
   if (url === "/about" || l.includes("about")) return "Tentang Kami";
   if (url === "/contact" || l.includes("contact")) return "Hubungi Kami";
   if (url === "/privacy" || l.includes("privacy")) return "Kebijakan Privasi";
