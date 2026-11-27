@@ -41,8 +41,8 @@ export function QrisCheckoutModal({
   const [paymentStatus, setPaymentStatus] = useState<"pending" | "paid" | "failed">("pending");
   const [timeLeft, setTimeLeft] = useState(15 * 60); // 15 mins
   const [error, setError] = useState<string | null>(null);
-  const [selectedMethod, setSelectedMethod] = useState<PaymentMethodTab>("qris");
   const [copied, setCopied] = useState(false);
+  const [isOpeningGateway, setIsOpeningGateway] = useState(false);
 
   // Determine item display metadata
   const planInfo = (() => {
@@ -149,11 +149,25 @@ export function QrisCheckoutModal({
     return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  // Open Payment Portal (Popup or Redirect)
+  // Open Payment Portal (Popup on Desktop, Direct Redirect on Mobile to prevent popup blocker & double modal)
   const handleOpenGateway = () => {
-    if (orderData?.order?.snapToken && typeof window !== "undefined" && (window as any).snap) {
+    if (!orderData?.order) return;
+
+    const isMobile =
+      typeof window !== "undefined" &&
+      (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+        window.innerWidth < 768);
+
+    // On mobile devices, direct navigation to snapRedirectUrl is 100% reliable and avoids popup blockers
+    if (isMobile && orderData.order.snapRedirectUrl) {
+      setIsOpeningGateway(true);
+      window.location.href = orderData.order.snapRedirectUrl;
+      return;
+    }
+
+    if (orderData.order.snapToken && typeof window !== "undefined" && (window as any).snap) {
       (window as any).snap.pay(orderData.order.snapToken, {
-        onSuccess: (result: any) => {
+        onSuccess: () => {
           setPaymentStatus("paid");
           if (onSuccess && orderData.order) onSuccess(orderData.order);
         },
@@ -162,11 +176,15 @@ export function QrisCheckoutModal({
         },
         onError: (err: any) => {
           console.warn("Payment gateway error:", err);
+          setError("Terjadi kendala pada popup pembayaran. Silakan klik tautan portal di bawah.");
         },
         onClose: () => {},
       });
-    } else if (orderData?.order?.snapRedirectUrl) {
-      window.open(orderData.order.snapRedirectUrl, "_blank");
+    } else if (orderData.order.snapRedirectUrl) {
+      setIsOpeningGateway(true);
+      window.location.href = orderData.order.snapRedirectUrl;
+    } else {
+      setError("Portal pembayaran belum siap. Silakan muat ulang atau coba lagi.");
     }
   };
 
@@ -309,22 +327,14 @@ export function QrisCheckoutModal({
                 </div>
               </div>
 
-              {/* Step 1: Payment Method Selector */}
+              {/* Supported Payment Methods Info */}
               <div>
                 <label className="block text-xs font-bold text-[#17324D] mb-2">
-                  1. Pilih Metode Pembayaran Favorit Anda:
+                  Metode Pembayaran Tersedia:
                 </label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMethod("qris")}
-                    className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                      selectedMethod === "qris"
-                        ? "border-[#2F7D78] bg-[#EFF7F6] ring-1 ring-[#2F7D78]"
-                        : "border-[#E4E7EC] bg-white hover:bg-[#F7F8FA]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div className="p-2.5 rounded-xl border border-[#E4E7EC] bg-[#F7F8FA] text-left flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
                       <QrCode className="w-4 h-4 text-[#2F7D78]" />
                       <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-[#18794E]/10 text-[#18794E]">
                         Instan
@@ -332,126 +342,101 @@ export function QrisCheckoutModal({
                     </div>
                     <span className="text-xs font-bold text-[#17324D] block">QRIS</span>
                     <span className="text-[10px] text-[#667085]">Semua Bank & E-Wallet</span>
-                  </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMethod("va")}
-                    className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                      selectedMethod === "va"
-                        ? "border-[#2F7D78] bg-[#EFF7F6] ring-1 ring-[#2F7D78]"
-                        : "border-[#E4E7EC] bg-white hover:bg-[#F7F8FA]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div className="p-2.5 rounded-xl border border-[#E4E7EC] bg-[#F7F8FA] text-left flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
                       <Building2 className="w-4 h-4 text-[#026AA2]" />
                     </div>
                     <span className="text-xs font-bold text-[#17324D] block">Virtual Account</span>
                     <span className="text-[10px] text-[#667085]">BCA, BRI, BNI, Mandiri</span>
-                  </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMethod("ewallet")}
-                    className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                      selectedMethod === "ewallet"
-                        ? "border-[#2F7D78] bg-[#EFF7F6] ring-1 ring-[#2F7D78]"
-                        : "border-[#E4E7EC] bg-white hover:bg-[#F7F8FA]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div className="p-2.5 rounded-xl border border-[#E4E7EC] bg-[#F7F8FA] text-left flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
                       <Smartphone className="w-4 h-4 text-[#B7791F]" />
                     </div>
                     <span className="text-xs font-bold text-[#17324D] block">E-Wallet</span>
                     <span className="text-[10px] text-[#667085]">GoPay & ShopeePay</span>
-                  </button>
+                  </div>
 
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMethod("card")}
-                    className={`p-2.5 rounded-xl border text-left transition-all flex flex-col justify-between ${
-                      selectedMethod === "card"
-                        ? "border-[#2F7D78] bg-[#EFF7F6] ring-1 ring-[#2F7D78]"
-                        : "border-[#E4E7EC] bg-white hover:bg-[#F7F8FA]"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-1.5">
+                  <div className="p-2.5 rounded-xl border border-[#E4E7EC] bg-[#F7F8FA] text-left flex flex-col justify-between">
+                    <div className="flex items-center justify-between mb-1">
                       <CreditCard className="w-4 h-4 text-[#5925DC]" />
                     </div>
                     <span className="text-xs font-bold text-[#17324D] block">Kartu Kredit</span>
                     <span className="text-[10px] text-[#667085]">Visa, Mastercard</span>
-                  </button>
+                  </div>
                 </div>
               </div>
 
-              {/* Step 2: Main Action Button */}
+              {/* Main Action Button */}
               <div className="p-4 rounded-xl bg-[#F7F8FA] border border-[#E4E7EC] space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-[#17324D]">
-                    2. Selesaikan Pembayaran Resmi
+                    Selesaikan Pembayaran Resmi
                   </span>
                   <span className="text-[10px] text-[#2F7D78] font-semibold bg-[#EFF7F6] px-2 py-0.5 rounded-full">
-                    Sistem Terverifikasi
+                    Midtrans Terverifikasi
                   </span>
                 </div>
 
                 {/* Primary Button */}
                 <button
                   type="button"
+                  disabled={isOpeningGateway}
                   onClick={handleOpenGateway}
-                  className="w-full py-3 px-4 rounded-xl bg-[#17324D] hover:bg-[#12273D] text-white text-xs font-bold shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#17324D] hover:bg-[#12273D] disabled:opacity-70 text-white text-xs sm:text-sm font-bold shadow-md flex items-center justify-center gap-2 transition-all active:scale-[0.99]"
                 >
-                  <Zap className="w-4 h-4 text-[#3E9C96]" />
-                  <span>Bayar Sekarang ({planInfo.idr})</span>
-                  <ChevronRight className="w-4 h-4" />
+                  {isOpeningGateway ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 text-[#3E9C96] animate-spin" />
+                      <span>Membuka Portal Pembayaran...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Zap className="w-4 h-4 text-[#3E9C96]" />
+                      <span>Bayar Sekarang ({planInfo.idr})</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </>
+                  )}
                 </button>
 
                 {orderData?.order?.snapRedirectUrl && (
-                  <div className="text-center">
+                  <div className="text-center pt-1">
                     <a
                       href={orderData.order.snapRedirectUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 text-xs text-[#2F7D78] hover:underline font-semibold"
                     >
-                      <span>Atau buka portal pembayaran di tab baru</span>
+                      <span>Jika popup tidak muncul, klik di sini untuk membayar</span>
                       <ExternalLink className="w-3.5 h-3.5" />
                     </a>
                   </div>
                 )}
               </div>
 
-              {/* Order Reference & Mobile Scanner */}
-              <div className="p-4 bg-white border border-[#E4E7EC] rounded-xl flex flex-col sm:flex-row items-center gap-4 text-center sm:text-left">
-                {orderData && (
-                  <div className="p-2 bg-white rounded-lg shadow-sm border border-[#E4E7EC] shrink-0">
-                    <img
-                      src={orderData.qrCodeUrl}
-                      alt="Payment Portal QR Code"
-                      className="w-24 h-24 object-contain"
-                    />
-                  </div>
-                )}
-                <div className="space-y-1.5 flex-1">
-                  <div className="flex items-center justify-center sm:justify-start gap-1.5">
-                    <span className="font-bold text-xs text-[#17324D]">Kode Tagihan & Mobile Pay</span>
-                  </div>
-                  <div className="flex items-center justify-center sm:justify-start gap-2">
-                    <span className="font-mono text-xs font-bold text-[#17324D] bg-[#F2F4F7] px-2 py-0.5 rounded border border-[#E4E7EC]">
-                      {orderData?.order?.orderId}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={copyOrderId}
-                      className="text-[#2F7D78] hover:text-[#17324D] p-1 rounded hover:bg-gray-100 transition-colors"
-                      title="Salin No. Tagihan"
-                    >
-                      {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-                  <p className="text-[11px] text-[#667085] leading-relaxed">
-                    Arahkan kamera ponsel Anda ke kode QR untuk membuka halaman pembayaran instan di smartphone Anda.
+              {/* Clean Invoice Reference Bar */}
+              <div className="p-3.5 bg-white border border-[#E4E7EC] rounded-xl flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+                <div>
+                  <span className="text-[11px] font-semibold text-[#667085] block">
+                    Nomor Tagihan (Invoice ID)
+                  </span>
+                  <p className="text-[10px] text-[#98A2B3]">
+                    Status kuota otomatis bertambah setelah pembayaran berhasil.
                   </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="font-mono text-xs font-bold text-[#17324D] bg-[#F2F4F7] px-2.5 py-1 rounded border border-[#E4E7EC]">
+                    {orderData?.order?.orderId}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={copyOrderId}
+                    className="text-[#2F7D78] hover:text-[#17324D] p-1.5 rounded hover:bg-gray-100 transition-colors border border-[#E4E7EC]"
+                    title="Salin No. Tagihan"
+                  >
+                    {copied ? <Check className="w-3.5 h-3.5 text-green-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  </button>
                 </div>
               </div>
             </div>
